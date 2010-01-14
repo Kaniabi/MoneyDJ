@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from moneydj.accounts.forms import *
 from moneydj.money.models import *
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 def view(request, id):
     acc = get_object_or_404(Account, pk=id, user=request.user)
     transactions = Transaction.objects.filter(account=acc).order_by('date')[:10]
-    return render_to_response('accounts/view.html', {'account': acc, 'transactions': transactions}, context_instance = RequestContext(request))
+    return render_to_response('account_view.html', {'account': acc, 'transactions': transactions}, context_instance = RequestContext(request))
 
 def add(request):
     if (request.method == 'POST'):
@@ -21,9 +21,4 @@ def add(request):
             return redirect(reverse('moneydj.money.views.accounts.view', args=[acc.id]))
     else:
         form = AccountForm()
-    return render_to_response('accounts/add.html', {'form': form}, context_instance = RequestContext(request))
-
-class AccountForm(ModelForm):
-    class Meta:
-        model = Account
-        exclude = ('user', 'balance_updated', 'date_created')
+    return render_to_response('account_add.html', {'form': form}, context_instance = RequestContext(request))

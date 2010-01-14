@@ -25,7 +25,7 @@
 			</tr>
 			{% endifchanged %}
 			<tr class="{% cycle 'odd' 'even' %}">
-				<td><a href="{% url money.views.accounts.view t.account.id %}">{{ t.account.name|default:"" }}</a></td>
+				<td><a href="{% url accounts.views.view t.account.id %}">{{ t.account.name|default:"" }}</a></td>
 				<td>{{ t.payee.name }}</td>
 				<td>{% if t.credit %}{{ t.amount }}{% endif %}</td>
 				<td>{% if not t.credit %}{{ t.amount }}{% endif %}</td>

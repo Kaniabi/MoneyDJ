@@ -38,7 +38,7 @@
 			<h2>{% trans 'Accounts' %}</h2>
 			{% accounts_block user %}
 			<ul class="actions">
-				<li class="add_account"><a href="{% url money.views.accounts.add %}">{% trans 'Add Account' %}</a></li>
+				<li class="add_account"><a href="{% url accounts.views.add %}">{% trans 'Add Account' %}</a></li>
 			</ul>
 		</div>
 		{% endif %}
