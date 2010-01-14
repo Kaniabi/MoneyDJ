@@ -14,5 +14,6 @@ urlpatterns = patterns('',
 
     (r'^admin/', include(admin.site.urls)),
     (r'^user/', include('moneydj.moneyuser.urls')),
-    (r'^', include('moneydj.money.urls'))
+    (r'^dashboard/', include('moneydj.dashboard.urls')),
+    (r'^accounts/', include('moneydj.accounts.urls'))
 )

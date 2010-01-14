@@ -85,5 +85,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.humanize',
     'moneydj.money',
-    'moneydj.moneyuser'
+    'moneydj.moneyuser',
+    'moneydj.dashboard',
+    'moneydj.accounts'
 )
