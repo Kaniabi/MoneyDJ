@@ -40,7 +40,7 @@ MEDIA_ROOT = '/mnt/project/moneydj/media/'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = 'http://media.moneydj:8000'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -65,16 +65,25 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'moneydj.urls'
 
+LOGIN_URL = '/user/login/'
+
+LOGIN_REDIRECT_URL = '/user/profile'
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/mnt/project/moneydj/money/templates'
+    '/mnt/project/moneydj/templates'
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    'django.contrib.sites',
+    'django.contrib.humanize',
     'moneydj.money',
+    'moneydj.moneyuser'
 )

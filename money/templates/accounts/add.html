@@ -1,0 +1,14 @@
+{% extends 'overall_template.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Add an Account' %} &bull; {% endblock %}
+
+{% block content %}
+<h2>{% trans 'Add an Account' %}</h2>
+<form action="{% url money.views.accounts.add %}" method="post">
+	<ol class="form">
+		{{ form.as_ul }}
+		<li class="submit"><input type="submit" value="{% trans 'Add' %}"/></li>
+	</ol>
+</form>
+{% endblock content %}

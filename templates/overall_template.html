@@ -1,0 +1,51 @@
+{% load i18n %}
+{% load money_overall %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+	<title>{% block title %}{% endblock %}MoneyDJ</title>
+
+	<link type="text/css" href="http://media.moneydj:8000/css/overall.css" rel="stylesheet"/>
+</head>
+
+<body>
+<div id="wrapper">
+	<div id="header">
+		<h1>MoneyDJ</h1>
+		{% if user.is_authenticated %}
+		<div id="user_content">
+			<p id="uid">{% trans "Welcome" %}, <strong>{{ user }}</strong></p>
+			<ul class="actions">
+				<li class="profile"><a href="{% url moneyuser.views.profile %}">{% trans "Profile" %}</a></li>
+				<li class="logout"><a href="{% url django.contrib.auth.views.logout %}">{% trans "Logout" %}</a></li>
+			</ul>
+		</div>
+		{% endif %}
+		<ul id="navigation">
+			<li><a href="/">{% trans 'Home' %}</a></li>
+			<li><a href="/accounts/">{% trans 'Accounts' %}</a></li>
+			<li><a href="/reports/">{% trans 'Reports' %}</a></li>
+		</ul>
+	</div>
+	
+	<div id="body">
+		{% if user.is_authenticated %}
+		<div id="accounts">
+			<h2>{% trans 'Accounts' %}</h2>
+			{% accounts_block user %}
+			<ul class="actions">
+				<li class="add_account"><a href="{% url money.views.accounts.add %}">{% trans 'Add Account' %}</a></li>
+			</ul>
+		</div>
+		{% endif %}
+		<div id="content">
+		{% block content %}{% endblock %}
+		</div>
+	</div>
+</div>
+</body>
+</html>

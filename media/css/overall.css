@@ -1,0 +1,89 @@
+body {
+	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 70%;
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	position: relative;
+	padding: 1em;
+}
+
+#user_content {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 1em;
+}
+
+#uid { text-align: right; margin: 0; }
+
+#header #navigation, #user_content {
+	list-style: none;
+}
+#header #navigation li {
+	display: inline;
+}
+
+ul.actions {
+	list-style: none;
+	margin: 0;
+}
+ul.actions li {
+	display: inline;
+}
+
+#body {
+	margin: 1em;
+}
+
+#accounts {
+	width: 15em;
+	float: left;
+}
+#accounts h2 {
+	margin-top: 0;
+}
+#accounts ul {
+	margin: 0.5em 0;
+	list-style: none;
+	padding: 0;
+}
+
+#content {
+	margin-left: 15em;
+}
+
+table {
+	border-collapse: collapse;
+}
+table tbody th {
+	text-align: left;
+}
+table td, th {
+	padding: 0.3em;
+}
+table tr.odd {
+	background-color: #def1a2;
+}
+table tr.even {
+	background-color: #afd4e8;
+}
+
+ol.form {
+	margin: 0.5em;
+	list-style: none;
+	padding: 0;
+}
+ol.form li {
+	margin-bottom: 0.5em;
+}
+ol.form li label {
+	width: 15em;
+	display: block;
+}
+
+table.transactions {
+	border: 1px solid #54abf9;
+}

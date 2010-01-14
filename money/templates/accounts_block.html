@@ -1,0 +1,5 @@
+<ul>
+	{% for a in accounts %}
+	<li><a href="{% url money.views.accounts.view a.id %}">{{ a.name }}</a> ({{ a.update_balance }}{{ a.balance }})</li>
+	{% endfor %}
+</ul>

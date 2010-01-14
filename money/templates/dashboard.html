@@ -1,0 +1,49 @@
+{% extends "overall_template.html" %}
+{% load i18n %}
+{% load humanize %}
+
+{% block title %}{% trans 'Dashboard' %} &bull; {% endblock %}
+
+{% block content %}
+<div id="transactions" class="dash_box">
+	<h2>{% trans 'Transactions' %}</h2>
+	{% if transactions %}
+	<table class="transactions">
+		<thead>
+			<tr>
+				<th>{% trans 'Account' %}</th>
+				<th>{% trans 'Payee' %}</th>
+				<th>{% trans 'Money In' %}</th>
+				<th>{% trans 'Money Out' %}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for t in transactions %}
+			{% ifchanged t.date %}
+			<tr>
+				<th class="date" colspan="4">{{ t.date|naturalday|capfirst }}</th>
+			</tr>
+			{% endifchanged %}
+			<tr class="{% cycle 'odd' 'even' %}">
+				<td><a href="{% url money.views.accounts.view t.account.id %}">{{ t.account.name|default:"" }}</a></td>
+				<td>{{ t.payee.name }}</td>
+				<td>{% if t.credit %}{{ t.amount }}{% endif %}</td>
+				<td>{% if not t.credit %}{{ t.amount }}{% endif %}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>{% trans 'No recent transactions' %}</p>
+	{% endif %}
+</div>
+
+<div id="tags" class="dash_box">
+	<h2>{% trans 'Tags' %}</h2>
+	{% if tags %}
+	<ul class="tags">
+		
+	</ul>
+	{% endif %}
+</div>
+{% endblock content %}
