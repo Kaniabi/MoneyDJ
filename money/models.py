@@ -45,24 +45,32 @@ class Account(models.Model):
     def __unicode__(self):
         return self.name
     
-    def update_balance(self):
+    def update_balance(self, all=False):
         """
-        Updates the balance of the account for all the transactions
+        Updates the balance of the account
+        
+        Arguments:
+        all -- whether to update using all transactions or just since last updated
         """
         # Only update the balance if we're tracking the balance for this account
         if (self.track_balance == True):
-            b = 0;
-            transactions = Transaction.objects.filter(account=self,date__gt=self.balance_updated)
+            transactions = Transaction.objects.filter(account=self)
+            if (all == False):
+                transactions.filter(date_created__gt=self.balance_updated)
+                b = self.balance;
+            else:
+                b = 0
                 
-            for t in transactions:
-                if t.credit:
-                    b += t.amount
-                else:
-                    b -= t.amount
-            
-            self.balance = b;
-            self.balance_updated = datetime.now()
-            self.save()
+            if (transactions):
+                for t in transactions:
+                    if t.credit:
+                        b += t.amount
+                    else:
+                        b -= t.amount
+                
+                self.balance = b;
+                self.balance_updated = datetime.now()
+                self.save()
         
     def balance_at(self, datetime):
         """ 
