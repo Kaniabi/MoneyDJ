@@ -1,89 +1,195 @@
 body {
 	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 70%;
+	font-size: 62.5%;
 	margin: 0;
 	padding: 0;
+}
+
+a:link, a:visited {
+	color: #642019;
+	text-decoration: none;
+}
+a:hover, a:active {
+	color: #5c3566;
+}
+
+.clear { clear: both; }
+
+/* Forms */
+ol.form {
+	font-size: 1.5em;
+	padding-left: 0.5em;
+}
+ol.form li {
+	list-style: none;
+	padding-bottom: 0.5em;
+	clear: left;
+	font-style: italic;
+}
+ol.form label {
+	width: 13em;
+	display: block;
+	float: left;
+	font-style: normal;
+}
+
+span.sprite {
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	background-image: url('../img/sprites.png');
+	vertical-align: middle;
+	margin-right: 2px;
+}
+span.sprite.profile {
+	background-position: -16px 0;
+}
+a:hover span.sprite.profile {
+	background-position: 0 0;
+}
+span.sprite.logout {
+	background-position: -16px -16px;
+}
+a:hover span.sprite.logout {
+	background-position: 0 -16px;
 }
 
 #header {
 	position: relative;
-	padding: 1em;
+}
+#header .main {
+	padding-top: 0.8em;
+	border-bottom: 4px solid #c0dd82;
+	background: #b5bd92 url(../img/header-bg.png) repeat-x;
 }
 
-#user_content {
+h1 {
+	width: 250px;
+	height: 52px;
+	font-size: 4em;
+	margin: 0 0 0.1em 0.2em;
+	background: transparent url(../img/logo.png) no-repeat top left;
+}
+h1 span {
+	display: block;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+#userbox {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 1em;
+	padding: 0.8em;
+	font-size: 1.2em;
+	text-align: right;
+	width: 40%;
 }
-
-#uid { text-align: right; margin: 0; }
-
-#header #navigation, #user_content {
-	list-style: none;
+#userbox img {
+	float: right;
+	max-height: 40px;
+	border: 2px solid #1a1a1a;
+	margin-left: 1em;
 }
-#header #navigation li {
-	display: inline;
-}
-
-ul.actions {
-	list-style: none;
+#userbox p {
 	margin: 0;
 }
-ul.actions li {
+#userbox ul {
+	margin: 0;
+	padding: 0;
+}
+#userbox ul li {
 	display: inline;
+	list-style: none;
+	margin-left: 0.4em;
+}
+#userbox ul li a {
+	font-weight: bold;
 }
 
-#body {
-	margin: 1em;
-}
-
-#accounts {
-	width: 15em;
+#nav {
+	font-size: 1.5em;
+	margin: -4px 0 0 2em;
 	float: left;
+	background: transparent url('../img/nav-left.png') no-repeat;
+	height: 26px;
 }
-#accounts h2 {
-	margin-top: 0;
-}
-#accounts ul {
-	margin: 0.5em 0;
-	list-style: none;
+#nav ul {
+	margin: 0 0 0 34px;
 	padding: 0;
-}
-
-#content {
-	margin-left: 15em;
-}
-
-table {
-	border-collapse: collapse;
-}
-table tbody th {
-	text-align: left;
-}
-table td, th {
-	padding: 0.3em;
-}
-table tr.odd {
-	background-color: #def1a2;
-}
-table tr.even {
-	background-color: #afd4e8;
-}
-
-ol.form {
-	margin: 0.5em;
 	list-style: none;
-	padding: 0;
+	display: inline;
+	vertical-align: top;
 }
-ol.form li {
-	margin-bottom: 0.5em;
+#nav ul li {
+	display: inline-block;
+	margin-right: 17px;
 }
-ol.form li label {
-	width: 15em;
+#nav a {
 	display: block;
+	height: 22px;
+	position: relative;
+	overflow: hidden;
+}
+#nav a span {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: transparent url('../img/en/nav.png');
+}
+#nav li.home a {
+	width: 106px;
+}
+#nav li.home.active span, #nav li.home a:hover span {
+	background-position: 0 -22px;
+}
+#nav li.accounts a {
+	width: 96px;
+}
+#nav li.accounts span {
+	background-position: -122px 0;
+}
+#nav li.accounts.active span, #nav li.accounts a:hover span {
+	background-position: -122px -22px;
+}
+#nav li.tags a {
+	width: 56px;
+}
+#nav li.tags span {
+	background-position: -234px 0;
+}
+#nav li.tags.active span, #nav li.tags a:hover span {
+	background-position: -234px -22px;
+}
+#nav li.budget a {
+	width: 75px;
+}
+#nav li.budget span {
+	background-position: -305px 0;
+}
+#nav li.budget.active span, #nav li.budget a:hover span {
+	background-position: -305px -22px;
+}
+#nav li.reports a {
+	width: 82px;
+}
+#nav li.reports span {
+	background-position: -396px 0;
+}
+#nav li.reports.active span, #nav li.reports a:hover span {
+	background-position: -396px -22px;
+}
+#nav .end {
+	width: 17px;
+	height: 26px;
+	background: transparent url('../img/nav-right.png') no-repeat right top;
+	display: inline-block;
 }
 
-table.transactions {
-	border: 1px solid #54abf9;
+#topbox .topMain {
+	background-color: #f9f9f9;
+	padding: 2.6em 2em 2em;
+	border: 4px solid #c0dd82;
+	border-top: 0;
 }

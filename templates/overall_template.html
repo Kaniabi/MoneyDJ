@@ -5,47 +5,58 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
-
-	<title>{% block title %}{% endblock %}MoneyDJ</title>
-
-	<link type="text/css" href="http://media.moneydj:8000/css/overall.css" rel="stylesheet"/>
-</head>
-
-<body>
-<div id="wrapper">
-	<div id="header">
-		<h1>MoneyDJ</h1>
-		{% if user.is_authenticated %}
-		<div id="user_content">
-			<p id="uid">{% trans "Welcome" %}, <strong>{{ user }}</strong></p>
-			<ul class="actions">
-				<li class="profile"><a href="{% url moneyuser.views.profile %}">{% trans "Profile" %}</a></li>
-				<li class="logout"><a href="{% url django.contrib.auth.views.logout %}">{% trans "Logout" %}</a></li>
-			</ul>
-		</div>
-		{% endif %}
-		<ul id="navigation">
-			<li><a href="/">{% trans 'Home' %}</a></li>
-			<li><a href="/accounts/">{% trans 'Accounts' %}</a></li>
-			<li><a href="/reports/">{% trans 'Reports' %}</a></li>
-		</ul>
-	</div>
+	<head>
 	
-	<div id="body">
-		{% if user.is_authenticated %}
-		<div id="accounts">
-			<h2>{% trans 'Accounts' %}</h2>
-			{% accounts_block user %}
-			<ul class="actions">
-				<li class="add_account"><a href="{% url accounts.views.add %}">{% trans 'Add Account' %}</a></li>
-			</ul>
+		<title>{% block title %}{% endblock %}MoneyDJ</title>
+	
+		<link type="text/css" href="http://media.moneydj:8000/css/overall.css" rel="stylesheet"/>
+	</head>
+
+	<body>
+		<div id="header">
+			<div class="main">
+				<h1><a href="{% if user.is_authenticated %}{% url dashboard.views.index %}{% else %}{% url money.views.index %}{% endif %}"><span>MoneyDJ</span></a></h1>
+				{% if user.is_authenticated %}
+				<div id="userbox">
+					<img src="/img/user.png" alt=""/>
+					<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
+					<ul>
+						<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
+						<li><a href="{% url django.contrib.auth.views.logout %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
+					</ul>
+				</div>
+				{% endif %}
+			</div>
+			<div id="nav">
+				<ul>
+					<li class="home"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
+					<li class="accounts"><a href="{% url accounts.views.add %}"><span></span>{% trans "Accounts" %}</a></li>
+					<li class="reports"><a href="#"><span></span>{% trans "Reports" %}</a></li>
+					<li class="tags"><a href="#"><span></span>{% trans "Tags" %}</a></li>
+					<li class="budget"><a href="#"><span></span>{% trans "Budget" %}</a></li>
+				</ul>
+				<div class="end"></div>
+			</div>
 		</div>
-		{% endif %}
-		<div id="content">
-		{% block content %}{% endblock %}
+		<div id="body">
+			<div id="topbox">
+				<div class="topMain">
+					<div class="clear"></div>
+				</div>
+				<div class="selector">
+				</div>
+			</div>
+			<div id="content">
+				<div class="main">
+					<h2>{% block pagetitle %}{% endblock %}</h2>
+					{% block content %}{% endblock %}
+				</div>
+				<div class="sidebar">
+					<h4>{% block sidebar_title %}{% trans "Accounts" %}{% endblock %}</h4>
+					{% block sidebar %}{% accounts_block user %}{% endblock %}
+				</div>
+			</div>
 		</div>
-	</div>
 </div>
 </body>
 </html>
