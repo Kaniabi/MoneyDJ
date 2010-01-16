@@ -1,5 +1,5 @@
 from moneydj.accounts.forms import *
-from moneydj.accounts.models import *
+from moneydj.money.models import *
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
