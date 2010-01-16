@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from django.utils.translation import ugettext as _
 
 # Create your models here.
 class Tag(models.Model):
@@ -37,9 +38,9 @@ class Account(models.Model):
     number = models.PositiveIntegerField(blank=True,null=True)
     sort_code = models.CharField(max_length=8,blank=True)
     bank = models.ForeignKey(Bank)
-    track_balance = models.BooleanField()
     balance = models.DecimalField(decimal_places=2,max_digits=9)
     balance_updated = models.DateTimeField()
+    track_balance = models.BooleanField(help_text=_(u'Turn this off if you want to use a cash account without tracking the balance'), default=True)
     currency = models.CharField(max_length=3)
     date_created = models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
@@ -53,7 +54,7 @@ class Account(models.Model):
         all -- whether to update using all transactions or just since last updated
         """
         # Only update the balance if we're tracking the balance for this account
-        if (self.track_balance == True):
+        if (self.use_balance == True):
             transactions = Transaction.objects.filter(account=self)
             if (all == False):
                 transactions.filter(date_created__gt=self.balance_updated)
