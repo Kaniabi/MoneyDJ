@@ -24,6 +24,7 @@ class Account(models.Model):
     number = models.PositiveIntegerField(blank=True,null=True)
     sort_code = models.CharField(max_length=8,blank=True)
     bank = models.ForeignKey(Bank)
+    track_balance = models.BooleanField()
     balance = models.DecimalField(decimal_places=2,max_digits=9)
     balance_updated = models.DateTimeField()
     currency = models.CharField(max_length=3)
@@ -62,6 +63,7 @@ class Account(models.Model):
         unique_together = ('user', 'number', 'sort_code', 'bank')
 
 class Transaction(models.Model):
+    mobile = models.BooleanField(default=False)
     account = models.ForeignKey(Account)
     cheque_no = models.PositiveIntegerField(blank=True,db_index=True,null=True)
     payee = models.ForeignKey(Payee)
