@@ -67,6 +67,12 @@ span.sprite.add {
 a:hover span.sprite.add {
 	background-position: 0 -32px;
 }
+span.sprite.account {
+	background-position: -16px -48px;
+}
+a:hover span.sprite.account {
+	background-position: 0 -48px;
+}
 /* END Sprites */
 
 /* BEGIN Boxes */
@@ -277,6 +283,14 @@ h1 span {
 }
 /* END Navigation */
 
+ul.accounts {
+	font-size: 1.3em;
+	padding-left: 0;
+}
+ul.accounts li {
+	list-style: none;
+}
+
 /* BEGIN Topbox */
 #topbox .content {
 	background-position: right center;
@@ -298,6 +312,7 @@ h1 span {
 }
 /* END Topbox */
 
+/* BEGIN Content */
 #content {
 	clear: both;
 	max-width: 1600px;
@@ -318,3 +333,4 @@ h1 span {
 #content .sidebar h3 {
 	font-size: 2.5em
 }
+/* END Content */
