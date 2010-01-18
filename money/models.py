@@ -37,7 +37,7 @@ class Account(models.Model):
     name = models.CharField(max_length=50)
     number = models.PositiveIntegerField(blank=True,null=True)
     sort_code = models.CharField(max_length=8,blank=True)
-    bank = models.ForeignKey(Bank)
+    bank = models.ForeignKey(Bank,blank=True,null=True)
     balance = models.DecimalField(decimal_places=2,max_digits=9)
     balance_updated = models.DateTimeField()
     track_balance = models.BooleanField(help_text=_(u'Turn this off if you want to use a cash account without tracking the balance'), default=True)

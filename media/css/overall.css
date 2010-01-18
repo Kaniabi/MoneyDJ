@@ -39,39 +39,74 @@ ol.form label {
 	float: left;
 	font-style: normal;
 }
+ol.form ul.errorlist {
+	padding: 0;
+}
+ol.form ul.errorlist li {
+	border: 1px solid #642019;
+	background-color: #a35c55;
+	color: white;
+	padding: 0.1em;
+}
 
 /* BEGIN Sprites */
 span.sprite {
 	display: inline-block;
 	height: 16px;
 	width: 16px;
-	background-image: url('../img/sprites.png');
+	background: transparent url('../img/sprites.png') no-repeat 16px 0;
 	vertical-align: middle;
 	margin-right: 2px;
 }
+
 span.sprite.profile {
+	background-position: 0 0;
+}
+a span.sprite.profile {
 	background-position: -16px 0;
 }
 a:hover span.sprite.profile {
 	background-position: 0 0;
 }
+
 span.sprite.logout {
+	background-position: 0 -16px;
+}
+a span.sprite.logout {
 	background-position: -16px -16px;
 }
 a:hover span.sprite.logout {
 	background-position: 0 -16px;
 }
+
 span.sprite.add {
+	background-position: 0 -32px;
+}
+a span.sprite.add {
 	background-position: -16px -32px;
 }
 a:hover span.sprite.add {
 	background-position: 0 -32px;
 }
+
 span.sprite.account {
+	background-position: 0 -48px;
+}
+a span.sprite.account {
 	background-position: -16px -48px;
 }
 a:hover span.sprite.account {
 	background-position: 0 -48px;
+}
+
+span.sprite.mobile {
+	background-position: 0 -48px;
+}
+a span.sprite.mobile {
+	background-position: -16px -48px;
+}
+a:hover span.sprite.mobile {
+	background-position: 0 -64px;
 }
 /* END Sprites */
 
@@ -87,7 +122,7 @@ a:hover span.sprite.account {
 	min-height: 40px;
 }
 .box .content h2, .box .content h3, .box .content h4 {
-	margin: 0;
+	margin-top: 0;
 	padding-top: 10px;
 }
 .box .content, .box .t, .box .b, .box .b div {
@@ -121,6 +156,9 @@ a:hover span.sprite.account {
 }
 
 /* small */
+.box.small {
+	margin-left: 26px;
+}
 .box.small .content, .box.small .t, .box.small .b, .box.small .b div {
 	background-image: url('../img/boxes/box-grey-s.png');
 }
@@ -135,10 +173,35 @@ a:hover span.sprite.account {
 	margin-left: -26px;
 	width: 26px;
 }
-#topbox .selector .b, #topbox .selector .b div {
+.box.small .b, .box.small .b div {
 	height: 30px;
 }
 /* END Boxes */
+
+/* BEGIN Tables */
+table {
+	border: 2px solid #424242;
+	font-size: 1.2em;
+	border-collapse: collapse;
+}
+td, th {
+	padding: 0.2em 0.4em;
+}
+table tr.odd {
+	background-color: #e9e6dc;
+}
+table tr.even {
+	background-color: #dee7b4;
+}
+table.transactions td.payee {
+	font-size: 1.2em;
+}
+table.transactions tbody th.date {
+	border: 1px solid #424242;
+	text-align: left;
+	font-size: 1.5em;
+}
+/* END Tables */
 
 /* BEGIN Header */
 #header {

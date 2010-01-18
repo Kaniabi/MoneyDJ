@@ -1,12 +1,13 @@
 {% extends 'overall_template.html' %}
 {% load i18n %}
 {% load humanize %}
+{% load money_overall %}
 
 {% block title %}{{ account.name }} &bull; {% endblock %}
 
-{% block content %}
-<h2>{{ account.name }}</h2>
+{% block pagetitle %}{{ account.name }}{% endblock %}
 
+{% block content %}
 <table class="transactions">
 	<thead>
 		<th>{% trans 'Payee' %}</th>
@@ -22,13 +23,13 @@
 		</tr>
 		{% endifchanged %}
 		<tr class="{% cycle 'odd' 'even' %}">
-			<td>{{ t.payee.name }}</td>
-			<td>{% if t.credit %}{{ t.amount }}{% endif %}</td>
-			<td>{% if not t.credit %}{{ t.amount }}{% endif %}</td>
-			<td></td>
+			<td class="payee"><span class="sprite{% if t.mobile %} mobile{% endif %}"></span>{{ t.payee.name }}</td>
+			<td>{% if t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
+			<td>{% if not t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
+			<td>{{ account.balance_at }}</td>
 		</tr>
 		{% empty %}
-		<tr>
+		<tr class="odd">
 			<td colspan="4">{% trans 'No transactions yet' %}</td>
 		</tr>
 		{% endfor %}
