@@ -8,6 +8,26 @@
 {% block pagetitle %}{{ account.name }}{% endblock %}
 
 {% block content %}
+<table class="account horizontal">
+	{% if account.number %}
+	<tr>
+		<th scope="row">{% trans "Account No." %}</th>
+		<td>{{ account.number }}</td>
+	</tr>
+	{% endif %}
+	{% if account.sort_code %}
+	<tr>
+		<th scope="row">{% trans "Account No." %}</th>
+		<td>{{ account.sort_code }}</td>
+	</tr>
+	{% endif %}
+	{% if account.track_balance %}
+	<tr>
+		<th scope="row">{% trans "Balance" %}</th>
+		<td>{{ account.balance|currency:account.currency }}</td>
+	</tr>
+	{% endif %}
+</table>
 <table class="transactions">
 	<thead>
 		<th>{% trans 'Payee' %}</th>
@@ -24,15 +44,7 @@
 		{% endifchanged %}
 		<tr class="{% cycle 'odd' 'even' %}">
 			<td class="payee">
-				<span class="sprite{% if t.mobile %} mobile{% endif %}"></span>{{ t.payee.name }}
-				{% if t.tags.all %} 
-				<div class="tags">
-					{% trans 'Tags' %}:
-					{% for tag in t.tags.all %}
-					{{ tag.name }}
-					{% endfor %}
-				</div>
-				{% endif %}
+				<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}"></span>{{ t.payee.name }}
 			</td>
 			<td class="money in">{% if t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
 			<td class="money out">{% if not t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>

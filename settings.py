@@ -63,6 +63,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
+INTERNAL_IPS = (
+    '127.0.0.1',
+    '10.50.0.11'
+)
+
 ROOT_URLCONF = 'moneydj.urls'
 
 LOGIN_URL = '/user/login/'

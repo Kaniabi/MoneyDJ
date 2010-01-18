@@ -7,4 +7,4 @@ class AccountForm(ModelForm):
     currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)'), (u'€', u'EUR (€)')])
     class Meta:
         model = Account
-        exclude = ('user', 'balance_updated', 'date_created')
+        exclude = ('user', 'starting_balance', 'balance_updated', 'date_created')

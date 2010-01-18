@@ -202,6 +202,11 @@ table tr.even {
 table.transactions td.payee {
 	font-size: 1.2em;
 }
+table.transactions td.payee div.tags {
+	margin-left: 16px;
+	font-size: 0.7em;
+	font-style: italic;
+}
 table.transactions tbody th.date {
 	border: 1px solid #424242;
 	text-align: left;
@@ -407,3 +412,11 @@ ul.accounts li {
 	font-size: 2.5em
 }
 /* END Content */
+
+/* BEGIN Footer */
+#footer {
+	clear: both;
+	background: #7f7f7f;
+	border-top: 4px solid #1a1a1a;
+}
+/* END Footer */
