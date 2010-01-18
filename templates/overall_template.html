@@ -9,7 +9,7 @@
 	
 		<title>{% block title %}{% endblock %}MoneyDJ</title>
 	
-		<link type="text/css" href="http://media.moneydj:8000/css/overall.css" rel="stylesheet"/>
+		<link type="text/css" href="{{ MEDIA_URL }}/css/overall.css" rel="stylesheet"/>
 	</head>
 
 	<body>
@@ -18,7 +18,7 @@
 				<h1><a href="{% if user.is_authenticated %}{% url dashboard.views.index %}{% else %}{% url money.views.index %}{% endif %}"><span>MoneyDJ</span></a></h1>
 				{% if user.is_authenticated %}
 				<div id="userbox">
-					<img src="/img/user.png" alt=""/>
+					<img src="{{ MEDIA_URL }}/img/user.png" alt=""/>
 					<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
 					<ul>
 						<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
