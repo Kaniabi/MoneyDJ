@@ -29,31 +29,47 @@
 			</div>
 			<div id="nav">
 				<ul>
-					<li class="home"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
+					<li class="home first"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
 					<li class="accounts"><a href="{% url accounts.views.add %}"><span></span>{% trans "Accounts" %}</a></li>
 					<li class="reports"><a href="#"><span></span>{% trans "Reports" %}</a></li>
 					<li class="tags"><a href="#"><span></span>{% trans "Tags" %}</a></li>
-					<li class="budget"><a href="#"><span></span>{% trans "Budget" %}</a></li>
+					<li class="budget end"><a href="#"><span></span>{% trans "Budget" %}</a></li>
 				</ul>
 				<div class="end"></div>
 			</div>
 		</div>
 		<div id="body">
-			<div id="topbox">
-				<div class="topMain">
+			<div id="topbox" class="box green">
+				<div class="content">
+					<div class="t"></div>
 					<div class="clear"></div>
 				</div>
-				<div class="selector">
+				<div class="b"><div></div></div>
+				<div class="selector box small green">
+					<div class="content">
+						<div class="t"></div>
+						<div class="selectorContent">
+						</div>
+					</div>
+					<div class="b"><div></div></div>
 				</div>
 			</div>
 			<div id="content">
-				<div class="main">
-					<h2>{% block pagetitle %}{% endblock %}</h2>
-					{% block content %}{% endblock %}
+				<div class="box maincontent">
+					<div class="content">
+						<div class="t"></div>
+						<h2>{% block pagetitle %}{% endblock %}</h2>
+						{% block content %}{% endblock %}
+					</div>
+					<div class="b"><div></div></div>
 				</div>
-				<div class="sidebar">
-					<h4>{% block sidebar_title %}{% trans "Accounts" %}{% endblock %}</h4>
-					{% block sidebar %}{% accounts_block user %}{% endblock %}
+				<div class="sidebar box">
+					<div class="content">
+						<div class="t"></div>
+						<h3>{% block sidebar_title %}{% trans "Accounts" %}{% endblock %}</h3>
+						{% block sidebar %}{% accounts_block user %}{% endblock %}
+					</div>
+					<div class="b"><div></div></div>
 				</div>
 			</div>
 		</div>

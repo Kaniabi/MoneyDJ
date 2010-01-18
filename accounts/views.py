@@ -18,7 +18,7 @@ def add(request):
             acc.user = request.user
             acc.balance_updated = datetime.datetime.today()
             acc.save()
-            return redirect(reverse('moneydj.money.views.accounts.view', args=[acc.id]))
+            return redirect(reverse('moneydj.accounts.views.view', args=[acc.id]))
     else:
         form = AccountForm()
     return render_to_response('account_add.html', {'form': form}, context_instance = RequestContext(request))

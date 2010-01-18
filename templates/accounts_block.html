@@ -1,5 +1,7 @@
+{% load i18n %}
 <ul>
 	{% for a in accounts %}
 	<li><a href="{% url accounts.views.view a.id %}">{{ a.name }}</a> ({{ a.update_balance }}{{ a.balance }})</li>
 	{% endfor %}
+	<li><a href="{% url accounts.views.add %}"><span class="sprite add"></span>{% trans "Add Account" %}</a></li>
 </ul>

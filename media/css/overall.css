@@ -1,8 +1,11 @@
+/* General Styles */
 body {
 	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 62.5%;
 	margin: 0;
 	padding: 0;
+	background: url('../img/background.png');
+	color: #1A1A1A;
 }
 
 a:link, a:visited {
@@ -15,15 +18,19 @@ a:hover, a:active {
 
 .clear { clear: both; }
 
-/* Forms */
+ol, ul {
+	margin-bottom: 0;
+	padding-bottom: 1em;
+}
+
 ol.form {
 	font-size: 1.5em;
-	padding-left: 0.5em;
 }
+
 ol.form li {
 	list-style: none;
-	padding-bottom: 0.5em;
 	clear: left;
+	padding-bottom: 0.5em;
 	font-style: italic;
 }
 ol.form label {
@@ -33,6 +40,7 @@ ol.form label {
 	font-style: normal;
 }
 
+/* BEGIN Sprites */
 span.sprite {
 	display: inline-block;
 	height: 16px;
@@ -53,7 +61,80 @@ span.sprite.logout {
 a:hover span.sprite.logout {
 	background-position: 0 -16px;
 }
+span.sprite.add {
+	background-position: -16px -32px;
+}
+a:hover span.sprite.add {
+	background-position: 0 -32px;
+}
+/* END Sprites */
 
+/* BEGIN Boxes */
+.box {
+	max-width: 1150px;
+	position: relative;
+	margin: 0 auto 0.5em 41px;
+}
+.box .content {
+	padding-right: 28px;
+	position: relative;
+	min-height: 40px;
+}
+.box .content h2, .box .content h3, .box .content h4 {
+	margin: 0;
+	padding-top: 10px;
+}
+.box .content, .box .t, .box .b, .box .b div {
+	background: transparent url('../img/boxes/box-grey.png') no-repeat top right;
+}
+.box.green .content, .box.green .t, .box.green .b, .box.green .b div {
+	background-image: url('../img/boxes/box-green.png');
+}
+.box .t {
+	background-position: top left;
+	height: 100%;
+	left: 0;
+	margin-left: -40px;
+	position: absolute;
+	width: 40px;
+}
+.box .b, .box .b div {
+	font-size: 2px;
+	height: 44px;
+}
+.box .b {
+	background-position: right bottom;
+	position: relative;
+	width: 100%;
+}
+.box .b div {
+	background-position: bottom left;
+	margin-left: -40px;
+	width: 40px;
+	position: relative;
+}
+
+/* small */
+.box.small .content, .box.small .t, .box.small .b, .box.small .b div {
+	background-image: url('../img/boxes/box-grey-s.png');
+}
+.box.green.small .content, .box.green.small .t, .box.green.small .b, .box.green.small .b div {
+	background-image: url('../img/boxes/box-green-s.png');
+}
+.box.small .content {
+	padding-right: 20px;
+	min-height: 30px;
+}
+.box.small .t, .box.small .b div {
+	margin-left: -26px;
+	width: 26px;
+}
+#topbox .selector .b, #topbox .selector .b div {
+	height: 30px;
+}
+/* END Boxes */
+
+/* BEGIN Header */
 #header {
 	position: relative;
 }
@@ -107,13 +188,16 @@ h1 span {
 #userbox ul li a {
 	font-weight: bold;
 }
+/* END Navigation */
 
+/* BEGIN Navigation */
 #nav {
 	font-size: 1.5em;
 	margin: -4px 0 0 2em;
 	float: left;
-	background: transparent url('../img/nav-left.png') no-repeat;
 	height: 26px;
+	position: relative;
+	z-index: 9999;
 }
 #nav ul {
 	margin: 0 0 0 34px;
@@ -122,9 +206,16 @@ h1 span {
 	display: inline;
 	vertical-align: top;
 }
-#nav ul li {
-	display: inline-block;
-	margin-right: 17px;
+#nav li {
+	display: inline;
+	float: left;
+	padding: 0 9px 4px;
+	margin: 0;
+	background: transparent url('../img/nav.png') no-repeat center bottom;
+}
+#nav li.first {
+	background-position: bottom left;
+	padding-left: 34px;
 }
 #nav a {
 	display: block;
@@ -136,7 +227,7 @@ h1 span {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background: transparent url('../img/en/nav.png');
+	background: transparent url('../img/en/nav.png') no-repeat;
 }
 #nav li.home a {
 	width: 106px;
@@ -180,16 +271,50 @@ h1 span {
 #nav li.reports.active span, #nav li.reports a:hover span {
 	background-position: -396px -22px;
 }
-#nav .end {
-	width: 17px;
-	height: 26px;
-	background: transparent url('../img/nav-right.png') no-repeat right top;
-	display: inline-block;
+#nav li.end {
+	padding-right: 34px;
+	background-position: right bottom;
 }
+/* END Navigation */
 
-#topbox .topMain {
-	background-color: #f9f9f9;
-	padding: 2.6em 2em 2em;
-	border: 4px solid #c0dd82;
-	border-top: 0;
+/* BEGIN Topbox */
+#topbox .content {
+	background-position: right center;
+}
+#topbox .t {
+	background-position: 0 -50px;	
+}
+#topbox .selector {
+	margin-left: 40px;
+	margin-top: -17px;
+	max-width: 20em;
+	float: left;
+}
+#topbox .selector .content {
+	min-height: 0;
+}
+#topbox .selector .selectorContent {
+	padding-top: 0.4em;
+}
+/* END Topbox */
+
+#content {
+	clear: both;
+	max-width: 1600px;
+}
+#content .maincontent {
+	float: right;
+	width: 70%;
+	z-index: 5;
+}
+#content .maincontent h2 {
+	font-size: 3em;
+}
+#content .sidebar {
+	width: 30%;
+	z-index: 1;
+	padding-top: 50px;
+}
+#content .sidebar h3 {
+	font-size: 2.5em
 }
