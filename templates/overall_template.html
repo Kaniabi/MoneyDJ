@@ -1,44 +1,8 @@
+{% extends "basic_template.html" %}
 {% load i18n %}
 {% load money_overall %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-	<head>
-	
-		<title>{% block title %}{% endblock %}MoneyDJ</title>
-	
-		<link type="text/css" href="{{ MEDIA_URL }}/css/overall.css" rel="stylesheet"/>
-	</head>
-
-	<body>
-		<div id="header">
-			<div class="main">
-				<h1><a href="{% if user.is_authenticated %}{% url dashboard.views.index %}{% else %}{% url money.views.index %}{% endif %}"><span>MoneyDJ</span></a></h1>
-				{% if user.is_authenticated %}
-				<div id="userbox">
-					<img src="{{ MEDIA_URL }}/img/user.png" alt=""/>
-					<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
-					<ul>
-						<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
-						<li><a href="{% url django.contrib.auth.views.logout %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
-					</ul>
-				</div>
-				{% endif %}
-			</div>
-			<div id="nav">
-				<ul>
-					<li class="home first"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
-					<li class="accounts"><a href="{% url accounts.views.add %}"><span></span>{% trans "Accounts" %}</a></li>
-					<li class="reports"><a href="#"><span></span>{% trans "Reports" %}</a></li>
-					<li class="tags"><a href="#"><span></span>{% trans "Tags" %}</a></li>
-					<li class="budget end"><a href="#"><span></span>{% trans "Budget" %}</a></li>
-				</ul>
-				<div class="end"></div>
-			</div>
-		</div>
-		<div id="body">
+{% block body %}
 			<div id="topbox" class="box green">
 				<div class="content">
 					<div class="t"></div>
@@ -63,6 +27,7 @@
 					</div>
 					<div class="b"><div></div></div>
 				</div>
+				{% if user.is_authenticated %}
 				<div class="sidebar box">
 					<div class="content">
 						<div class="t"></div>
@@ -71,8 +36,6 @@
 					</div>
 					<div class="b"><div></div></div>
 				</div>
+				{% endif %}
 			</div>
-		</div>
-</div>
-</body>
-</html>
+{% endblock body %}

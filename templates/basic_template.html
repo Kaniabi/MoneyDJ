@@ -1,0 +1,77 @@
+{% load i18n %}
+{% load money_overall %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+	
+		<title>{% block title %}{% endblock %}MoneyDJ</title>
+	
+		<link type="text/css" href="{{ MEDIA_URL }}/css/overall.css" rel="stylesheet"/>
+	</head>
+
+	<body>
+		<div id="header">
+			<div class="main">
+				<h1><a href="{% if user.is_authenticated %}{% url dashboard.views.index %}{% else %}{% url money.views.index %}{% endif %}"><span>MoneyDJ</span></a></h1>
+				{% if user.is_authenticated %}
+				<div id="userbox">
+					<img src="{{ MEDIA_URL }}/img/user.png" alt=""/>
+					<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
+					<ul>
+						<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
+						<li><a href="{% url django.contrib.auth.views.logout %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
+					</ul>
+				</div>
+				{% endif %}
+			</div>
+			<div id="nav">
+				<ul>
+					<li class="home first"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
+					<li class="accounts"><a href="{% url accounts.views.add %}"><span></span>{% trans "Accounts" %}</a></li>
+					<li class="reports"><a href="#"><span></span>{% trans "Reports" %}</a></li>
+					<li class="tags"><a href="#"><span></span>{% trans "Tags" %}</a></li>
+					<li class="budget end"><a href="#"><span></span>{% trans "Budget" %}</a></li>
+				</ul>
+				<div class="end"></div>
+			</div>
+		</div>
+		<div id="body">
+			{% block body %}{% endblock body %}
+		</div>
+		<div id="footer">
+			{% if debug %}
+			<div id="debug">
+			  <h2>Queries</h2>
+			  <p>
+			    {{ sql_queries|length }} Quer{{ sql_queries|pluralize:"y,ies" }}
+			    {% ifnotequal sql_queries|length 0 %}
+			    (<span style="cursor: pointer;" onclick="var s=document.getElementById('debugQueryTable').style;s.display=s.display=='none'?'':'none';this.innerHTML=this.innerHTML=='Show'?'Hide':'Show';">Show</span>)
+			    {% endifnotequal %}
+			  </p>
+			  <table id="debugQueryTable" style="display: none;">
+			    <col width="1"></col>
+			    <col></col>
+			    <col width="1"></col>
+			    <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">SQL</th>
+			      <th scope="col">Time</th>
+			    </tr>
+			    </thead>
+			    <tbody>
+			    {% for query in sql_queries %}<tr class="{% cycle odd,even %}">
+			      <td>{{ forloop.counter }}</td>
+			      <td>{{ query.sql|escape }}</td>
+			      <td>{{ query.time }}</td>
+			    </tr>{% endfor %}
+			    </tbody>
+			  </table>
+			</div>
+			{% endif %}
+		</div>
+	</body>
+</html>

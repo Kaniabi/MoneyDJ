@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     (r'^admin/', include(admin.site.urls)),
+    (r'^$', 'moneydj.money.views.index'),
     (r'^user/', include('moneydj.moneyuser.urls')),
     (r'^dashboard/', include('moneydj.dashboard.urls')),
     (r'^accounts/', include('moneydj.accounts.urls'))
