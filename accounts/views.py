@@ -11,22 +11,7 @@ def view(request, id):
     acc = get_object_or_404(Account, pk=id, user=request.user)
     
     # Get all the transactions
-    transaction_list = Transaction.objects.filter(account=acc).order_by('-date', '-date_created').select_related()
-    
-    # Create the paginator
-    paginator = Paginator(transaction_list, 25)
-    
-    # Make sure page request is an int. If not, deliver first page.
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    # If page request (9999) is out of range, deliver last page of results.
-    try:
-        transactions = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        transactions = paginator.page(paginator.num_pages)
+    transactions = Transaction.objects.filter(account=acc).order_by('-date', '-date_created').select_related()
 
     return render_to_response('account_view.html', {'account': acc, 'transactions': transactions}, context_instance = RequestContext(request))
 
