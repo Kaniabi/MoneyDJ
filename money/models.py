@@ -54,7 +54,7 @@ class Account(models.Model):
         all -- whether to update using all transactions or just since last updated
         """
         # Only update the balance if we're tracking the balance for this account
-        if (self.use_balance == True):
+        if (self.track_balance == True):
             transactions = Transaction.objects.filter(account=self)
             if (all == False):
                 transactions.filter(date_created__gt=self.balance_updated)
@@ -70,7 +70,7 @@ class Account(models.Model):
                         b -= t.amount
                 
                 self.balance = b;
-                self.balance_updated = datetime.now()
+                self.balance_updated = datetime.datetime.now()
                 self.save()
         
     def balance_at(self, datetime):

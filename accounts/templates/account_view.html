@@ -13,20 +13,30 @@
 		<th>{% trans 'Payee' %}</th>
 		<th>{% trans 'Money In' %}</th>
 		<th>{% trans 'Money Out' %}</th>
-		<th>{% trans 'Balance' %}</th>
+		{% if account.track_balance %}<th>{% trans 'Balance' %}</th>{% endif %}
 	</thead>
 	<tbody>
-		{% for t in transactions %}
+		{% for t in transactions.object_list %}
 		{% ifchanged t.date %}
 		<tr>
 			<th class="date" colspan="4">{{ t.date|naturalday|capfirst }}</th>
 		</tr>
 		{% endifchanged %}
 		<tr class="{% cycle 'odd' 'even' %}">
-			<td class="payee"><span class="sprite{% if t.mobile %} mobile{% endif %}"></span>{{ t.payee.name }}</td>
-			<td>{% if t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
-			<td>{% if not t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
-			<td>{{ account.balance_at }}</td>
+			<td class="payee">
+				<span class="sprite{% if t.mobile %} mobile{% endif %}"></span>{{ t.payee.name }}
+				{% if t.tags.all %} 
+				<div class="tags">
+					{% trans 'Tags' %}:
+					{% for tag in t.tags.all %}
+					{{ tag.name }}
+					{% endfor %}
+				</div>
+				{% endif %}
+			</td>
+			<td class="money in">{% if t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
+			<td class="money out">{% if not t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
+			{% if account.track_balance %}<td class="money balance">{{ account.balance_at }}</td>{% endif %}
 		</tr>
 		{% empty %}
 		<tr class="odd">

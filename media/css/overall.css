@@ -100,10 +100,10 @@ a:hover span.sprite.account {
 }
 
 span.sprite.mobile {
-	background-position: 0 -48px;
+	background-position: 0 -64px;
 }
 a span.sprite.mobile {
-	background-position: -16px -48px;
+	background-position: -16px -64px;
 }
 a:hover span.sprite.mobile {
 	background-position: 0 -64px;
@@ -184,6 +184,12 @@ table {
 	font-size: 1.2em;
 	border-collapse: collapse;
 }
+table.transactions {
+	width: 100%;
+}
+thead th {
+	font-size: 1.5em;
+}
 td, th {
 	padding: 0.2em 0.4em;
 }
@@ -200,6 +206,10 @@ table.transactions tbody th.date {
 	border: 1px solid #424242;
 	text-align: left;
 	font-size: 1.5em;
+	font-weight: normal;
+}
+table td.money {
+	text-align: right;
 }
 /* END Tables */
 
@@ -378,18 +388,18 @@ ul.accounts li {
 /* BEGIN Content */
 #content {
 	clear: both;
-	max-width: 1600px;
+	max-width: 1500px;
 }
 #content .maincontent {
 	float: right;
-	width: 70%;
+	width: 75%;
 	z-index: 5;
 }
 #content .maincontent h2 {
 	font-size: 3em;
 }
 #content .sidebar {
-	width: 30%;
+	width: 22%;
 	z-index: 1;
 	padding-top: 50px;
 }
