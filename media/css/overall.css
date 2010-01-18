@@ -189,6 +189,9 @@ table.transactions {
 }
 thead th {
 	font-size: 1.5em;
+	border: 1px solid #1a1a1a;
+	border-top: 0;
+	border-bottom: 0;
 }
 td, th {
 	padding: 0.2em 0.4em;

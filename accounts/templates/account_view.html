@@ -36,7 +36,7 @@
 		{% if account.track_balance %}<th>{% trans 'Balance' %}</th>{% endif %}
 	</thead>
 	<tbody>
-		{% for t in transactions.object_list %}
+		{% for t in transactions %}
 		{% ifchanged t.date %}
 		<tr>
 			<th class="date" colspan="4">{{ t.date|naturalday|capfirst }}</th>
@@ -52,9 +52,12 @@
 		</tr>
 		{% empty %}
 		<tr class="odd">
-			<td colspan="4">{% trans 'No transactions yet' %}</td>
+			<td colspan="{% if account.track_balance %}4{% else %}3{% endif %}">{% trans 'No transactions yet' %}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
+	<form action="{% url accounts.views.add_transaction account.id %}" method="post">
+		
+	</form>
 </table>
 {% endblock content %}

@@ -33,3 +33,7 @@ def add(request):
 def add_transaction(request, account):
     """Adds a transaction to the specified account"""
     pass
+
+def view_transaction(request, account, transaction):
+    """Views a transaction"""
+    pass
