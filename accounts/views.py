@@ -2,7 +2,7 @@ from moneydj.accounts.forms import *
 from moneydj.money.models import *
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.template.context import RequestContext
+from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 

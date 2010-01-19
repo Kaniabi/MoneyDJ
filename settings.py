@@ -9,12 +9,14 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'moneydj'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'moneydj'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'moneydj'         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {
+    'default': {
+        'NAME': 'moneydj',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'moneydj',
+        'PASSWORD': 'moneydj'
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -33,6 +35,8 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+USE_L10N = True
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = '/mnt/project/moneydj/media/'
@@ -40,7 +44,7 @@ MEDIA_ROOT = '/mnt/project/moneydj/media/'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://media.moneydj:8000'
+MEDIA_URL = 'http://media.moneydj:8000/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -65,7 +69,8 @@ MIDDLEWARE_CLASSES = (
 
 INTERNAL_IPS = (
     '127.0.0.1',
-    '10.50.0.11'
+    '10.50.0.11',
+    '10.50.0.12'
 )
 
 ROOT_URLCONF = 'moneydj.urls'

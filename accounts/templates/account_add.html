@@ -3,8 +3,9 @@
 
 {% block title %}{% trans 'Add an Account' %} &bull; {% endblock %}
 
+{% block pagetitle %}{% trans 'Add an Account' %}{% endblock %}
+
 {% block content %}
-<h2>{% trans 'Add an Account' %}</h2>
 <form action="{% url accounts.views.add %}" method="post">
 	<ol class="form">
 		{{ form.as_ul }}

@@ -33,6 +33,9 @@ ol.form li {
 	padding-bottom: 0.5em;
 	font-style: italic;
 }
+ol.form li.required label {
+	font-weight: bold;
+}
 ol.form label {
 	width: 13em;
 	display: block;
