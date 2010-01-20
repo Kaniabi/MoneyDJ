@@ -45,6 +45,13 @@
 		<tr class="{% cycle 'odd' 'even' %}">
 			<td class="payee">
 				<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}"></span>{{ t.payee.name }}
+				{% if t.tags %}
+				<div class="tags">
+					{% for tag in t.tags.all %}
+					{{ tag.name }}{% if tag.split != t.amount %}:{{ tag.split }}{% endif %}
+					{% endfor %}
+				</div>
+				{% endif %}
 			</td>
 			<td class="money in">{% if t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
 			<td class="money out">{% if not t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
@@ -55,6 +62,26 @@
 			<td colspan="{% if account.track_balance %}4{% else %}3{% endif %}">{% trans 'No transactions yet' %}</td>
 		</tr>
 		{% endfor %}
+		<tr class="transaction_form">
+			<form method="post" action="{{ request.url }}">
+			<td>
+				{{ transaction_form.date.errors }}{{ transaction_form.date }}
+				{{ transaction_form.payee.errors }}{{ transaction_form.payee }}
+			</td>
+			<td colspan="2">
+				{{ transaction_form.amount.errors }}
+				{{ transaction_form.amount }}
+				{{ transaction_form.credit.errors }}
+				{{ transaction_form.credit }}
+				<div class="transfer">
+					{{ transaction_form.transfer.errors }}
+					{{ transaction_form.transfer.label_tag }}
+					{{ transaction_form.transfer }}
+				</div>
+				<input type="submit" value="{% trans 'Save' %}"/>
+			</td>
+			</form>
+		</tr>
 	</tbody>
 	<form action="{% url accounts.views.add_transaction account.id %}" method="post">
 		
