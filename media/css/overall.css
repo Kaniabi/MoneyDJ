@@ -216,7 +216,9 @@ a:hover span.sprite.mobile {
 	font-size: 1.5em;
 	font-weight: normal;
 }
-#content table.transactions tr.transactions_form td { vertical-align: top; }
+#content table.transactions tr.transaction_form td { vertical-align: top; }
+#content table.transactions tr.transaction_form div.credit ul { margin: 0; padding: 0; }
+#content table.transactions tr.transaction_form div.credit ul li { display: inline; }
 #content table td.money {
 	text-align: right;
 }

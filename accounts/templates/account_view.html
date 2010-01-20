@@ -69,8 +69,10 @@
 					{{ transaction_form.amount.errors }}
 					{{ transaction_form.amount.label_tag }}
 					{{ transaction_form.amount }}
-					{{ transaction_form.credit.errors }}
-					{{ transaction_form.credit }}
+					<div class="credit">
+						{{ transaction_form.credit.errors }}
+						{{ transaction_form.credit }}
+					</div>
 					<div class="transfer">
 						{{ transaction_form.transfer.errors }}
 						{{ transaction_form.transfer.label_tag }}
