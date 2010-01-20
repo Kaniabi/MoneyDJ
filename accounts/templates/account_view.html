@@ -7,6 +7,9 @@
 
 {% block pagetitle %}{{ account.name }}{% endblock %}
 
+{% block extracss %}{{ transaction_form.media.css }}{% endblock %}
+{% block extrajs %}{{ transaction_form.media.js }}{% endblock %}
+
 {% block content %}
 <table class="account horizontal">
 	{% if account.number %}
@@ -28,63 +31,55 @@
 	</tr>
 	{% endif %}
 </table>
-<table class="transactions">
-	<thead>
-		<th>{% trans 'Payee' %}</th>
-		<th>{% trans 'Money In' %}</th>
-		<th>{% trans 'Money Out' %}</th>
-		{% if account.track_balance %}<th>{% trans 'Balance' %}</th>{% endif %}
-	</thead>
-	<tbody>
-		{% for t in transactions %}
-		{% ifchanged t.date %}
-		<tr>
-			<th class="date" colspan="4">{{ t.date|naturalday|capfirst }}</th>
-		</tr>
-		{% endifchanged %}
-		<tr class="{% cycle 'odd' 'even' %}">
-			<td class="payee">
-				<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}"></span>{{ t.payee.name }}
-				{% if t.tags %}
-				<div class="tags">
-					{% for tag in t.tags.all %}
-					{{ tag.name }}{% if tag.split != t.amount %}:{{ tag.split }}{% endif %}
-					{% endfor %}
-				</div>
-				{% endif %}
-			</td>
-			<td class="money in">{% if t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
-			<td class="money out">{% if not t.credit %}{{ t.amount|currency:account.currency }}{% endif %}</td>
-			{% if account.track_balance %}<td class="money balance">{{ account.balance_at }}</td>{% endif %}
-		</tr>
-		{% empty %}
-		<tr class="odd">
-			<td colspan="{% if account.track_balance %}4{% else %}3{% endif %}">{% trans 'No transactions yet' %}</td>
-		</tr>
-		{% endfor %}
-		<tr class="transaction_form">
-			<form method="post" action="{{ request.url }}">
-			<td>
-				{{ transaction_form.date.errors }}{{ transaction_form.date }}
-				{{ transaction_form.payee.errors }}{{ transaction_form.payee }}
-			</td>
-			<td colspan="2">
-				{{ transaction_form.amount.errors }}
-				{{ transaction_form.amount }}
-				{{ transaction_form.credit.errors }}
-				{{ transaction_form.credit }}
-				<div class="transfer">
-					{{ transaction_form.transfer.errors }}
-					{{ transaction_form.transfer.label_tag }}
-					{{ transaction_form.transfer }}
-				</div>
-				<input type="submit" value="{% trans 'Save' %}"/>
-			</td>
-			</form>
-		</tr>
-	</tbody>
-	<form action="{% url accounts.views.add_transaction account.id %}" method="post">
-		
-	</form>
-</table>
+<form method="post" action="{{ request.url }}">
+	<table class="transactions">
+		<tbody>
+			{% for t in transactions %}
+			{% ifchanged t.date %}
+			<tr>
+				<th class="date" colspan="4">{{ t.date|naturalday|capfirst }}</th>
+			</tr>
+			{% endifchanged %}
+			<tr class="{% cycle 'odd' 'even' %}">
+				<td class="payee">
+					<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}"></span>{{ t.payee.name }}
+					{% if t.tags.all %}
+					<div class="tags"><span class="sprite tag"></span>
+						{% for tag in t.tags.all %}
+						{{ tag.name }}
+						{% endfor %}
+					</div>
+					{% endif %}
+				</td>
+				<td class="money{% if t.credit %} in{% endif %}">{{ t.amount|currency:account.currency }}</td>
+				{% if account.track_balance %}<td class="money balance">{{ account.balance_at }}</td>{% endif %}
+			</tr>
+			{% empty %}
+			<tr class="odd">
+				<td colspan="{% if account.track_balance %}3{% else %}2{% endif %}">{% trans 'No transactions yet' %}</td>
+			</tr>
+			{% endfor %}
+			<tr class="transaction_form">
+				<td>
+					<div class="date">{{ transaction_form.date.errors }}{{ transaction_form.date.label_tag }}{{ transaction_form.date }}</div>
+					<div class="payee">{{ transaction_form.payee.errors }}{{ transaction_form.payee.label_tag }}{{ transaction_form.payee }}</div>
+					<div class="tags"><span class="sprite tag"></span>{{ transaction_form.tags.errors }}{{ transaction_form.tags.label_tag }}{{ transaction_form.tags }}</div>
+				</td>
+				<td{% if account.track_balance %} colspan="2"{% endif %}>
+					{{ transaction_form.amount.errors }}
+					{{ transaction_form.amount.label_tag }}
+					{{ transaction_form.amount }}
+					{{ transaction_form.credit.errors }}
+					{{ transaction_form.credit }}
+					<div class="transfer">
+						{{ transaction_form.transfer.errors }}
+						{{ transaction_form.transfer.label_tag }}
+						{{ transaction_form.transfer }}
+					</div>
+					<input type="submit" value="{% trans 'Save' %}"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
 {% endblock content %}

@@ -182,44 +182,42 @@ a:hover span.sprite.mobile {
 /* END Boxes */
 
 /* BEGIN Tables */
-table {
-	border: 2px solid #424242;
+#content table {
 	font-size: 1.2em;
 	border-collapse: collapse;
 }
-table.transactions {
+#content table.transactions {
 	width: 100%;
 }
-thead th {
+#content thead th {
 	font-size: 1.5em;
-	border: 1px solid #1a1a1a;
 	border-top: 0;
 	border-bottom: 0;
 }
-td, th {
+#content td, th {
 	padding: 0.2em 0.4em;
 }
-table tr.odd {
+#content table tr.odd {
 	background-color: #e9e6dc;
 }
-table tr.even {
+#content table tr.even {
 	background-color: #dee7b4;
 }
-table.transactions td.payee {
+#content table.transactions td.payee {
 	font-size: 1.2em;
 }
-table.transactions td.payee div.tags {
+#content table.transactions td.payee div.tags {
 	margin-left: 16px;
 	font-size: 0.7em;
 	font-style: italic;
 }
-table.transactions tbody th.date {
-	border: 1px solid #424242;
+#content table.transactions tbody th.date {
 	text-align: left;
 	font-size: 1.5em;
 	font-weight: normal;
 }
-table td.money {
+#content table.transactions tr.transactions_form td { vertical-align: top; }
+#content table td.money {
 	text-align: right;
 }
 /* END Tables */
@@ -426,3 +424,7 @@ ul.accounts li {
 	border-top: 4px solid #1a1a1a;
 }
 /* END Footer */
+
+/* UI Tweaks */
+#ui-datepicker-div { z-index: 999; }
+ */
