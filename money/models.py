@@ -99,19 +99,16 @@ class Transaction(models.Model):
     """
     mobile = models.BooleanField(default=False)
     account = models.ForeignKey(Account)
-    cheque_no = models.PositiveIntegerField(blank=True,db_index=True,null=True)
     payee = models.ForeignKey(Payee)
     amount = models.DecimalField(decimal_places=2,max_digits=8)
     credit = models.BooleanField(default=False)
     date = models.DateField(db_index=True)
     tags = models.ManyToManyField(Tag, through='TagLink')
     comment = models.TextField(blank=True)
-    date_created = models.DateTimeField()
+    transfer = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
         return self.payee.name + u' (' + unicode(self.amount) + u' on ' + unicode(self.date) + u')'
-    
-    class Meta:
-        unique_together = ('account', 'cheque_no')
 
 class TagLink(models.Model):
     """
