@@ -1,4 +1,5 @@
 from decimal import *
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
@@ -8,6 +9,16 @@ from django.template import RequestContext
 from moneydj.accounts.forms import *
 from moneydj.money.models import *
 
+@login_required
+def index(request):
+    try:
+        accounts = Account.objects.filter(user=request.user)
+    except Account.DoesNotExist:
+        raise Http404
+
+    return render_to_response("account_index.html", { "accounts": accounts }, context_instance=RequestContext(request))
+
+@login_required
 @transaction.commit_on_success
 def view(request, id):
     """Lists the transactions in an account"""
@@ -16,83 +27,13 @@ def view(request, id):
     if (request.method == 'POST'):
         transaction_form = QuickTransactionForm(request.POST)
         if (transaction_form.is_valid()):
-            tr = Transaction()
-            # Try to find an existing payee with that name
-            payee = Payee.objects.filter(name__iexact=transaction_form.cleaned_data['payee'])
-
-            if (len(payee) == 1):
-                payee = payee[0]
-            else:
-                # Create a new payee
-                payee = Payee(name=transaction_form.cleaned_data['payee'])
-                payee.save()
-
-            tr.payee = payee
-
-            tr.account = acc
-            tr.amount = transaction_form.cleaned_data['amount']
-            tr.transfer = transaction_form.cleaned_data['transfer']
-
-            # The credit field returns one or zero, but we need a boolean value for the model
-            if (transaction_form.cleaned_data['credit'] == u'1'):
-                tr.credit = True
-            else:
-                tr.credit = False
-
-            tr.date = transaction_form.cleaned_data['date']
-            tr.save()
-
-            #
-            # Now to deal with the tags
-            #
-
-            used_tags = []
-
-            # get a list of the tags entered, separated by spaces
-            for t in transaction_form.cleaned_data['tags'].split(u' '):
-                # partition the tag on the last ':' to get any possible split
-                name, delim, split = t.rpartition(u':')
-
-                if not name and not split:
-                    continue
-                elif not name:
-                    name = split
-                    split = None
-
-                if split != None:
-                    try:
-                        split = Decimal(split)
-                        # Use the total amount if the split is invalid
-                        if split > tr.amount or split < 0:
-                            split = tr.amount
-                    except:
-                        # The split couldn't be determined
-                        split = tr.amount
-                else:
-                    # A split wasn't specified, so we use the total amount
-                    split = tr.amount
-
-                if name in used_tags:
-                    continue
-                else:
-                    try:
-                        tag = Tag(name=name)
-                        tag.save()
-                        used_tags.append(name)
-                    except IntegrityError:
-                        tag = Tag.objects.filter(name__iexact=name)[0]
-                        used_tags.append(name)
-
-                rel = TagLink(tag=tag, transaction=tr, split=split)
-                rel.save()
-
-            acc.update_balance()
+            transaction = transaction_form.save()
             transaction_form = QuickTransactionForm()
     else:
         transaction_form = QuickTransactionForm()
 
     # Get all the transactions
-    transactions = Transaction.objects.filter(account=acc).order_by('-date', '-date_created').select_related()
+    transactions = Transaction.objects.select_related().filter(account=acc).order_by('-date', '-date_created')
 
     return render_to_response('account_view.html', {
         'account': acc,
@@ -100,6 +41,7 @@ def view(request, id):
         'transaction_form': transaction_form
     }, context_instance=RequestContext(request))
 
+@login_required
 def add(request):
     """Adds an account"""
     if (request.method == 'POST'):
@@ -115,10 +57,17 @@ def add(request):
         form = AccountForm()
     return render_to_response('account_add.html', {'form': form}, context_instance=RequestContext(request))
 
+@login_required
 def add_transaction(request, account):
     """Adds a transaction to the specified account"""
     pass
 
-def view_transaction(request, account, transaction):
-    """Views a transaction"""
-    pass
+@login_required
+def edit_transaction(request, account, transaction):
+    account = get_object_or_404(Account, pk=account, user=request.user)
+    transaction = get_object_or_404(Transaction, pk=transaction, user=request.user)
+
+    if (request.method == "POST"):
+
+
+    return render_to_response('account_edit.html', { 'form': form }, context_instance=RequestContext(request))

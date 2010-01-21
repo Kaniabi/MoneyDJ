@@ -1,0 +1,35 @@
+{% extends "overall_template.html" %}
+{% load i18n %}
+{% load humanize %}
+{% load money_overall %}
+
+{% block title %}{% trans 'Accounts' %} &bull; {% endblock %}
+
+{% block pagetitle %}{% trans 'Accounts ' %}{% endblock %}
+
+{% block content %}
+<table class="transactions">
+	<thead>
+		<tr>
+			<th>{% trans "Account" %}</th>
+			<th>{% trans "Account Number" %}</th>
+			<th>{% trans "Sort Code" %}</th>
+			<th>{% trans "Balance" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for a in accounts %}
+		<tr class="{% cycle 'odd' 'even' %}">
+			<td><a href="{% url accounts.views.view a.id %}">{{ a.name }}</a></td>
+			<td>{% if a.number %}{{ a.number }}{% endif %}</td>
+			<td>{% if a.sort_code %}{{ a.sort_code }}{% endif %}</td>
+			<td class="money">{% if a.track_balance %}{{ a.balance|currency:a.currency }}{% endif %}</td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td colspan="4">{% trans "You currently don't have any accounts set up. To get started, click the 'Add Account' button to the left" %}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock content %}
