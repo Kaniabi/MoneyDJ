@@ -1,0 +1,20 @@
+{% extends 'overall_template.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load money_overall %}
+
+{% block title %}{% trans 'Editing Transaction: ' %}{{ transaction.payee.name }} ({{ transaction.date }}) &bull; {% endblock %}
+
+{% block pagetitle %}{{ account.name }}{% endblock %}
+
+{% block extracss %}{{ form.media.css }}{% endblock %}
+{% block extrajs %}{{ form.media.js }}{% endblock %}
+
+{% block content %}
+<form action="{{ request.url }}" method="post">
+	<ol class="form">
+		{{ form.as_ul }}
+		<li><input type="submit" value="{% trans 'Save Transaction' %}"/></li>
+	</ol>
+</form>
+{% endblock %}

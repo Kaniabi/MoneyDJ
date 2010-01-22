@@ -23,7 +23,6 @@ class QuickTransactionForm(forms.Form):
     credit = forms.ChoiceField(widget=forms.RadioSelect, choices=[(0, _(u'Expense')), (1, _(u'Income'))], initial=0)
     transfer = forms.BooleanField(label=_(u'Transfer'), required=False)
     tags = forms.CharField(label=_(u'Tags'), required=False)
-    user = forms.IntegerField(widget=forms.HiddenInput)
     account = forms.IntegerField(widget=forms.HiddenInput)
     error_css_class = 'error'
     required_css_class = 'required'
@@ -70,6 +69,8 @@ class QuickTransactionForm(forms.Form):
         #
 
         used_tags = []
+        
+        tr.taglink_set.all().delete()
 
         # get a list of the tags entered, separated by spaces
         for t in self.cleaned_data['tags'].split(u' '):

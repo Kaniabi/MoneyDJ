@@ -26,6 +26,9 @@ def view(request, id):
 
     if (request.method == 'POST'):
         transaction_form = QuickTransactionForm(request.POST)
+        if request.POST['account'] != id:
+            raise Http404
+        
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
             transaction_form.clean()
@@ -65,9 +68,38 @@ def add_transaction(request, account):
 @login_required
 def edit_transaction(request, account, transaction):
     account = get_object_or_404(Account, pk=account, user=request.user)
-    transaction = get_object_or_404(Transaction, pk=transaction, user=request.user)
+    transaction = get_object_or_404(Transaction, pk=transaction, account=account)
+    
+    if request.method == "POST":
+        form = QuickTransactionForm(request.POST)
+        if int(request.POST['account']) != account.pk:
+            raise Http404
+        
+        if form.is_valid():
+            form.save(instance=transaction)
+            return redirect(reverse('moneydj.accounts.views.view', args=[transaction.account.pk]))
+    else:
+        tags = u''
+        # Build the tag field
+        for tl in transaction.taglink_set.all():
+            tags = tags + tl.tag.name
+            if tl.split != transaction.amount:
+                tags = tags + u':' + tl.split
+            tags = tags + u' '
+            
+        tags = tags.strip()
+        data = {
+            'date': transaction.date,
+            'payee': transaction.payee.name,
+            'amount': transaction.amount,
+            'credit': transaction.credit,
+            'transfer': transaction.transfer,
+            'tags': tags,
+            'account': account.pk
+        }
+        form = QuickTransactionForm(initial=data)
 
-    return render_to_response('account_edit.html', { 'form': form }, context_instance=RequestContext(request))
+    return render_to_response('transaction_edit.html', { 'form': form, 'account': account, 'transaction': transaction }, context_instance=RequestContext(request))
 
 @login_required
 def delete_transaction(request, account, transaction):
