@@ -32,6 +32,7 @@
 	{% endif %}
 </table>
 <form method="post" action="{{ request.url }}">
+	{% for hidden in transaction_form.hidden_fields %}{{ hidden }}{% endfor %}
 	<table class="transactions">
 		<tbody>
 			{% for t in transactions %}

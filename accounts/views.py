@@ -28,9 +28,9 @@ def view(request, id):
         transaction_form = QuickTransactionForm(request.POST)
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
-            transaction_form = QuickTransactionForm()
+            transaction_form.clean()
     else:
-        transaction_form = QuickTransactionForm()
+        transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
 
     # Get all the transactions
     transactions = Transaction.objects.select_related().filter(account=acc).order_by('-date', '-date_created')
@@ -52,7 +52,7 @@ def add(request):
             acc.balance_updated = datetime.datetime.today()
             acc.starting_balance = acc.balance
             acc.save()
-            return redirect(reverse('moneydj.accounts.views.view', args=[acc.id]))
+            return redirect(reverse('moneydj.accounts.views.view', args=[acc.pk]))
     else:
         form = AccountForm()
     return render_to_response('account_add.html', {'form': form}, context_instance=RequestContext(request))
@@ -67,7 +67,12 @@ def edit_transaction(request, account, transaction):
     account = get_object_or_404(Account, pk=account, user=request.user)
     transaction = get_object_or_404(Transaction, pk=transaction, user=request.user)
 
-    if (request.method == "POST"):
-
-
     return render_to_response('account_edit.html', { 'form': form }, context_instance=RequestContext(request))
+
+@login_required
+def delete_transaction(request, account, transaction):
+    transaction = get_object_or_404(Transaction, pk=transaction, account=account, account__user=request.user)
+    
+    transaction.delete()
+    transaction.account.update_balance(True)
+    return redirect(reverse('moneydj.accounts.views.view', args=[account]))

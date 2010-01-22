@@ -1,9 +1,11 @@
 # coding=utf8
 from django import forms
-from moneydj.money import widgets
-import datetime
-from moneydj.money.models import Account, Transaction
+from django.db import transaction, IntegrityError
+from django.http import Http404
 from django.utils.translation import ugettext as _
+from moneydj.money import widgets
+from moneydj.money.models import *
+import datetime
 
 class AccountForm(forms.ModelForm):
     currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)'), (u'€', u'EUR (€)')])
@@ -13,7 +15,8 @@ class AccountForm(forms.ModelForm):
         model = Account
         exclude = ('user', 'starting_balance', 'balance_updated', 'date_created')
 
-class QuickTransactionForm(forms.ModelForm):
+@transaction.commit_on_success
+class QuickTransactionForm(forms.Form):
     date = forms.DateField(label=_(u'Date'), initial=datetime.date.today(), widget=widgets.UIDateWidget())
     payee = forms.CharField(label=_(u'Payee'), max_length=50)
     amount = forms.DecimalField(label=_(u'Amount'), decimal_places=2, max_digits=8)
@@ -21,24 +24,23 @@ class QuickTransactionForm(forms.ModelForm):
     transfer = forms.BooleanField(label=_(u'Transfer'), required=False)
     tags = forms.CharField(label=_(u'Tags'), required=False)
     user = forms.IntegerField(widget=forms.HiddenInput)
+    account = forms.IntegerField(widget=forms.HiddenInput)
     error_css_class = 'error'
     required_css_class = 'required'
 
     def save(self, instance=None):
         # Check the instance we've been given (if any)
         if instance is None:
-            instance = Transaction()
+            tr = Transaction()
         elif isinstance(instance, Transaction):
             tr = instance
         else:
             raise TypeError("instance is not a Transaction")
 
         # Try to find an existing payee with that name
-        payee = Payee.objects.filter(name__iexact=self.cleaned_data['payee'])
-
-        if (len(payee) == 1):
-            payee = payee[0]
-        else:
+        try:
+            payee = Payee.objects.get(name__iexact=self.cleaned_data['payee'])
+        except Payee.DoesNotExist:
             # Create a new payee
             payee = Payee(name=self.cleaned_data['payee'])
             payee.save()
@@ -46,7 +48,9 @@ class QuickTransactionForm(forms.ModelForm):
         tr.payee = payee
 
         try:
-            acc = Account.objects.get(pk=self.account)
+            acc = Account.objects.get(pk=self.cleaned_data['account'])
+        except Account.DoesNotExist:
+            raise Http404
 
         tr.account = acc
         tr.amount = self.cleaned_data['amount']
@@ -68,7 +72,7 @@ class QuickTransactionForm(forms.ModelForm):
         used_tags = []
 
         # get a list of the tags entered, separated by spaces
-        for t in s.cleaned_data['tags'].split(u' '):
+        for t in self.cleaned_data['tags'].split(u' '):
             # partition the tag on the last ':' to get any possible split
             name, delim, split = t.rpartition(u':')
 
@@ -91,6 +95,7 @@ class QuickTransactionForm(forms.ModelForm):
                 # A split wasn't specified, so we use the total amount
                 split = tr.amount
 
+            # If name is in the used_tags array, we've already tagged this transaction with that tag
             if name in used_tags:
                 continue
             else:
@@ -106,3 +111,4 @@ class QuickTransactionForm(forms.ModelForm):
             rel.save()
 
         acc.update_balance()
+        return tr
