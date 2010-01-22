@@ -60,6 +60,8 @@ span.sprite {
 	background: transparent url('../img/sprites.png') no-repeat 16px 0;
 	vertical-align: middle;
 	margin-right: 2px;
+	overflow: hidden;
+	text-indent: 20px;
 }
 
 span.sprite.profile {
@@ -110,6 +112,36 @@ a span.sprite.mobile {
 }
 a:hover span.sprite.mobile {
 	background-position: 0 -64px;
+}
+
+span.sprite.tag {
+	background-position: 0 -80px;
+}
+a span.sprite.tag {
+	background-position: -16px -80px;
+}
+a:hover span.sprite.tag {
+	background-position: 0 -80px;
+}
+
+span.sprite.transaction_edit {
+	background-position: 0 -96px;
+}
+a span.sprite.transaction_edit {
+	background-position: -16px -96px;
+}
+a:hover span.sprite.transaction_edit {
+	background-position: 0 -96px;
+}
+
+span.sprite.delete {
+	background-position: 0 -112px;
+}
+a span.sprite.delete {
+	background-position: -16px -112px;
+}
+a:hover span.sprite.delete {
+	background-position: 0 -112px;
 }
 /* END Sprites */
 
@@ -219,6 +251,8 @@ a:hover span.sprite.mobile {
 #content table.transactions tr.transaction_form td { vertical-align: top; }
 #content table.transactions tr.transaction_form div.credit ul { margin: 0; padding: 0; }
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
+#content table.transactions tr div.actions { width: 16px; float: left; margin: 0 32px 0 -32px; }
+#content table.transactions tr:hover div.actions { margin: block; margin: 0; }
 #content table td.money {
 	text-align: right;
 }
