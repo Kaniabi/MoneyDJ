@@ -239,9 +239,12 @@ a:hover span.sprite.delete {
 	font-size: 1.2em;
 }
 #content table.transactions td.payee div.tags {
-	margin-left: 16px;
+	margin: 4px 0 0 32px;
 	font-size: 0.7em;
-	font-style: italic;
+	color: #8f8f8f;
+}
+#content table.transactions td.payee div.tags span.sprite {
+	margin-right: 0;
 }
 #content table.transactions tbody th.date {
 	text-align: left;
@@ -253,9 +256,8 @@ a:hover span.sprite.delete {
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
 #content table.transactions tr div.actions { width: 16px; float: left; margin: 0 32px 0 -32px; }
 #content table.transactions tr:hover div.actions { margin: block; margin: 0; }
-#content table td.money {
-	text-align: right;
-}
+#content table td.money { text-align: right; font-weight: bold; color: #4d4d4d; }
+#content table td.money.in { color: #7CAF62; }
 /* END Tables */
 
 /* BEGIN Header */
