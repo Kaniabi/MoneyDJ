@@ -111,5 +111,4 @@ class QuickTransactionForm(forms.Form):
             rel = TagLink(tag=tag, transaction=tr, split=split)
             rel.save()
 
-        acc.update_balance()
         return tr

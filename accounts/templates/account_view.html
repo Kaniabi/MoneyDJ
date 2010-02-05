@@ -56,7 +56,7 @@
 					</div>
 					{% endif %}
 				</td>
-				<td class="money{% if t.credit %} in{% endif %}">{{ t.amount|currency:account.currency }}</td>
+				<td class="money{% if t.credit %} in{% endif %}">{% if t.credit %}+ {% endif %}{{ t.amount|currency:account.currency }}</td>
 				{% if account.track_balance %}<td class="money balance">{{ account.balance_at }}</td>{% endif %}
 			</tr>
 			{% empty %}

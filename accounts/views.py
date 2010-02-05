@@ -24,14 +24,15 @@ def view(request, id):
     """Lists the transactions in an account"""
     acc = get_object_or_404(Account, pk=id, user=request.user)
 
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         transaction_form = QuickTransactionForm(request.POST)
-        if request.POST['account'] != id:
+        if 'account' not in request.POST.keys() or request.POST['account'] != id:
             raise Http404
         
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
-            transaction_form.clean()
+            acc.update_balance()
+            transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
     else:
         transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
 
