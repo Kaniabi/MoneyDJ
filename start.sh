@@ -4,7 +4,7 @@ NAME=manage.py
 PROJECT=/mnt/project/moneydj
 PIDFILE=/var/run/$NAME.pid
 DAEMON=$PROJECT/$NAME
-DAEMON_ARGS="runfcgi method=threaded host=127.0.0.1 port=8000 pidfile=$PIDFILE"
+DAEMON_ARGS="runfcgi method=threaded host=127.0.0.1 port=8025 pidfile=$PIDFILE"
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh

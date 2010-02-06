@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from moneydj.accounts.forms import *
 from moneydj.money.models import *
+import pdb
 
 @login_required
 def index(request):
@@ -101,6 +102,12 @@ def edit_transaction(request, account, transaction):
         form = QuickTransactionForm(initial=data)
 
     return render_to_response('transaction_edit.html', { 'form': form, 'account': account, 'transaction': transaction }, context_instance=RequestContext(request))
+
+@login_required
+def resync(request, account):
+    account = get_object_or_404(Account, pk=account, user=request.user)
+    account.update_balance(True)
+    return redirect(reverse('moneydj.accounts.views.view', args=[account.pk]))
 
 @login_required
 def delete_transaction(request, account, transaction):
