@@ -20,4 +20,4 @@ def get_accounts(request):
         if not check_password(request.POST['password'], user.password):
             return HttpResponseForbidden()
     
-    return HttpResponse(serializers.serialize('json', Account.objects.filter(user=user), ensure_ascii=False), mimetype='application/javascript')
+    return HttpResponse(serializers.serialize('json', Account.objects.filter(user=user), ensure_ascii=False), content_type='application/javascript; charset=utf-8')
