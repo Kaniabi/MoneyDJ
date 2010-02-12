@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 from moneydj.money import widgets
 from moneydj.money.models import *
 import datetime
+from decimal import Decimal, InvalidOperation
 
 class AccountForm(forms.ModelForm):
     currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)'), (u'€', u'EUR (€)')])
@@ -89,7 +90,7 @@ class QuickTransactionForm(forms.Form):
                     # Use the total amount if the split is invalid
                     if split > tr.amount or split < 0:
                         split = tr.amount
-                except:
+                except (InvalidOperation, TypeError):
                     # The split couldn't be determined
                     split = tr.amount
             else:
