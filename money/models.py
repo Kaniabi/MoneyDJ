@@ -80,7 +80,7 @@ class Account(models.Model):
         """
         self.update_balance()
         b = self.balance
-        transactions = Transactions.objects.filter(account=self,date__gte=datetime)
+        transactions = Transaction.objects.filter(account=self,date__gte=datetime)
         
         for t in transactions:
             if t.credit:
