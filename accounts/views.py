@@ -39,6 +39,18 @@ def view(request, id):
 
     # Get all the transactions
     transactions = Transaction.objects.select_related().filter(account=acc).order_by('-date', '-date_created')
+    
+    paginator = Paginator(transactions, 20)
+    
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+        
+    try:
+        transactions = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        transactions = paginator.page(paginator.num_pages)
 
     return render_to_response('account_view.html', {
         'account': acc,
@@ -86,7 +98,7 @@ def edit_transaction(request, account, transaction):
         for tl in transaction.taglink_set.all():
             tags = tags + tl.tag.name
             if tl.split != transaction.amount:
-                tags = tags + u':' + tl.split
+                tags = tags + u':' + unicode(str(tl.split))
             tags = tags + u' '
             
         tags = tags.strip()

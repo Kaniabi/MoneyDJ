@@ -31,11 +31,14 @@
 	</tr>
 	{% endif %}
 </table>
+
+{% pagination_links transactions %}
+
 <form method="post" action="{{ request.url }}">
 	{% for hidden in transaction_form.hidden_fields %}{{ hidden }}{% endfor %}
 	<table class="transactions">
 		<tbody>
-			{% for t in transactions %}
+			{% for t in transactions.object_list %}
 			{% ifchanged t.date %}
 			<tr>
 				<th class="date" colspan="4">{{ t.date|naturalday|capfirst }}</th>
