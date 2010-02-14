@@ -432,6 +432,72 @@ ul.accounts li {
 }
 /* END Topbox */
 
+/* BEGIN pagination */
+.pagination ul {
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+.pagination ul li {
+	display: inline-block;
+	list-style: none;
+	font-size: 1.3em;
+	height: 16px;
+	width: 16px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-image: url('../img/pagination.png');
+	text-indent: 2em;
+}
+.pagination ul li a {
+	background-repeat: no-repeat;
+	background-image: url('../img/pagination.png');
+	display: block;
+}
+.pagination ul li.first {
+	background-position: 0 -16px;
+}
+.pagination ul li.first a {
+	background-position: 0 0;
+}
+.pagination ul li.first a:hover {
+	background-position: 0 -32px;
+}
+.pagination ul li.back {
+	background-position: -16px -16px;
+}
+.pagination ul li.back a {
+	background-position: -16px 0;
+}
+.pagination ul li.back a:hover {
+	background-position: -16px -32px;
+}
+.pagination ul li.forward {
+	background-position: -32px -16px;
+}
+.pagination ul li.forward a {
+	background-position: -32px 0;
+}
+.pagination ul li.forward a:hover {
+	background-position: -32px -32px;
+}
+.pagination ul li.last {
+	background-position: -48px -16px;
+}
+.pagination ul li.last a {
+	background-position: -48px 0;
+}
+.pagination ul li.last a:hover {
+	background-position: -48px -32px;
+}
+.pagination ul li.current {
+	background-image: none;
+	width: auto;
+	height: auto;
+	text-indent: 0;
+}
+/* END pagination */
+
 /* BEGIN Content */
 #content {
 	clear: both;
