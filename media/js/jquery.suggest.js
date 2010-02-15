@@ -88,7 +88,7 @@
 				else if ((event.keyCode > 64 && event.keyCode < 91) || (event.keyCode > 69 && event.keyCode < 123))
 				{
 					word = (options.multiWords ? getCurrentWord() : $t.val());
-					if (word)
+					if (word.length >= options.minLetters)
 					{
 						getSuggestions(word);
 					}
@@ -96,6 +96,10 @@
 					{
 						hideSuggestions();
 					}
+				}
+				else
+				{
+					hideSuggestions();
 				}
 			});
 			
@@ -145,7 +149,7 @@
 				
 				var cur = $t.val().substr(0, lastSpace);
 				var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
-				var val = valFirst + ($t.val().length > cur.length ? ' ' + $t.val().substr(range.end) : '');
+				var val = valFirst + ($t.val().length > cur.length ? ' ' + $.trim($t.val().substr(range.end)) : '');
 				$t.val(val);
 				$t.caret(valFirst.length);
 			}
@@ -211,7 +215,8 @@
 	
 	$.fn.suggest.defaults = {
 		queryString: 'q',
-		multiWords: true
+		multiWords: true,
+		minLetters: 2
 	}
 	
 })(jQuery)
