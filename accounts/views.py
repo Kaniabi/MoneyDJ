@@ -1,15 +1,17 @@
 from accounts.forms import QuickTransactionForm, AccountForm
-from decimal import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
-from django.db import IntegrityError, transaction
-from django.http import Http404
+from django.db import transaction
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
-from money.models import Account, Transaction
+from money.models import Account, Transaction, Payee
 import datetime
-import pdb
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 @login_required
 def index(request):
@@ -121,6 +123,18 @@ def resync(request, account):
     account = get_object_or_404(Account, pk=account, user=request.user)
     account.update_balance(True)
     return redirect(reverse('moneydj.accounts.views.view', args=[account.pk]))
+
+def get_payee_suggestions(request):
+    if not request.GET['q']:
+        return HttpResponseBadRequest()
+    
+    tags = Payee.objects.filter(name__icontains=request.GET['q']).order_by('name')
+    
+    response = []
+    for t in tags:
+        response.append(t.name)
+    
+    return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
 
 @login_required
 def delete_transaction(request, account, transaction):

@@ -2,7 +2,7 @@
 	
 	$.fn.suggest = function(data)
 	{
-		options = $.extend({}, $.fn.suggest.defaults, data);
+		var options = $.extend({}, $.fn.suggest.defaults, data);
 		
 		if (!options.url)
 		{
@@ -16,13 +16,11 @@
 			{
 				return;
 			}
-			var suggestions = $('<div class="suggestions"></div>').hide();
+			
+			var id = 'autocomplete_' + Math.floor(Math.random() * 1000000);
+			var suggestions = $('<div class="suggestions"></div>').attr('id', id).hide();
 			
 			$t.attr('autocomplete', 'off').after(suggestions);
-			
-			$('body').bind('click', function() {
-				hideSuggestions();
-			});
 			$t.bind('keypress', function(event) {
 				// Enter
 				if (event.keyCode == 13)
@@ -103,10 +101,16 @@
 				}
 			});
 			
-			suggestions.find('li').live('hover', function() {
+			$('#' + id + ' li').live('mouseover', function() {
 				selectSuggestion(suggestions.find('li').index(this));
-			}).live('click', function() {
-				useSuggestion(suggestions.find('li').index(this));
+			});
+			$('#' + id + ' li').live('click', function() {
+				selectSuggestion(suggestions.find('li').index(this));
+				useSuggestion();
+				return false;
+			});
+			$t.bind('blur', function() {
+				hideSuggestions();
 			});
 			
 			function getSuggestions(word)
@@ -149,7 +153,7 @@
 				
 				var cur = $t.val().substr(0, lastSpace);
 				var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
-				var val = valFirst + ($t.val().length > cur.length ? ' ' + $.trim($t.val().substr(range.end)) : '');
+				var val = valFirst + ($t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '');
 				$t.val(val);
 				$t.caret(valFirst.length);
 			}
@@ -167,6 +171,7 @@
 					var w = list[i];
 					ul.append('<li>' + w.replace(word, '<span>' + word + '</span>') + '</li>');
 				}
+				
 				var cruftLeft = parseInt($t.css('borderLeftWidth')) + parseInt($t.css('paddingLeft'));
 				var cruftRight = parseInt($t.css('borderRightWidth')) + parseInt($t.css('paddingRight'));
 				var cruftTop = parseInt($t.css('borderTopWidth')) + parseInt($t.css('paddingTop'));

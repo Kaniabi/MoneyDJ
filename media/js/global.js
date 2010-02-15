@@ -9,6 +9,7 @@ $(function() {
 	});
 	$('.uiDateField').datepicker();
 	
+	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiwords: false});
 	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
 });
 
