@@ -5,8 +5,11 @@ try:
 except ImportError:
     import simplejson as json
 
-def get_tag_suggestions(request, suggest):
-    tags = Tag.objects.filter(name__icontains=suggest)
+def get_tag_suggestions(request):
+    if not request.GET['q']:
+        return HttpResponseBadRequest()
+    
+    tags = Tag.objects.filter(name__icontains=request.GET['q']).order_by('name')
     
     response = []
     for t in tags:
