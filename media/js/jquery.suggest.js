@@ -11,26 +11,37 @@
 		
 		return $(this).each(function() {
 			var $t = $(this);
-			var word = '';
 			if (!$t.is('input'))
 			{
 				return;
 			}
+			var word = '';
+			var xhr;
+			var cache = {};
+			
+			// Store the options
+			$t.data('options', options);
 			
 			var id = 'autocomplete_' + Math.floor(Math.random() * 1000000);
-			var suggestions = $('<div class="suggestions"></div>').attr('id', id).hide();
+			var suggestions = $('<div class="suggestions"></div>').attr('id', id).hide().appendTo('body');
 			
-			$t.attr('autocomplete', 'off').after(suggestions);
+			$t.attr('autocomplete', 'off');
 			$t.bind('keypress', function(event) {
-				// Enter
-				if (event.keyCode == 13)
+				// Enter or tab
+				if (event.keyCode == 13 || event.keyCode == 9)
 				{
 					useSuggestion();
-					return false;
+					// Only prevent the event if enter was pressed
+					if (event.keyCode == 13)
+					{
+						return false;
+					}
 				}
 			}).bind('keyup', function(event) {
-				var val = $(this).val();
-				var range = $(this).caret();
+				var $t = $(this);
+				var val = $t.val();
+				var range = $t.caret();
+				var options = $t.data('options');
 				// Up or down arrow
 				if (event.keyCode == 38 || event.keyCode == 40)
 				{
@@ -78,26 +89,30 @@
 					var cur = $t.val().substr(0, range.start);
 					var valFirst = cur + options.amountElement.val();
 					var val = valFirst + ($t.val().length > cur.length ? ' ' + $t.val().substr(range.end) : '');
-					$(this).val(val);
+					$t.val(val);
 					$t.caret(valFirst.length);
 					hideSuggestions();
 				}
-				// We have pressed a letter
-				else if ((event.keyCode > 64 && event.keyCode < 91) || (event.keyCode > 69 && event.keyCode < 123))
+				else
 				{
-					word = (options.multiWords ? getCurrentWord() : $t.val());
-					if (word.length >= options.minLetters)
-					{
-						getSuggestions(word);
-					}
-					else
+					// Space bar or enter
+					if (options.multiWords && event.keyCode == 32 || event.keyCode == 13)
 					{
 						hideSuggestions();
 					}
-				}
-				else
-				{
-					hideSuggestions();
+					// We have pressed a letter or number
+					else
+					{
+						word = (options.multiWords === true ? getCurrentWord() : val);
+						if (word.length >= options.minLetters)
+						{
+							getSuggestions(word);
+						}
+						else
+						{
+							hideSuggestions();
+						}
+					}
 				}
 			});
 			
@@ -109,19 +124,31 @@
 				useSuggestion();
 				return false;
 			});
-			$t.bind('blur', function() {
-				hideSuggestions();
-			});
 			
 			function getSuggestions(word)
 			{
-				suggestions.addClass('loading').text(gettext('Loading'));
-				$.ajax({
+				// If we have the word cached, use that
+				if (cache[word])
+				{
+					showSuggestions(cache[word]);
+					return;
+				}
+				// Abort the request if there's one already active
+				if (xhr)
+				{
+					xhr.abort();
+				}
+				var data = {};
+				data[options.queryString] = word;
+				suggestions.addClass('loading').text(gettext('Loading')).show();
+				xhr = $.ajax({
 					type: 'GET',
 					url: options.url,
-					data: options.queryString + '=' + word,
+					cache: true,
+					data: data,
 					dataType: 'json',
 					success: function(ret) {
+						cache[word] = ret;
 						showSuggestions(ret);
 					}
 				});
@@ -144,18 +171,25 @@
 			
 			function setCurrentWord(word)
 			{
-				var range = $t.caret();
-				var lastSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
-				if (lastSpace == -1)
+				if (options.multiWords)
 				{
-					lastSpace = 0;
+					var range = $t.caret();
+					var lastSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
+					if (lastSpace == -1)
+					{
+						lastSpace = 0;
+					}
+					
+					var cur = $t.val().substr(0, lastSpace);
+					var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
+					var val = valFirst + ($t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '');
+					$t.val(val);
+					$t.caret(valFirst.length);
 				}
-				
-				var cur = $t.val().substr(0, lastSpace);
-				var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
-				var val = valFirst + ($t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '');
-				$t.val(val);
-				$t.caret(valFirst.length);
+				else
+				{
+					$t.val(word);
+				}
 			}
 			
 			function showSuggestions(list)
@@ -179,9 +213,8 @@
 
 				var width = $t.width();
 				var offset = $t.offset();
-				var parent = $t.offsetParent().offset();
-				var left = offset.left - parent.left + cruftLeft;
-				var top = offset.top - parent.top + $t.height() + cruftTop + cruftBottom;
+				var left = offset.left + cruftLeft;
+				var top = offset.top + $t.height() + cruftTop + cruftBottom;
 
 				suggestions.removeClass('loading').html(ul).css({
 					position: 'absolute',

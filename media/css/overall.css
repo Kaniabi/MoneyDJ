@@ -51,24 +51,24 @@ ol.form ul.errorlist li {
 	color: white;
 	padding: 0.1em;
 }
-form div.suggestions {
+div.suggestions {
 	z-index: 9999;
 	background: #c0dd82;
 	border: 1px solid #a1ab74;
 }
-form div.suggestions ul {
+div.suggestions ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
-form div.suggestions ul li {
+div.suggestions ul li {
 	padding: 4px;
 	cursor: pointer;
 }
-form div.suggestions li span {
+div.suggestions li span {
 	font-weight: bold;
 }
-form div.suggestions li.selected {
+div.suggestions li.selected {
 	background: #8b536f;
 	color: white;
 }
