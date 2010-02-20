@@ -9,7 +9,7 @@
 <form action="{% url accounts.views.add %}" method="post">
 	<ol class="form">
 		{{ form.as_ul }}
-		<li class="submit"><input type="submit" value="{% trans 'Add' %}"/></li>
+		<li class="submit"><input type="submit" value="{% trans 'Add' %}"class="button" /></li>
 	</ol>
 </form>
 {% endblock content %}

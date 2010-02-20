@@ -37,7 +37,7 @@
 <form method="post" action="{{ request.url }}" id="add_transaction">
 	<ol class="form">
 		{{ transaction_form.as_ul }}
-		<li><input type="submit" value="{% trans 'Save' %}"/></li>
+		<li><input type="submit" value="{% trans 'Save' %}" class="button" /></li>
 	</ol>
 </form>
 {% endblock content %}

@@ -73,6 +73,38 @@ div.suggestions li.selected {
 	color: white;
 }
 
+div.overlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* Buttons based on the super awesome buttons: http://www.zurb.com/article/266/super-awesome-buttons-with-css3-and-rgba */
+a.button, input.button {
+	font-size: 1.1em;
+	display: inline-block;
+	padding: 5px 10px 6px;
+	text-decoration: none;
+	font-weight: bold;
+	line-height: 1;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+	border: 0;
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	cursor: pointer;
+	background: #8b536f url('../img/alert-overlay.png') repeat-x 0 0;
+	color: white;
+}
+.button:hover {
+	background-color: #5c3566;
+}
+
 /* BEGIN Sprites */
 span.sprite {
 	display: inline-block;
@@ -354,7 +386,7 @@ h1 span {
 	float: left;
 	height: 26px;
 	position: relative;
-	z-index: 9999;
+	z-index: 100;
 }
 #nav ul {
 	margin: 0 0 0 34px;
@@ -568,7 +600,22 @@ div.tagCloud ol li.tag-7 { font-size: 1.8em; }
 div.tagCloud ol li.tag-8 { font-size: 2em; }
 div.tagCloud ol li.tag-9 { font-size: 2.2em; }
 div.tagCloud ol li.tag-10 { font-size: 2.4em; }
+/* END tags */
 
+div#add_transaction_holder {
+	background: #E9E6DC;
+	border: 1px solid #1D1D1D;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	font-size: 0.8em;
+	padding: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+div#add_transaction_holder ol {
+	margin: 0;
+	padding: 0;
+}
 
 /* BEGIN Footer */
 #footer {
