@@ -164,6 +164,16 @@ a span.sprite.delete {
 a:hover span.sprite.delete {
 	background-position: 0 -112px;
 }
+
+span.sprite.comment {
+	background-position: 0 -128px;
+}
+a span.sprite.comment {
+	background-position: -16px -128px;
+}
+a:hover span.sprite.comment {
+	background-position: 0 -128px;
+}
 /* END Sprites */
 
 /* BEGIN Boxes */
