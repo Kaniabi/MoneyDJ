@@ -2,18 +2,15 @@
 {% load i18n %}
 {% load humanize %}
 {% load tags %}
+{% load accounts_tags %}
 
 {% block title %}{% trans 'Tags' %} &bull; {% endblock %}
 
 {% block pagetitle %}{% trans 'Tags' %}{% endblock %}
 
 {% block content %}
-<h3>{% trans 'Top 20 Tags' %}</h3>
-<ol>
-	{% for t in tags %}
-	<li>{{ t.tag__name }}</li>
-	{% endfor %}
-</ol>
+<h3>{% trans 'Untagged Transactions' %}</h3>
+{% show_transactions transactions %}
 {% endblock %}
 
 {% block sidebar %}

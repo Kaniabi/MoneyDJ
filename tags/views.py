@@ -13,7 +13,22 @@ except ImportError:
 @login_required
 def index(request):
     tags = TagLink.objects.filter(transaction__account__user=request.user, transaction__credit=False, transaction__transfer=False).values('tag__name').annotate(total=Sum('split')).order_by('tag__name')[:20]
-    return render_to_response("tags_index.html", { "tags": tags }, context_instance=RequestContext(request))
+    
+    transactions = Transaction.objects.filter(taglink__id__isnull=True)
+    
+    paginator = Paginator(transactions, 20)
+    
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+        
+    try:
+        transactions = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        transactions = paginator.page(paginator.num_pages)
+        
+    return render_to_response("tags_index.html", { "tags": tags, "transactions": transactions }, context_instance=RequestContext(request))
 
 @login_required
 def view_tag(request, tag):
