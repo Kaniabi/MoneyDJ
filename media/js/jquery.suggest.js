@@ -140,7 +140,21 @@
 				}
 				var data = {};
 				data[options.queryString] = word;
-				suggestions.addClass('loading').text(gettext('Loading')).show();
+				
+				var cruft = getCruft($t);
+
+				var width = $t.width();
+				var offset = $t.offset();
+				var left = offset.left + cruft.left;
+				var top = offset.top + $t.height() + cruft.top + cruft.bottom;
+				
+				suggestions.addClass('loading').text(gettext('Loading')).show().css({
+					position: 'absolute',
+					top: top + 'px',
+					left: left + 'px',
+					width: width
+				}).show();
+				
 				xhr = $.ajax({
 					type: 'GET',
 					url: options.url,
@@ -203,18 +217,15 @@
 				for (var i in list)
 				{
 					var w = list[i];
-					ul.append('<li>' + w.replace(word, '<span>' + word + '</span>') + '</li>');
+					ul.append('<li>' + w.replace(new RegExp('(' + RegExp.escape(word) + ')', 'gi'), '<span>$1</span>') + '</li>');
 				}
 				
-				var cruftLeft = parseInt($t.css('borderLeftWidth')) + parseInt($t.css('paddingLeft'));
-				var cruftRight = parseInt($t.css('borderRightWidth')) + parseInt($t.css('paddingRight'));
-				var cruftTop = parseInt($t.css('borderTopWidth')) + parseInt($t.css('paddingTop'));
-				var cruftBottom = parseInt($t.css('borderBottomWidth')) + parseInt($t.css('paddingBottom'));
+				var cruft = getCruft($t);
 
 				var width = $t.width();
 				var offset = $t.offset();
-				var left = offset.left + cruftLeft;
-				var top = offset.top + $t.height() + cruftTop + cruftBottom;
+				var left = offset.left + cruft.left;
+				var top = offset.top + $t.height() + cruft.top + cruft.bottom;
 
 				suggestions.removeClass('loading').html(ul).css({
 					position: 'absolute',
@@ -258,3 +269,17 @@
 	}
 	
 })(jQuery)
+
+// From http://simonwillison.net/2006/Jan/20/escape/
+RegExp.escape = function(text) {
+  if (!arguments.callee.sRE) {
+    var specials = [
+      '/', '.', '*', '+', '?', '|',
+      '(', ')', '[', ']', '{', '}', '\\'
+    ];
+    arguments.callee.sRE = new RegExp(
+      '(\\' + specials.join('|\\') + ')', 'g'
+    );
+  }
+  return text.replace(arguments.callee.sRE, '\\$1');
+}

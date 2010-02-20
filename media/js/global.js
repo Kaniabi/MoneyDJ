@@ -11,7 +11,52 @@ $(function() {
 	
 	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiWords: false});
 	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
+	
+	// Remove the add transaction form from the page so we can make it nicer
+	var t = $('form#add_transaction');
+	var transactions = $('table.transactions:first');
+	if (t.length == 1 && transactions.length == 1)
+	{
+		var a = $('<a href="#add_transaction_button" class="button">+ ' + gettext('Add Transaction') + '</a>');
+		transactions.before(a);
+		var offset = a.offset();
+		var offsetParent = a.offsetParent().offset();
+		var cruft = getCruft(a);
+		
+		t.wrap($('<div id="add_transaction_holder"></div>').css({
+				position: 'absolute',
+				left: offset.left - offsetParent.left,
+				top: offset.top + a.height() + cruft.top + cruft.bottom - offsetParent.top,
+				zIndex: 9998
+			}).hide());
+		var holder = $('#add_transaction_holder');
+		
+		a.click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			holder.slideDown();
+			/*
+$('body').append($('<div class="overlay"></div>').css('z-index', 500).click(function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				holder.slideUp();
+				$(this).remove();
+			}));
+*/
+		});
+	}
 });
+
+function getCruft(element)
+{
+	var $e = $(element);	
+	return {
+		left: parseInt($e.css('borderLeftWidth')) + parseInt($e.css('paddingLeft')),
+		right: parseInt($e.css('borderRightWidth')) + parseInt($e.css('paddingRight')),
+		top: parseInt($e.css('borderTopWidth')) + parseInt($e.css('paddingTop')),
+		bottom: parseInt($e.css('borderBottomWidth')) + parseInt($e.css('paddingBottom'))
+	}
+}
 
 /*
  * jQuery Caret Range plugin
