@@ -1,10 +1,12 @@
 {% load i18n %}
+{% if items.paginator.num_pages > 1 %}
 <div class="pagination">
 	<ul>
-		<li class="first" title="{% trans "first" %}">{% if items.number != 1 %}<a href="?page=1">{% endif %}{% trans "first" %}{% if items.number != 1 %}</a>{% endif %}</li>
+		<li class="first" title="{% trans "first" %}">{% if items.number > 1 %}<a href="?page=1">{% endif %}{% trans "first" %}{% if items.number > 1 %}</a>{% endif %}</li>
 		<li class="back" title="{% trans "back" %}">{% if items.has_previous %}<a href="?page={{ items.previous_page_number }}">{% endif %}{% trans "back" %}{% if items.has_previous %}</a>{% endif %}</li>
 		<li class="current">{% blocktrans with items.number as curr and items.paginator.num_pages as total %}Page {{ curr }} of {{ total }}{% endblocktrans %}</li>
 		<li class="forward" title="{% trans "forward" %}">{% if items.has_next %}<a href="?page={{ items.next_page_number }}">{% endif %}{% trans "next" %}{% if items.has_next %}</a>{% endif %}</li>
 		<li class="last" title="{% trans "last" %}">{% if items.number != items.paginator.num_pages %}<a href="?page={{ items.paginator.num_pages }}">{% endif %}{% trans "last" %}{% if items.number != items.paginator.num_pages %}</a>{% endif %}</li>
 	</ul>
 </div>
+{% endif %}
