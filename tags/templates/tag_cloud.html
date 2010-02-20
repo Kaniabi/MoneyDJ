@@ -1,0 +1,8 @@
+{% load i18n %}
+<div class="tagCloud">
+	<ol>
+		{% for t in cloud %}
+		<li class="tag-{{ t.val }}"><span>{{ t.amount }} has been spent on </span><a href="{% url tags.views.view_tag t.name %}">{{ t.name }}</a></li>
+		{% endfor %}
+	</ol>
+</div>

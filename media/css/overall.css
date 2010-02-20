@@ -538,9 +538,27 @@ ul.accounts li {
 	padding-top: 50px;
 }
 #content .sidebar h3 {
-	font-size: 2.5em
+	font-size: 2.5em;
+	margin-bottom: 10px;
 }
 /* END Content */
+
+/* BEGIN tags */
+div.tagCloud { position: relative; }
+div.tagCloud ol { margin: 0; text-align: center; font-size: 120%; padding: 0; }
+div.tagCloud ol li { list-style: none; display: inline; margin: 3px; }
+div.tagCloud ol li span { left: -999px; position: absolute; width: 990px; }
+div.tagCloud ol li.tag-1 { font-size: 0.6em; }
+div.tagCloud ol li.tag-2 { font-size: 0.8em; }
+div.tagCloud ol li.tag-3 { font-size: 1em; }
+div.tagCloud ol li.tag-4 { font-size: 1.2em; }
+div.tagCloud ol li.tag-5 { font-size: 1.4em; }
+div.tagCloud ol li.tag-6 { font-size: 1.6em; }
+div.tagCloud ol li.tag-7 { font-size: 1.8em; }
+div.tagCloud ol li.tag-8 { font-size: 2em; }
+div.tagCloud ol li.tag-9 { font-size: 2.2em; }
+div.tagCloud ol li.tag-10 { font-size: 2.4em; }
+
 
 /* BEGIN Footer */
 #footer {
