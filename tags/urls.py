@@ -2,6 +2,6 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('moneydj.tags.views',
     (r'^$', 'index'),
-    (r'^(\w+)/$', 'view_tag'),
-    (r'^suggest/$', 'get_tag_suggestions')
+    (r'^suggest/$', 'get_tag_suggestions'),
+    (r'^view/(\w+)/$', 'view_tag')
 )
