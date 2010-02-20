@@ -1,10 +1,10 @@
-from money.models import Tag, TagLink, Transaction
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.db.models import Sum
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from django.db.models import Sum
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from money.models import Tag, TagLink, Transaction, Payee
 try:
     import json
 except ImportError:
@@ -60,6 +60,15 @@ def get_tag_suggestions(request):
         return HttpResponseBadRequest()
     
     tags = Tag.objects.filter(name__icontains=request.GET['q']).order_by('name')
+    
+    response = []
+    for t in tags:
+        response.append(t.name)
+    
+    return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
+
+def get_tag_suggestions_for_payee(request, payee):
+    tags = get_object_or_404(Payee, pk=payee).suggest_tags()
     
     response = []
     for t in tags:

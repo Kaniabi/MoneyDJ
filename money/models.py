@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
-import datetime
+from django.db import models
+from django.db.models.aggregates import Count
 from django.utils.translation import ugettext as _
+import datetime
 
 # Create your models here.
 class Tag(models.Model):
@@ -19,6 +20,9 @@ class Payee(models.Model):
     name = models.CharField(max_length=50,db_index=True,unique=True)
     def __unicode__(self):
         return self.name
+    
+    def suggest_tags(self):
+        return Tag.objects.filter(taglink__transaction__payee=self).annotate(count=Count('id', distinct=True)).order_by('count', 'name')
 
 class Bank(models.Model):
     """
