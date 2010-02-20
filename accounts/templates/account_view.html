@@ -34,29 +34,10 @@
 
 {% show_transactions transactions %}
 
-<form method="post" action="{{ request.url }}">
-	{% for hidden in transaction_form.hidden_fields %}{{ hidden }}{% endfor %}
-			<tr class="transaction_form">
-				<td>
-					<div class="date">{{ transaction_form.date.errors }}{{ transaction_form.date.label_tag }}{{ transaction_form.date }}</div>
-					<div class="payee">{{ transaction_form.payee.errors }}{{ transaction_form.payee.label_tag }}{{ transaction_form.payee }}</div>
-					<div class="tags"><span class="sprite tag"></span>{{ transaction_form.tags.errors }}{{ transaction_form.tags.label_tag }}{{ transaction_form.tags }}</div>
-				</td>
-				<td>
-					{{ transaction_form.amount.errors }}
-					{{ transaction_form.amount.label_tag }}
-					{{ transaction_form.amount }}
-					<div class="credit">
-						{{ transaction_form.credit.errors }}
-						{{ transaction_form.credit }}
-					</div>
-					<div class="transfer">
-						{{ transaction_form.transfer.errors }}
-						{{ transaction_form.transfer.label_tag }}
-						{{ transaction_form.transfer }}
-					</div>
-					<input type="submit" value="{% trans 'Save' %}"/>
-				</td>
-			</tr>
+<form method="post" action="{{ request.url }}" id="add_transaction">
+	<ol class="form">
+		{{ transaction_form.as_ul }}
+		<li><input type="submit" value="{% trans 'Save' %}"/></li>
+	</ol>
 </form>
 {% endblock content %}

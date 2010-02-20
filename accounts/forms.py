@@ -24,6 +24,7 @@ class QuickTransactionForm(forms.Form):
     transfer = forms.BooleanField(label=_(u'Transfer'), required=False)
     tags = forms.CharField(label=_(u'Tags'), required=False)
     account = forms.IntegerField(widget=forms.HiddenInput)
+    comment = forms.CharField(label=_(u'Comment'), widget=forms.Textarea(), required=False)
     error_css_class = 'error'
     required_css_class = 'required'
 
@@ -54,6 +55,7 @@ class QuickTransactionForm(forms.Form):
         tr.account = acc
         tr.amount = self.cleaned_data['amount']
         tr.transfer = self.cleaned_data['transfer']
+        tr.comment = self.cleaned_data['comment']
 
         # The credit field returns one or zero, but we need a boolean value for the model
         if (self.cleaned_data['credit'] == u'1'):
