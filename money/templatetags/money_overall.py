@@ -1,5 +1,5 @@
 from django import template
-from moneydj.money.models import Account
+from money.models import Account
 import locale
 
 locale.setlocale(locale.LC_ALL, '')
