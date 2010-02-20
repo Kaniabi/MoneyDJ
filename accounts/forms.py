@@ -3,13 +3,12 @@ from django import forms
 from django.db import transaction, IntegrityError
 from django.http import Http404
 from django.utils.translation import ugettext as _
-from moneydj.money import widgets
-from moneydj.money.models import *
-import datetime
+from money import widgets
+from money.models import *
 from decimal import Decimal, InvalidOperation
 
 class AccountForm(forms.ModelForm):
-    currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)'), (u'€', u'EUR (€)')])
+    currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)')])
     error_css_class = 'error'
     required_css_class = 'required'
     class Meta:
