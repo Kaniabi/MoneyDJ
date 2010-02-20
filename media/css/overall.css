@@ -279,15 +279,23 @@ a:hover span.sprite.comment {
 /* BEGIN Tables */
 #content table {
 	font-size: 1.2em;
-	border-collapse: collapse;
+	margin: 0.4em 0;
 }
 #content table.transactions {
 	width: 100%;
+	border: 2px solid #d9d9d9;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 }
 #content thead th {
 	font-size: 1.5em;
 	border-top: 0;
 	border-bottom: 0;
+}
+#content th {
+	background: #DFDFDF;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 #content td, th {
 	padding: 0.2em 0.4em;
