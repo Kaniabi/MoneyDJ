@@ -1,0 +1,11 @@
+{% extends "overall_template.html" %}
+{% load i18n %}
+{% load reports_tags %}
+
+{% block title %}{% trans 'Reports' %} &bull; {% endblock %}
+
+{% block pagetitle %}{% trans 'Reports' %}{% endblock %}
+
+{% block content %}
+{% net_worth_by_time user "month" %}
+{% endblock %}

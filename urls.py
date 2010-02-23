@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     (r'^dashboard/', include('moneydj.dashboard.urls')),
     (r'^accounts/', include('moneydj.accounts.urls')),
     (r'^sync/', include('moneydj.sync.urls')),
-    (r'^tags/', include('moneydj.tags.urls'))
+    (r'^tags/', include('moneydj.tags.urls')),
+    (r'^reports/', include('moneydj.reports.urls')),
 )

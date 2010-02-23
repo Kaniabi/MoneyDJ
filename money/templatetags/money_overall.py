@@ -12,7 +12,7 @@ def accounts_block(user):
     return {'accounts': accounts}
 
 @register.filter()
-def currency(value, symbol):
+def currency(value, symbol=None):
     return locale.currency(value, grouping=True, symbol=symbol)
 
 @register.inclusion_tag('pagination_links.html')

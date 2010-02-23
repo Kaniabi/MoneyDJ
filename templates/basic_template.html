@@ -12,12 +12,6 @@
 		<link type="text/css" href="{{ MEDIA_URL }}/css/overall.css" rel="stylesheet"/>
 		<link type="text/css" href="{{ MEDIA_URL }}/css/no-theme/jquery-ui-1.7.2.custom.css" rel="stylesheet"/>
 		{% block extracss %}{% endblock %}
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.suggest.js"></script>
-		<script type="text/javascript" src="{{ MEDIA_URL }}/js/global.js"></script>
-		<script type="text/javascript" src="/admin/jsi18n/"></script>
-		{% block extrajs %}{% endblock %}
 	</head>
 
 	<body>
@@ -51,5 +45,11 @@
 		</div>
 		<div id="footer">
 		</div>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.suggest.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}/js/global.js"></script>
+		<script type="text/javascript" src="/admin/jsi18n/"></script>
+		{% block extrajs %}{% endblock %}
 	</body>
 </html>

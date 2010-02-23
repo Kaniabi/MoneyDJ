@@ -1,0 +1,24 @@
+<table class="report">
+	{% if report.head %}
+	<thead>
+		<tr>
+			{% for th in report.head %}
+			<th>{{ th }}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	{% endif %}
+	<tbody>
+		{% for tr in report.body %}
+		<tr>
+			{% if tr.head %}
+			<th scope="row">{{ tr.value }}</th>
+			{% else %}
+			{% for td in tr.values %}
+			<td>{{ td }}</td>
+			{% endfor %}
+			{% endif %}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
