@@ -18,6 +18,7 @@
 			var word = '';
 			var xhr;
 			var cache = {};
+			var mouseDownOnList = false;
 			
 			// Store the options
 			$t.data('options', options);
@@ -86,11 +87,22 @@
 				// Keycode 58/59/186 == ':' depending on the browser
 				else if (options.amountElement && val.slice(range.start - 1, range.start) == ':' && (event.keyCode == 58 || event.keyCode == 59 || event.keyCode == 186))
 				{
-					var cur = $t.val().substr(0, range.start);
-					var valFirst = cur + options.amountElement.val();
-					var val = valFirst + ($t.val().length > cur.length ? ' ' + $t.val().substr(range.end) : '');
-					$t.val(val);
-					$t.caret(valFirst.length);
+					var cur = getCurrentWord();
+					var currentTotal = getSplitTotal($t.val());
+					var value = parseFloat(options.amountElement.val());
+					
+					if (currentTotal >= value)
+					{
+						var newVal = '0';
+					}
+					else
+					{
+						var newVal = "" + (value - currentTotal).toFixed(2);
+					}
+					
+					setCurrentWord(cur += newVal);
+					$t.caret($t.caret().start - newVal.length, $t.caret().start);
+					
 					hideSuggestions();
 				}
 				else
@@ -114,16 +126,35 @@
 						}
 					}
 				}
+			}).bind('blur', function() {
+				if (!mouseDownOnList)
+				{
+					hideSuggestions();
+				}
 			});
 			
-			$('#' + id + ' li').live('mouseover', function() {
-				selectSuggestion(suggestions.find('li').index(this));
-			});
-			$('#' + id + ' li').live('click', function() {
-				selectSuggestion(suggestions.find('li').index(this));
-				useSuggestion();
-				return false;
-			});
+			function getSplitTotal(string)
+			{
+				var split = string.split(' ');
+				var total = 0;
+				for (var i = 0; i < split.length; i++)
+				{
+					var sColon = split[i].indexOf(':');
+					if (sColon > 0)
+					{
+						var str = split[i].substring(sColon + 1);
+						if (str.length > 0)
+						{
+							var val = parseFloat(str);
+							if (!isNaN(val) && val > 0)
+							{
+								total += val;
+							}
+						}
+					}
+				}
+				return total;
+			}
 			
 			function getSuggestions(word)
 			{
@@ -213,7 +244,17 @@
 					hideSuggestions();
 					return;
 				}
-				var ul = $('<ul></ul>');
+				var ul = $('<ul></ul>').bind('mouseover', function(event) {
+					selectSuggestion(suggestions.find('li').index(target(event)));
+				}).bind('click', function(event) {
+					selectSuggestion(suggestions.find('li').index(target(event)));
+					useSuggestion();
+					return false;
+				}).bind('mousedown', function() {
+					mouseDownOnList = true;
+				}).bind('mousedown', function() {
+					mouseDownOnList = false;
+				});
 				for (var i in list)
 				{
 					var w = list[i];
@@ -258,6 +299,18 @@
 					setCurrentWord(selected.text());
 				}
 				hideSuggestions();
+			}
+	
+			/* Find the target of an event. From http://docs.jquery.com/Plugins/Autocomplete */
+			function target(event) 
+			{
+				var element = event.target;
+				while(element && element.tagName != "LI")
+					element = element.parentNode;
+				// more fun with IE, sometimes event.target is empty, just ignore it then
+				if(!element)
+					return [];
+				return element;
 			}
 		});
 	}

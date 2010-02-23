@@ -2,7 +2,7 @@
 {% load money_overall %}
 <ul class="accounts">
 	{% for a in accounts %}
-	<li><a href="{% url accounts.views.view a.id %}"><span class="sprite account"></span>{{ a.name }}</a>{% if a.track_balance %} ({{ a.balance|currency:a.currency }}){% endif %}</li>
+	<li><a href="{% url accounts.views.view a.id %}"><span class="sprite account"></span> {{ a.name }}</a>{% if a.track_balance %} ({{ a.balance|currency:a.currency }}){% endif %}</li>
 	{% endfor %}
-	<li><a href="{% url accounts.views.add %}"><span class="sprite add"></span>{% trans "Add Account" %}</a></li>
+	<li><a href="{% url accounts.views.add %}"><span class="sprite add"></span> {% trans "Add Account" %}</a></li>
 </ul>

@@ -26,11 +26,13 @@ ol, ul {
 form {
 	margin: 0;
 }
+textarea, input, select {
+	width: 300px;
+}
 
 ol.form {
 	font-size: 1.5em;
 }
-
 ol.form li {
 	list-style: none;
 	clear: left;
@@ -55,6 +57,10 @@ ol.form ul.errorlist li {
 	color: white;
 	padding: 0.1em;
 }
+ol.form input.button {
+	margin-left: 12em;
+}
+
 div.suggestions {
 	z-index: 9999;
 	background: #c0dd82;
@@ -106,6 +112,7 @@ a.button, input.button {
 	cursor: pointer;
 	background: #8b536f url('../img/alert-overlay.png') repeat-x 0 0;
 	color: white;
+	width: auto;
 }
 .button:hover {
 	background-color: #5c3566;
@@ -118,7 +125,6 @@ span.sprite {
 	width: 16px;
 	background: transparent url('../img/sprites.png') no-repeat 16px 0;
 	vertical-align: middle;
-	margin-right: 2px;
 	overflow: hidden;
 	text-indent: 20px;
 }
@@ -318,7 +324,7 @@ a:hover span.sprite.comment {
 	font-size: 1.2em;
 }
 #content table.transactions td.payee div.tags {
-	margin: 4px 0 0 32px;
+	margin: 4px 0 0 22px;
 	font-size: 0.7em;
 	color: #8f8f8f;
 }
@@ -333,8 +339,8 @@ a:hover span.sprite.comment {
 #content table.transactions tr.transaction_form td { vertical-align: top; }
 #content table.transactions tr.transaction_form div.credit ul { margin: 0; padding: 0; }
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
-#content table.transactions tr div.actions { width: 16px; float: left; margin-left: -9999px; }
-#content table.transactions tr:hover div.actions { display: block; margin: 0 -16px 0 0; }
+#content table.transactions tr div.actions { width: 9999px; float: left; margin-left: -9999px; margin-right: 20px; }
+#content table.transactions tr:hover div.actions { display: block; margin: 0 4px 0 0; width: 16px; }
 #content table td.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
 /* END Tables */
@@ -613,7 +619,7 @@ ul.accounts li {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	margin-bottom: 5px;
-	background-color: #e8e8e8;
+	background: #e8e8e8 url(../img/box-bottom-overlay.png) repeat-x bottom left;
 }
 #content .dash_column > div > div {
 	padding: 0 5px 5px;
@@ -654,7 +660,6 @@ div#add_transaction_holder {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	font-size: 0.8em;
 	padding: 5px;
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -673,5 +678,5 @@ div#add_transaction_holder ol {
 /* END Footer */
 
 /* UI Tweaks */
-#ui-datepicker-div { z-index: 999; }
+#ui-datepicker-div { z-index: 9999; }
  */

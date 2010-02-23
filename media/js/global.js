@@ -7,44 +7,48 @@ $(function() {
 		dateFormat: 'yy-mm-dd',
 		showAnim: 'slideDown'
 	});
-	$('.uiDateField').datepicker();
-	
-	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiWords: false});
-	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
 	
 	// Remove the add transaction form from the page so we can make it nicer
-	var t = $('form#add_transaction');
+	var t = $('form#add_transaction').remove();
 	var transactions = $('table.transactions:first');
 	if (t.length == 1 && transactions.length == 1)
 	{
 		var a = $('<a href="#add_transaction_button" class="button">+ ' + gettext('Add Transaction') + '</a>');
 		transactions.before(a);
 		var offset = a.offset();
-		var offsetParent = a.offsetParent().offset();
 		var cruft = getCruft(a);
 		
-		t.wrap($('<div id="add_transaction_holder"></div>').css({
+		var holder = $('<div id="add_transaction_holder"></div>').css({
 				position: 'absolute',
-				left: offset.left - offsetParent.left,
-				top: offset.top + a.height() + cruft.top + cruft.bottom - offsetParent.top,
+				left: offset.left,
+				top: offset.top + a.height() + cruft.top + cruft.bottom,
 				zIndex: 9998
-			}).hide());
-		var holder = $('#add_transaction_holder');
+			}).html(t).appendTo('body');
+		if (holder.find('li.error').length == 0)
+		{
+			holder.hide()
+		}
 		
 		a.click(function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			holder.slideDown();
-			/*
-$('body').append($('<div class="overlay"></div>').css('z-index', 500).click(function(e) {
+			$('body').append($('<div class="overlay"></div>').css({
+				zIndex: 500,
+				height: $('body').height(),
+				width: $('body').width()
+			}).click(function(e) {
 				e.preventDefault();
 				e.stopPropagation();
 				holder.slideUp();
 				$(this).remove();
 			}));
-*/
 		});
 	}
+	$('.uiDateField').datepicker();
+	
+	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiWords: false});
+	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
 });
 
 function getCruft(element)
