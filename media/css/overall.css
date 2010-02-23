@@ -23,6 +23,10 @@ ol, ul {
 	padding-bottom: 1em;
 }
 
+form {
+	margin: 0;
+}
+
 ol.form {
 	font-size: 1.5em;
 }
@@ -91,6 +95,8 @@ a.button, input.button {
 	line-height: 1;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
@@ -279,13 +285,14 @@ a:hover span.sprite.comment {
 /* BEGIN Tables */
 #content table {
 	font-size: 1.2em;
-	margin: 0.4em 0;
+	margin: 0.4em 0 0 0;
 }
 #content table.transactions {
 	width: 100%;
 	border: 2px solid #d9d9d9;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
+	border-radius: 6px;
 }
 #content thead th {
 	font-size: 1.5em;
@@ -296,6 +303,7 @@ a:hover span.sprite.comment {
 	background: #DFDFDF;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
 #content td, th {
 	padding: 0.2em 0.4em;
@@ -645,6 +653,7 @@ div#add_transaction_holder {
 	border: 1px solid #1D1D1D;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	font-size: 0.8em;
 	padding: 5px;
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
