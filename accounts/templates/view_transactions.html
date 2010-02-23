@@ -13,7 +13,7 @@
 		</tr>
 		{% endifchanged %}
 		<tr class="{% cycle 'odd' 'even' %}">
-			{% transaction_row t %}
+			{% include 'transaction_row.html' %}
 		</tr>
 		{% empty %}
 		<tr class="odd">
