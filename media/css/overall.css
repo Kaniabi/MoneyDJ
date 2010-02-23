@@ -325,8 +325,8 @@ a:hover span.sprite.comment {
 #content table.transactions tr.transaction_form td { vertical-align: top; }
 #content table.transactions tr.transaction_form div.credit ul { margin: 0; padding: 0; }
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
-#content table.transactions tr div.actions { width: 16px; float: left; margin: 0 32px 0 -32px; }
-#content table.transactions tr:hover div.actions { margin: block; margin: 0; }
+#content table.transactions tr div.actions { width: 16px; float: left; margin-left: -9999px; }
+#content table.transactions tr:hover div.actions { display: block; margin: 0 -16px 0 0; }
 #content table td.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
 /* END Tables */
@@ -593,11 +593,41 @@ ul.accounts li {
 }
 /* END Content */
 
+/* BEGIN Dashboard */
+#content .dash_column {
+	width: 48%;
+	padding: 0 5px;
+	float: left;
+}
+#content .dash_column > div {
+	border: 3px solid #d9d9d9;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	margin-bottom: 5px;
+	background-color: #e8e8e8;
+}
+#content .dash_column > div > div {
+	padding: 0 5px 5px;
+}
+#content .dash_column > div h3 {
+	padding: 5px;
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	font-size: 1.4em;
+	margin: 0;
+	background: transparent url(../img/title-overlay.png) repeat-x 0 0;
+}
+/* END Dashboard */
+
 /* BEGIN tags */
 div.tagCloud { position: relative; }
 div.tagCloud ol { margin: 0; text-align: center; font-size: 120%; padding: 0; }
 div.tagCloud ol li { list-style: none; display: inline; margin: 3px; }
-div.tagCloud ol li span { left: -999px; position: absolute; width: 990px; }
+div.tagCloud ol li span { left: -9999px; position: absolute; width: 9990px; }
 div.tagCloud ol li.tag-1 { font-size: 0.6em; }
 div.tagCloud ol li.tag-2 { font-size: 0.8em; }
 div.tagCloud ol li.tag-3 { font-size: 1em; }

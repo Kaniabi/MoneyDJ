@@ -79,7 +79,7 @@ ROOT_URLCONF = 'moneydj.urls'
 
 LOGIN_URL = '/user/login/'
 
-LOGIN_REDIRECT_URL = '/user/profile'
+LOGIN_REDIRECT_URL = '/dashboard/'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

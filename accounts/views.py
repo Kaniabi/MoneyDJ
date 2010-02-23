@@ -15,10 +15,7 @@ except ImportError:
 
 @login_required
 def index(request):
-    try:
-        accounts = Account.objects.filter(user=request.user)
-    except Account.DoesNotExist:
-        raise Http404
+    accounts = Account.objects.filter(user=request.user).order_by('name')
 
     return render_to_response("account_index.html", { "accounts": accounts }, context_instance=RequestContext(request))
 
