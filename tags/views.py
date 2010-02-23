@@ -8,7 +8,7 @@ from money.models import Tag, TagLink, Transaction, Payee
 try:
     import json
 except ImportError:
-    import simplejson as json
+    from django.utils import simplejson as json
     
 @login_required
 def index(request):
@@ -61,17 +61,13 @@ def get_tag_suggestions(request):
     
     tags = Tag.objects.filter(name__icontains=request.GET['q']).order_by('name')
     
-    response = []
-    for t in tags:
-        response.append(t.name)
+    response = [t.name for t in tags]
     
     return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
 
 def get_tag_suggestions_for_payee(request, payee):
-    tags = get_object_or_404(Payee, pk=payee).suggest_tags()
+    payees = get_object_or_404(Payee, pk=payee).suggest_tags()
     
-    response = []
-    for t in tags:
-        response.append(t.name)
+    response = [p.name for p in payees]
     
     return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')

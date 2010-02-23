@@ -11,7 +11,7 @@ import datetime
 try:
     import json
 except ImportError:
-    import simplejson as json
+    from django.utils import simplejson as json
 
 @login_required
 def index(request):

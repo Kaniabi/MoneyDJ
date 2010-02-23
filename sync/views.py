@@ -2,14 +2,14 @@
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib.auth.models import check_password
-from moneydj.money.models import Account, Transaction, Payee
+from money.models import Account, Transaction, Payee
 from django.core import serializers
 from django.contrib.auth.models import User
 import datetime
 try:
     import json
 except ImportError:
-    import simplejson as json
+    from django.utils import simplejson as json
 
 # Create your views here.
 def get_accounts(request):
