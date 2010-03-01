@@ -73,13 +73,18 @@ def get_transactions(request):
         
         if 'payee' not in transactions[i].keys() or 'amount' not in transactions[i].keys():
             errors.append(i)
-            continue        
+            continue
+        
+        pname = transactions[i]['payee']
+        if type(pname) is str:
+            pname = pname.decode('utf-8')
+            
         # Try to find an existing payee with that name
         try:
-            payee = Payee.objects.get(name__iexact=transactions[i]['payee'])
+            payee = Payee.objects.get(name__iexact=pname)
         except Payee.DoesNotExist:
             # Create a new payee
-            payee = Payee(name=transactions[i]['payee'])
+            payee = Payee(name=pname)
             payee.save()
 
         t.payee = payee
@@ -98,7 +103,10 @@ def get_transactions(request):
             t.date = datetime.date.fromtimestamp(float(transactions[i]['date']))
             
         if 'comment' in transactions[i].keys():
-            t.comment = transactions[i]['comment']
+            comment = transactions[i]['comment']
+            if type(comment) is str:
+                comment = comment.decode('utf-8')
+            t.comment = comment
             
         t.transfer = False
         t.save()
