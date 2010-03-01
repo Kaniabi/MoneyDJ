@@ -109,7 +109,8 @@ def edit_transaction(request, account, transaction):
             'credit': transaction.credit,
             'transfer': transaction.transfer,
             'tags': tags,
-            'account': account.pk
+            'account': account.pk,
+            'comment': transaction.comment
         }
         form = QuickTransactionForm(initial=data)
 
