@@ -72,12 +72,14 @@ class QuickTransactionForm(forms.Form):
         used_tags = []
         
         tr.taglink_set.all().delete()
+        
+        abs_amount = abs(Decimal(tr.amount))
 
         # get a list of the tags entered, separated by spaces
         for t in self.cleaned_data['tags'].split(u' '):
             # partition the tag on the last ':' to get any possible split
             name, delim, split = t.rpartition(u':')
-
+            
             if not name and not split:
                 continue
             elif not name:
@@ -87,16 +89,16 @@ class QuickTransactionForm(forms.Form):
 
             if split != None:
                 try:
-                    split = Decimal(split)
+                    split = float(split)
                     # Use the total amount if the split is invalid
-                    if split > abs(float(tr.amount)) or split < 0:
-                        split = float(tr.amount)
+                    if split > abs_amount or split < 0:
+                        split = abs_amount
                 except (InvalidOperation, TypeError):
                     # The split couldn't be determined
-                    split = float(tr.amount)
+                    split = abs_amount
             else:
                 # A split wasn't specified, so we use the total amount
-                split = float(tr.amount)
+                split = abs_amount
                 
             # Make sure we have the right sign!
             if float(tr.amount) < 0:

@@ -97,15 +97,15 @@ def edit_transaction(request, account, transaction):
         for tl in transaction.taglink_set.all():
             tags = tags + tl.tag.name
             if tl.split != transaction.amount:
-                tags = tags + u':' + unicode(str(tl.split))
+                tags = tags + u':' + unicode(str(abs(tl.split)))
             tags = tags + u' '
             
         tags = tags.strip()
         data = {
             'date': transaction.date,
             'payee': transaction.payee.name,
-            'amount': transaction.amount,
-            'credit': transaction.amount > 0,
+            'amount': abs(transaction.amount),
+            'credit': int(transaction.amount > 0),
             'transfer': transaction.transfer,
             'tags': tags,
             'account': account.pk,
