@@ -344,8 +344,9 @@ a:hover span.sprite.comment {
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
 #content table.transactions tr div.actions { float: left; margin-left: -9999px; margin-right: 20px; }
 #content table.transactions tr:hover div.actions { display: block; margin: 0 4px 0 0; width: 16px; }
-#content table td.money { text-align: right; font-weight: bold; color: #4d4d4d; }
+#content table td.money, #content span.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
+#content table td.money.out, #content span.money.out { color: #c91200; }
 /* END Tables */
 
 /* BEGIN Header */

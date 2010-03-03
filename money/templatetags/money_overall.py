@@ -11,9 +11,11 @@ def accounts_block(user):
     accounts = Account.objects.filter(user=user).order_by('name')
     return {'accounts': accounts}
 
-@register.filter()
-def currency(value, symbol=None):
-    return locale.currency(abs(value), grouping=True, symbol=symbol)
+@register.simple_tag
+def currency(value, symbol=None, sign=0):
+    if sign is 0:
+        value = abs(value)
+    return locale.currency(value, grouping=True, symbol=symbol)
 
 @register.inclusion_tag('pagination_links.html')
 def pagination_links(items):

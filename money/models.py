@@ -4,6 +4,7 @@ from django.db.models.aggregates import Count
 from django.utils.translation import ugettext as _
 import datetime
 from django.db.models import Sum
+from django.db.models.signals import post_delete, post_save
 
 # Create your models here.
 class Tag(models.Model):
@@ -68,11 +69,11 @@ class Account(models.Model):
             else:
                 b = self.starting_balance
             
-            transactions = transactions.annotate(Sum('amount'))
+            transactions = transactions.values('account__id').annotate(Sum('amount'))
                 
             if (transactions):
                 for t in transactions:
-                    b += t.amount__sum
+                    b += t['amount__sum']
                 
                 self.balance = b;
                 self.balance_updated = datetime.datetime.now()
@@ -84,7 +85,7 @@ class Account(models.Model):
         """
         self.update_balance()
         b = self.balance
-        transactions = Transaction.objects.filter(account=self,date__gte=datetime).annotate(Sum('amount'))
+        transactions = Transaction.objects.filter(account=self,date__gte=datetime).values('account__id').annotate(Sum('amount'))
         
         for t in transactions:
             b -= t.amount__sum
@@ -109,6 +110,20 @@ class Transaction(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
         return self.payee.name + u' (' + unicode(self.amount) + u' on ' + unicode(self.date) + u')'
+    
+    @staticmethod
+    def on_save(**kwargs):
+        if 'instance' in kwargs.keys() and 'sender' in kwargs.keys() and kwargs['sender'] is Transaction:
+            kwargs['instance'].account.update_balance(False)
+    
+    @staticmethod
+    def on_delete(**kwargs):
+        if 'instance' in kwargs.keys() and 'sender' in kwargs.keys() and kwargs['sender'] is Transaction:
+            kwargs['instance'].account.update_balance(True)
+    
+# Attach listeners for delete and save signals so we can update the account's balance
+post_delete.connect(Transaction.on_delete, sender=Transaction)
+post_save.connect(Transaction.on_save, sender=Transaction)
 
 class TagLink(models.Model):
     """

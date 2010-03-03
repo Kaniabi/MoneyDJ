@@ -23,7 +23,7 @@
 			<td><a href="{% url accounts.views.view a.id %}">{{ a.name }}</a></td>
 			<td>{% if a.number %}{{ a.number }}{% endif %}</td>
 			<td>{% if a.sort_code %}{{ a.sort_code }}{% endif %}</td>
-			<td class="money">{% if a.track_balance %}{{ a.balance|currency:a.currency }}{% endif %}</td>
+			<td class="money{% if a.balance < 0 %} out{% endif %}">{% if a.track_balance %}{% currency a.balance a.currency 1 %}{% endif %}</td>
 		</tr>
 		{% empty %}
 		<tr>

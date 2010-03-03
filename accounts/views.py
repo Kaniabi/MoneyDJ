@@ -32,7 +32,6 @@ def view(request, id):
         
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
-            acc.update_balance()
             transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
     else:
         transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
@@ -139,5 +138,4 @@ def delete_transaction(request, account, transaction):
     transaction = get_object_or_404(Transaction, pk=transaction, account=account, account__user=request.user)
     
     transaction.delete()
-    transaction.account.update_balance(True)
     return redirect(reverse('moneydj.accounts.views.view', args=[account]))

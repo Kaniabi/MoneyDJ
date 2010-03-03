@@ -27,7 +27,7 @@
 	{% if account.track_balance %}
 	<tr>
 		<th scope="row">{% trans "Balance" %}</th>
-		<td>{{ account.balance|currency:account.currency }}</td>
+		<td class="money{% if account.balance < 0 %} out{% endif %}">{% currency account.balance account.currency 1 %}</td>
 	</tr>
 	{% endif %}
 </table>
