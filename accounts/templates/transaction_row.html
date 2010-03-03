@@ -5,8 +5,10 @@
 					<a href="{% url accounts.views.edit_transaction t.account.pk t.pk %}" title="{% trans 'Edit Transaction' %}"><span class="sprite transaction_edit">{% trans 'Edit Transaction' %}</span></a>
 					<a href="{% url accounts.views.delete_transaction t.account.pk t.pk %}" title="{% trans 'Delete Transaction' %}"><span class="sprite delete">{% trans 'Delete Transaction' %}</span></a>
 				</div>
-				<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}">{% if t.mobile %}{% trans 'Entered from a mobile device' %}{% endif %}</span>
-				<a href="{% url accounts.views.edit_transaction t.account.pk t.pk %}">{{ t.payee.name }}</a>{% if t.comment %} <span class="sprite comment right" title="{{ t.comment }}">{% trans 'has a comment' %}</span>{% endif %}
+				<div class="payee">
+					<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}">{% if t.mobile %}{% trans 'Entered from a mobile device' %}{% endif %}</span>
+					<a href="{% url accounts.views.edit_transaction t.account.pk t.pk %}">{{ t.payee.name }}</a>{% if t.comment %} <span class="sprite comment right" title="{{ t.comment }}">{% trans 'has a comment' %}</span>{% endif %}
+				</div>
 				{% if t.tags.all %}
 				<div class="tags"><span class="sprite tag"></span>
 					{% for tag in t.taglink_set.select_related.all %}

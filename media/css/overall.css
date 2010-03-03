@@ -323,6 +323,9 @@ a:hover span.sprite.comment {
 #content table.transactions td.payee {
 	font-size: 1.2em;
 }
+#content table.transactions td.payee div.payee {
+	margin-left: 22px;
+}
 #content table.transactions td.payee div.tags {
 	margin: 4px 0 0 22px;
 	font-size: 0.7em;
@@ -339,7 +342,7 @@ a:hover span.sprite.comment {
 #content table.transactions tr.transaction_form td { vertical-align: top; }
 #content table.transactions tr.transaction_form div.credit ul { margin: 0; padding: 0; }
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
-#content table.transactions tr div.actions { width: 9999px; float: left; margin-left: -9999px; margin-right: 20px; }
+#content table.transactions tr div.actions { float: left; margin-left: -9999px; margin-right: 20px; }
 #content table.transactions tr:hover div.actions { display: block; margin: 0 4px 0 0; width: 16px; }
 #content table td.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
