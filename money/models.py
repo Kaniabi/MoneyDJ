@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.aggregates import Count
 from django.utils.translation import ugettext as _
 import datetime
+from django.db.models import Sum
 
 # Create your models here.
 class Tag(models.Model):
@@ -66,13 +67,12 @@ class Account(models.Model):
                 b = self.balance;
             else:
                 b = self.starting_balance
+            
+            transactions = transactions.annotate(Sum('amount'))
                 
             if (transactions):
                 for t in transactions:
-                    if t.credit:
-                        b += t.amount
-                    else:
-                        b -= t.amount
+                    b += t.amount__sum
                 
                 self.balance = b;
                 self.balance_updated = datetime.datetime.now()
@@ -84,13 +84,10 @@ class Account(models.Model):
         """
         self.update_balance()
         b = self.balance
-        transactions = Transaction.objects.filter(account=self,date__gte=datetime)
+        transactions = Transaction.objects.filter(account=self,date__gte=datetime).annotate(Sum('amount'))
         
         for t in transactions:
-            if t.credit:
-                b -= t.amount
-            else:
-                b += t.amount
+            b -= t.amount__sum
         
         return b
     
@@ -105,7 +102,6 @@ class Transaction(models.Model):
     account = models.ForeignKey(Account)
     payee = models.ForeignKey(Payee)
     amount = models.DecimalField(decimal_places=2,max_digits=8)
-    credit = models.BooleanField(default=False)
     date = models.DateField(db_index=True)
     tags = models.ManyToManyField(Tag, through='TagLink')
     comment = models.TextField(blank=True)

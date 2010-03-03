@@ -10,9 +10,9 @@
 				{% if t.tags.all %}
 				<div class="tags"><span class="sprite tag"></span>
 					{% for tag in t.taglink_set.select_related.all %}
-					{{ tag.tag.name }}{% if tag.split != t.amount %}:{{ tag.split }}{% endif %}
+					{{ tag.tag.name }}{% if tag.split != t.amount %}:{{ tag.split|currency }}{% endif %}
 					{% endfor %}
 				</div>
 				{% endif %}
 			</td>
-			<td class="money{% if t.credit %} in{% endif %}">{% if t.credit %}+ {% endif %}{{ t.amount|currency:t.account.currency }}</td>
+			<td class="money{% if t.amount > 0 %} in{% endif %}">{% if t.amount > 0 %}+ {% endif %}{{ t.amount|currency:t.account.currency }}</td>

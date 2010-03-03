@@ -16,11 +16,9 @@ register = template.Library()
 def net_worth_by_time(user, time=None, account=None):
     
     if type(account) is Account and account.user is user:
-        transactions = Transaction.objects.filter(account=account)
+        transactions = Transaction.objects.filter(account=account,transfer=False)
     else:
-        transactions = Transaction.objects.filter(account__user=user)
-    
-    print time
+        transactions = Transaction.objects.filter(account__user=user,transfer=False)
     
     # Day of the week
     if time == 'day':
@@ -35,45 +33,42 @@ def net_worth_by_time(user, time=None, account=None):
     else:
         extra = {'time': 'CONCAT(YEAR(`date`), MONTH(`date`))'}
         
-    credit = transactions.filter(credit=True).extra(select=extra).values('time').annotate(Sum('amount')).order_by('time')
-    debit = transactions.filter(credit=False).extra(select=extra).values('time').annotate(Sum('amount')).order_by('time')
+    credit = transactions.extra(select=extra).filtervalues('time').annotate(Sum('amount')).order_by('time')
     
-    # Convert the result sets into dictionaries of time: result so we can easily compare the two
-    credit = dict([(str(t['time']), t) for t in credit])
-    debit = dict([(str(t['time']), t) for t in debit])
-    
-    # Create a dictionary of time: total values to use in the table
-    total = dict([(str(time), t['amount__sum'] - debit[time]['amount__sum']) for time, t in credit.iteritems()])
+    # Convert the result set into dictionaries of time: result
+    total = dict([(str(t['time']), t['amount__sum']) for t in credit])
     
     body = []
     head = []
     values = []
-    for t, amount in total.iteritems():
-        if time is 'day':
+    
+    # Have to iterate over the sorted keys because dicts don't maintain order
+    keys = total.keys()
+    keys.sort()
+    print keys
+    for timekey in keys:
+        if time == 'day':
             t = {1: _(u'Sunday'),
-             2: _(u'Monday'),
-             3: _(u'Tuesday'),
-             4: _(u'Wednesday'),
-             5: _(u'Thursday'),
-             6: _(u'Friday'),
-             7: _(u'Saturday'),
-             }[t]
-        elif time is 'week':
-            t = str(t)
-            print t
-            year = t[:4]
-            week = t[4:]
-            print year, week
+                 2: _(u'Monday'),
+                 3: _(u'Tuesday'),
+                 4: _(u'Wednesday'),
+                 5: _(u'Thursday'),
+                 6: _(u'Friday'),
+                 7: _(u'Saturday'),
+                 }[timekey]
+        elif time == 'week' and len(timekey) > 4:
+            year = timekey[:4]
+            week = timekey[4:]
             date = iso_to_gregorian(int(year), int(week), 1)
             df = DateFormat(date)
             t = df.format(settings.SHORT_DATE_FORMAT)
-        elif time is 'year':
+        elif time == 'year':
             # Don't do anything because we already have the year which is what we need
-            t = unicode(str(t))
-        else:
+            t = unicode(timekey)
+        elif len(timekey) > 4:
             # Split the string into year and month, then format it nicely
-            year = int(t[:4])
-            month = int(t[4:])
+            year = int(timekey[:4])
+            month = int(timekey[4:])
             month = {1: _(u'Jan'),
                      2: _(u'Feb'),
                      3: _(u'Mar'),
@@ -88,8 +83,10 @@ def net_worth_by_time(user, time=None, account=None):
                      12: _(u'Dec')
                      }[month]
             t = month + u' ' + unicode(str(year))
+        else:
+            continue
         head.append(t)
-        values.append(currency(amount))
+        values.append(currency(total[timekey]))
     body.append({'values': values})
     
     return {'report': {'head': head, 'body': body}}

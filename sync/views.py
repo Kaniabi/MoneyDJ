@@ -90,12 +90,12 @@ def get_transactions(request):
         t.payee = payee
         t.amount = '%s' % transactions[i]['amount']
         if 'credit' not in transactions[i].keys():
-            t.credit = False
+            t.amount = '%s' % (-abs(float(t.amount)))
         else:
             if transactions[i]['credit'] == 0:
-                t.credit = False
+                t.amount = '%s' % (-abs(float(t.amount)))
             else:
-                t.credit = True
+                t.amount = '%s' % abs(float(t.amount))
         
         if 'date' not in transactions[i].keys():
             t.date = datetime.date.today()

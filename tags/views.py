@@ -12,7 +12,7 @@ except ImportError:
     
 @login_required
 def index(request):
-    tags = TagLink.objects.filter(transaction__account__user=request.user, transaction__credit=False, transaction__transfer=False).values('tag__name').annotate(total=Sum('split')).order_by('tag__name')[:20]
+    tags = TagLink.objects.values('tag__name').annotate(total=Sum('split')).filter(total__lt=0, transaction__account__user=request.user, transaction__transfer=False).order_by('tag__name')[:20]
     
     transactions = Transaction.objects.filter(taglink__id__isnull=True)
     
@@ -36,7 +36,7 @@ def view_tag(request, tag):
     tag = get_object_or_404(Tag, name=tag)
     
     # Get the tags for the tag cloud
-    tags = TagLink.objects.filter(transaction__account__user=request.user, transaction__credit=False, transaction__transfer=False).values('tag__name').annotate(total=Sum('split')).order_by('tag__name')[:20]
+    tags = TagLink.objects.values('tag__name').annotate(total=Sum('split')).filter(total__lt=0, transaction__account__user=request.user, transaction__transfer=False).order_by('tag__name')[:20]
     
     # Get the transactions related to the tag
     transactions = Transaction.objects.select_related().filter(taglink__tag=tag).order_by('-date')

@@ -13,7 +13,7 @@ def accounts_block(user):
 
 @register.filter()
 def currency(value, symbol=None):
-    return locale.currency(value, grouping=True, symbol=symbol)
+    return locale.currency(abs(value), grouping=True, symbol=symbol)
 
 @register.inclusion_tag('pagination_links.html')
 def pagination_links(items):

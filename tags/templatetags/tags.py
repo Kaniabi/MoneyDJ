@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 @register.inclusion_tag('tag_cloud.html')
-def cloud(items):
+def cloud(items, credit=None):
     cloud = []
     max = 0
     min = 0
@@ -14,6 +14,9 @@ def cloud(items):
             max = i['total']
         if i['total'] < min or min == 0:
             min = i['total']
+            
+    if not credit:
+        max, min = min, max
             
     diff = max - min
     

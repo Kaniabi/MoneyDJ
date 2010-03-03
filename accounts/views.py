@@ -106,7 +106,7 @@ def edit_transaction(request, account, transaction):
             'date': transaction.date,
             'payee': transaction.payee.name,
             'amount': transaction.amount,
-            'credit': transaction.credit,
+            'credit': transaction.amount > 0,
             'transfer': transaction.transfer,
             'tags': tags,
             'account': account.pk,

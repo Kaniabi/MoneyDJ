@@ -53,15 +53,14 @@ class QuickTransactionForm(forms.Form):
             raise Http404
 
         tr.account = acc
-        tr.amount = self.cleaned_data['amount']
         tr.transfer = self.cleaned_data['transfer']
         tr.comment = self.cleaned_data['comment']
 
-        # The credit field returns one or zero, but we need a boolean value for the model
+        # The credit field returns one or zero
         if (self.cleaned_data['credit'] == u'1'):
-            tr.credit = True
+            tr.amount = '%s' % abs(float(self.cleaned_data['amount']))
         else:
-            tr.credit = False
+            tr.amount = '%s' % (-abs(float(self.cleaned_data['amount'])))
 
         tr.date = self.cleaned_data['date']
         tr.save()
@@ -82,6 +81,7 @@ class QuickTransactionForm(forms.Form):
             if not name and not split:
                 continue
             elif not name:
+                # We only have a name, but it's put into the split variable because we're partitioning from the right
                 name = split
                 split = None
 
@@ -89,14 +89,21 @@ class QuickTransactionForm(forms.Form):
                 try:
                     split = Decimal(split)
                     # Use the total amount if the split is invalid
-                    if split > tr.amount or split < 0:
-                        split = tr.amount
+                    if split > abs(float(tr.amount)) or split < 0:
+                        split = float(tr.amount)
                 except (InvalidOperation, TypeError):
                     # The split couldn't be determined
-                    split = tr.amount
+                    split = float(tr.amount)
             else:
                 # A split wasn't specified, so we use the total amount
-                split = tr.amount
+                split = float(tr.amount)
+                
+            # Make sure we have the right sign!
+            if float(tr.amount) < 0:
+                split = -abs(split)
+            
+            # Convert the split into a string
+            split = '%s' % split
 
             # If name is in the used_tags array, we've already tagged this transaction with that tag
             if name in used_tags:
