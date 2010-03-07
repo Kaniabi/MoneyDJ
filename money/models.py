@@ -108,13 +108,21 @@ class Transaction(models.Model):
     comment = models.TextField(blank=True)
     transfer = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
+    
     def __unicode__(self):
         return self.payee.name + u' (' + unicode(self.amount) + u' on ' + unicode(self.date) + u')'
     
     @staticmethod
     def on_save(**kwargs):
         if 'instance' in kwargs.keys() and 'sender' in kwargs.keys() and kwargs['sender'] is Transaction:
-            kwargs['instance'].account.update_balance(False)
+            inst = kwargs['instance']
+            # If the model was created, we only need to use the transactions created since the last balance
+            # update
+            if 'created' in kwargs and kwargs['created']:
+                inst.account.update_balance(False)
+            # Otherwise, we update the balance using all the transactions in the database
+            else:
+                inst.account.update_balance(True)
     
     @staticmethod
     def on_delete(**kwargs):
