@@ -130,7 +130,7 @@ def get_payee_suggestions(request):
     
     response = []
     for t in tags:
-        response.append(t.name)
+        response.append((t.id, t.name))
     
     return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
 

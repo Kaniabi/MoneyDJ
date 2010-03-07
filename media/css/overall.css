@@ -26,9 +26,6 @@ ol, ul {
 form {
 	margin: 0;
 }
-textarea, input, select {
-	width: 300px;
-}
 
 ol.form {
 	font-size: 1.5em;
@@ -81,6 +78,34 @@ div.suggestions li span {
 div.suggestions li.selected {
 	background: #8b536f;
 	color: white;
+}
+
+li.tag_suggestions {
+	border: 1px solid #642019;
+	background: #DEE7B4;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	padding: 5px;
+	font-size: 0.7em;
+	margin-bottom: 5px;
+}
+li.tag_suggestions label {
+	width: 18.5em;
+}
+li.tag_suggestions ul {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+li.tag_suggestions ul li {
+	display: inline;
+	margin-right: 5px;
+}
+li.tag_suggestions.loading {
+	background-image: url(../img/loading-DEE7B4.gif);
+	padding-left: 25px;
+	background-position: 5px center;
+	background-repeat: no-repeat;
 }
 
 div.overlay {

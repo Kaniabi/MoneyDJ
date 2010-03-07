@@ -25,17 +25,22 @@
 			
 			var id = 'autocomplete_' + Math.floor(Math.random() * 1000000);
 			var suggestions = $('<div class="suggestions"></div>').attr('id', id).hide().appendTo('body');
+			var data = [];
 			
 			$t.attr('autocomplete', 'off');
 			$t.bind('keypress', function(event) {
 				// Enter or tab
 				if (event.keyCode == 13 || event.keyCode == 9)
 				{
-					useSuggestion();
-					// Only prevent the event if enter was pressed
-					if (event.keyCode == 13)
+					// Only prevent the event if enter was pressed and the suggestions are visible
+					if (event.keyCode == 13 && suggestions.is(':visible'))
 					{
+						useSuggestion();
 						return false;
+					}
+					else if (suggestions.is(':visible'))
+					{
+						useSuggestion();
 					}
 				}
 			}).bind('keyup', function(event) {
@@ -100,7 +105,7 @@
 						var newVal = "" + (value - currentTotal).toFixed(2);
 					}
 					
-					setCurrentWord(cur += newVal);
+					setCurrentWord(cur += newVal, $t, options.multiWords);
 					$t.caret($t.caret().start - newVal.length, $t.caret().start);
 					
 					hideSuggestions();
@@ -214,31 +219,9 @@
 				return $t.val().slice(lastSpace, range.end);
 			}
 			
-			function setCurrentWord(word)
-			{
-				if (options.multiWords)
-				{
-					var range = $t.caret();
-					var lastSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
-					if (lastSpace == -1)
-					{
-						lastSpace = 0;
-					}
-					
-					var cur = $t.val().substr(0, lastSpace);
-					var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
-					var val = valFirst + ($t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '');
-					$t.val(val);
-					$t.caret(valFirst.length);
-				}
-				else
-				{
-					$t.val(word);
-				}
-			}
-			
 			function showSuggestions(list)
 			{
+				data = list;
 				if (list.length == 0)
 				{
 					hideSuggestions();
@@ -255,9 +238,16 @@
 				}).bind('mousedown', function() {
 					mouseDownOnList = false;
 				});
-				for (var i in list)
+				for (var i in data)
 				{
-					var w = list[i];
+					if (typeof data[i] == 'object') 
+					{
+						var w = data[i][1];
+					}
+					else 
+					{
+						var w = data[i];
+					}
 					ul.append('<li>' + w.replace(new RegExp('(' + RegExp.escape(word) + ')', 'gi'), '<span>$1</span>') + '</li>');
 				}
 				
@@ -296,8 +286,30 @@
 				var selected = getSelected();
 				if (selected.length == 1)
 				{
-					setCurrentWord(selected.text());
+					setCurrentWord(selected.text(), $t, options.multiWords);
+					
+					if (options.useIds == true && options.idField != null)
+					{
+						var selectedId = suggestions.find('li').index(selected);
+						var id = data[selectedId][0];
+						var idField = $(options.idField);
+						if (options.multiWords)
+						{
+							idField.val(idField.val() + options.multiIdSelector + id)
+						}
+						else
+						{
+							idField.val(id);
+						}
+						
+						if ($.isFunction(options.onChosen)) options.onChosen(id);
+					}
+					else
+					{
+						if ($.isFunction(options.onChosen)) options.onChosen(selected.text());
+					}
 				}
+				
 				hideSuggestions();
 			}
 	
@@ -318,10 +330,41 @@
 	$.fn.suggest.defaults = {
 		queryString: 'q',
 		multiWords: true,
-		minLetters: 2
+		minLetters: 2,
+		// The plugin will expect each element of the array of results to be a two-element array of id => text
+		useIds: false,
+		// The field to use to hold the id(s) of the currently selected item (normally a hidden field)
+		idField: null,
+		multiIdSeparator: ',',
+		// Called when an item is selected. Passes either the id or text of the selected item depending on the options
+		onSelected: null
 	}
 	
 })(jQuery)
+			
+function setCurrentWord(word, element, multiWords)
+{
+	var $t = jQuery(element);
+	if (multiWords)
+	{
+		var range = $t.caret();
+		var lastSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
+		if (lastSpace == -1)
+		{
+			lastSpace = $t.val().length;
+		}
+		
+		var cur = $t.val().substr(0, lastSpace);
+		var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
+		var val = valFirst + ($t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '');
+		$t.val(val);
+		$t.caret(valFirst.length);
+	}
+	else
+	{
+		$t.val(word);
+	}
+}
 
 // From http://simonwillison.net/2006/Jan/20/escape/
 RegExp.escape = function(text) {

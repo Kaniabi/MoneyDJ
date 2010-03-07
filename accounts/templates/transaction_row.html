@@ -2,7 +2,6 @@
 {% load money_overall %}
 			<td class="payee">
 				<div class="actions">
-					<a href="{% url accounts.views.edit_transaction t.account.pk t.pk %}" title="{% trans 'Edit Transaction' %}"><span class="sprite transaction_edit">{% trans 'Edit Transaction' %}</span></a>
 					<a href="{% url accounts.views.delete_transaction t.account.pk t.pk %}" title="{% trans 'Delete Transaction' %}"><span class="sprite delete">{% trans 'Delete Transaction' %}</span></a>
 				</div>
 				<div class="payee">

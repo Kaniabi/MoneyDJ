@@ -19,6 +19,7 @@ class AccountForm(forms.ModelForm):
 class QuickTransactionForm(forms.Form):
     date = forms.DateField(label=_(u'Date'), initial=datetime.date.today(), widget=widgets.UIDateWidget())
     payee = forms.CharField(label=_(u'Payee'), max_length=50)
+    payee_id = forms.IntegerField(required=False, widget=forms.HiddenInput)
     amount = forms.DecimalField(label=_(u'Amount'), decimal_places=2, max_digits=8)
     credit = forms.ChoiceField(widget=forms.RadioSelect, choices=[(0, _(u'Expense')), (1, _(u'Income'))], initial=0)
     transfer = forms.BooleanField(label=_(u'Transfer'), required=False)
@@ -37,13 +38,21 @@ class QuickTransactionForm(forms.Form):
         else:
             raise TypeError("instance is not a Transaction")
 
-        # Try to find an existing payee with that name
-        try:
-            payee = Payee.objects.get(name__iexact=self.cleaned_data['payee'])
-        except Payee.DoesNotExist:
-            # Create a new payee
-            payee = Payee(name=self.cleaned_data['payee'])
-            payee.save()
+        if self.cleaned_data['payee_id']:
+            # Try to find a payee with the ID that's been put in the hidden payee id field
+            try:
+                payee = Payee.objects.get(pk=self.cleaned_data['payee_id'])
+            except Payee.DoesNotExist:
+                pass
+        
+        if not payee:
+            # Try to find an existing payee with that name
+            try:
+                payee = Payee.objects.get(name__iexact=self.cleaned_data['payee'])
+            except Payee.DoesNotExist:
+                # Create a new payee
+                payee = Payee(name=self.cleaned_data['payee'])
+                payee.save()
 
         tr.payee = payee
 

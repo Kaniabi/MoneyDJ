@@ -47,7 +47,52 @@ $(function() {
 	}
 	$('.uiDateField').datepicker();
 	
-	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiWords: false});
+	var payeeTagXhr = null;
+	var payeeTagSuggestions = null;
+	var getPayeeTags = function(payee)
+	{
+		if (payeeTagXhr)
+		{
+			payeeTagXhr.abort();
+		}
+		
+		if (!payeeTagSuggestions)
+		{
+			payeeTagSuggestions = $('<li></li>').addClass('tag_suggestions').insertAfter($('#id_tags').parent());
+		}
+		
+		payeeTagSuggestions.text(gettext('Loading')).addClass('loading');
+		
+		payeeTagXhr = $.ajax({
+			type: 'GET',
+			url: '/tags/suggest/' + payee + '/',
+			cache: true,
+			dataType: 'json',
+			success: function(ret) {
+				payeeTagSuggestions.text('').removeClass('loading');
+				if (ret.length > 0)
+				{
+					payeeTagSuggestions.append('<label>' + gettext('Tag Suggestions:') + '</label>');
+					var ul = $('<ul></ul>');
+					for (var i = 0; i < ret.length; i++)
+					{
+						ul.append('<li><a href="#">' + ret[i] + '</a></li>');
+					}
+					
+					ul.find('a').click(function() {
+						var $t = $(this);
+						var tags = $('#id_tags');
+						setCurrentWord($t.text(), tags, true);
+						return false;
+					});
+					
+					ul.appendTo(payeeTagSuggestions);
+				}
+			}
+		})
+	}
+	
+	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiWords: false, useIds: true, idField: $('#id_payee_id'), onChosen: getPayeeTags});
 	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
 });
 
