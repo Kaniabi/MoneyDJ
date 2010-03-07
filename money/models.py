@@ -24,7 +24,7 @@ class Payee(models.Model):
         return self.name
     
     def suggest_tags(self):
-        return Tag.objects.filter(taglink__transaction__payee=self).annotate(count=Count('id', distinct=True)).order_by('count', 'name')
+        return Tag.objects.filter(taglink__transaction__payee=self).annotate(count=Count('id', distinct=True)).order_by('count', 'name')[:10]
 
 class Bank(models.Model):
     """
