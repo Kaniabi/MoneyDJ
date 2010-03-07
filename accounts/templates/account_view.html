@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load money_overall %}
 {% load accounts_tags %}
+{% load tags %}
 
 {% block title %}{{ account.name }} &bull; {% endblock %}
 
@@ -11,6 +12,8 @@
 {% block extrajs %}{{ transaction_form.media.js }}{% endblock %}
 
 {% block content %}
+{% cloud account 0 10 %}
+
 <table class="account horizontal">
 	{% if account.number %}
 	<tr>

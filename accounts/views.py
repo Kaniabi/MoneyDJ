@@ -32,6 +32,7 @@ def view(request, id):
         
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
+            acc = transaction.account
             transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
     else:
         transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })

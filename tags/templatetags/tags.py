@@ -1,9 +1,28 @@
 from django import template
+from money.models import TagLink, Account
+from django.db.models import Sum
+from django.contrib.auth.models import User
 
 register = template.Library()
 
 @register.inclusion_tag('tag_cloud.html')
-def cloud(items, credit=None):
+def cloud(account_user=None, credit=0, number=20):
+    items = TagLink.objects.values('tag__name').annotate(total=Sum('split'))
+    
+    if credit is 0:
+        items = items.filter(total__lt=0)
+    else:
+        items = items.filter(total__gt=0)
+    
+    if isinstance(account_user, Account):
+        items = items.filter(transaction__account=account_user, transaction__transfer=False)
+    elif isinstance(account_user, User):
+        items = items.filter(transaction__account__user=account_user, transaction__transfer=False)
+    else:
+        return {'cloud': []}
+        
+    items = items.order_by('total', 'tag__name')[:number]
+    
     cloud = []
     max = 0
     min = 0

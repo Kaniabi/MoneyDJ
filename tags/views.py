@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.db.models import Sum
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -12,8 +11,6 @@ except ImportError:
     
 @login_required
 def index(request):
-    tags = TagLink.objects.values('tag__name').annotate(total=Sum('split')).filter(total__lt=0, transaction__account__user=request.user, transaction__transfer=False).order_by('tag__name')[:20]
-    
     transactions = Transaction.objects.filter(taglink__id__isnull=True)
     
     paginator = Paginator(transactions, 20)
@@ -28,16 +25,13 @@ def index(request):
     except (EmptyPage, InvalidPage):
         transactions = paginator.page(paginator.num_pages)
         
-    return render_to_response("tags_index.html", { "tags": tags, "transactions": transactions }, context_instance=RequestContext(request))
+    return render_to_response("tags_index.html", { "transactions": transactions }, context_instance=RequestContext(request))
 
 @login_required
 def view_tag(request, tag):
     # Get the right tag
     tag = get_object_or_404(Tag, name=tag)
-    
-    # Get the tags for the tag cloud
-    tags = TagLink.objects.values('tag__name').annotate(total=Sum('split')).filter(total__lt=0, transaction__account__user=request.user, transaction__transfer=False).order_by('tag__name')[:20]
-    
+
     # Get the transactions related to the tag
     transactions = Transaction.objects.select_related().filter(taglink__tag=tag).order_by('-date')
     
@@ -53,7 +47,7 @@ def view_tag(request, tag):
     except (EmptyPage, InvalidPage):
         transactions = paginator.page(paginator.num_pages)
     
-    return render_to_response("tag_view.html", {'tag': tag, 'transactions': transactions, 'tags': tags}, context_instance=RequestContext(request))
+    return render_to_response("tag_view.html", {'tag': tag, 'transactions': transactions }, context_instance=RequestContext(request))
 
 def get_tag_suggestions(request):
     if not request.GET['q']:
