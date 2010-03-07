@@ -624,6 +624,7 @@ ul.accounts li {
 }
 #content .maincontent h2 {
 	font-size: 3em;
+	margin-bottom: 0.3em;
 }
 #content .sidebar {
 	width: 22%;
@@ -649,7 +650,7 @@ ul.accounts li {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	margin-bottom: 5px;
-	background: #e8e8e8 url(../img/box-bottom-overlay.png) repeat-x bottom left;
+	background: #e8e8e8;
 }
 #content .dash_column > div > div {
 	padding: 0 5px 5px;
@@ -670,7 +671,7 @@ ul.accounts li {
 /* BEGIN tags */
 div.tagCloud { position: relative; }
 div.tagCloud ol { margin: 0; text-align: center; font-size: 120%; padding: 0; }
-div.tagCloud ol li { list-style: none; display: inline; margin: 3px; }
+div.tagCloud ol li { list-style: none; display: inline; margin: 0.1em; }
 div.tagCloud ol li span { left: -9999px; position: absolute; width: 9990px; }
 div.tagCloud ol li.tag-1 { font-size: 0.6em; }
 div.tagCloud ol li.tag-2 { font-size: 0.8em; }

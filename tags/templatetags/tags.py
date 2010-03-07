@@ -2,6 +2,7 @@ from django import template
 from money.models import TagLink, Account
 from django.db.models import Sum
 from django.contrib.auth.models import User
+import operator
 
 register = template.Library()
 
@@ -45,5 +46,8 @@ def cloud(account_user=None, credit=0, number=20):
                       # Distribute the cloud over 10 levels of granularity
                       'val': int(round(percent * 9) + 1),
                       'amount': unicode(str(i['total']))})
+    
+    # Sort the cloud by the tag name
+    cloud.sort(key=operator.itemgetter('name'))
         
     return {'cloud': cloud}
