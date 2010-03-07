@@ -33,7 +33,7 @@ def net_worth_by_time(user, time=None, account=None):
     else:
         extra = {'time': 'CONCAT(YEAR(`date`), MONTH(`date`))'}
         
-    credit = transactions.extra(select=extra).filtervalues('time').annotate(Sum('amount')).order_by('time')
+    credit = transactions.extra(select=extra).values('time').annotate(Sum('amount')).order_by('time')
     
     # Convert the result set into dictionaries of time: result
     total = dict([(str(t['time']), t['amount__sum']) for t in credit])
@@ -45,7 +45,6 @@ def net_worth_by_time(user, time=None, account=None):
     # Have to iterate over the sorted keys because dicts don't maintain order
     keys = total.keys()
     keys.sort()
-    print keys
     for timekey in keys:
         if time == 'day':
             t = {1: _(u'Sunday'),
@@ -55,7 +54,7 @@ def net_worth_by_time(user, time=None, account=None):
                  5: _(u'Thursday'),
                  6: _(u'Friday'),
                  7: _(u'Saturday'),
-                 }[timekey]
+                 }[int(timekey)]
         elif time == 'week' and len(timekey) > 4:
             year = timekey[:4]
             week = timekey[4:]
@@ -86,7 +85,7 @@ def net_worth_by_time(user, time=None, account=None):
         else:
             continue
         head.append(t)
-        values.append(currency(total[timekey]))
+        values.append(currency(total[timekey], sign=1))
     body.append({'values': values})
     
     return {'report': {'head': head, 'body': body}}
