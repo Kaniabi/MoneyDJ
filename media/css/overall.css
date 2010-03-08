@@ -243,6 +243,26 @@ a span.sprite.comment {
 a:hover span.sprite.comment {
 	background-position: 0 -128px;
 }
+
+span.sprite.refresh {
+	background-position: 0 -144px;
+}
+a span.sprite.refresh {
+	background-position: -16px -144px;
+}
+a:hover span.sprite.refresh {
+	background-position: 0 -144px;
+}
+
+span.sprite.account_edit {
+	background-position: 0 -160px;
+}
+a span.sprite.account_edit {
+	background-position: -16px -160px;
+}
+a:hover span.sprite.account_edit {
+	background-position: 0 -160px;
+}
 /* END Sprites */
 
 /* BEGIN Boxes */

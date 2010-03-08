@@ -6,7 +6,7 @@
 
 {% block title %}{{ account.name }} &bull; {% endblock %}
 
-{% block pagetitle %}{{ account.name }}{% endblock %}
+{% block pagetitle %}{{ account.name }} <a href="{% url accounts.views.edit account.id %}"><span class="sprite account_edit" title="{% trans 'Edit Account' %}">{% trans 'Edit Account' %}</span></a>{% endblock %}
 
 {% block extracss %}{{ transaction_form.media.css }}{% endblock %}
 {% block extrajs %}{{ transaction_form.media.js }}{% endblock %}
