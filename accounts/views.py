@@ -74,6 +74,26 @@ def add(request):
         form = AccountForm()
     return render_to_response('account_add.html', {'form': form}, context_instance=RequestContext(request))
 
+def edit(request, id):
+    """ Edit an account """
+    acc = get_object_or_404(Account, pk=id, user=request.user)
+    
+    orig_balance = acc.balance
+    
+    if (request.method == 'POST'):
+        form = AccountForm(data=request.POST, instance=acc)
+        if form.is_valid():
+            acc = form.save(commit=False)
+            acc.user = request.user
+            if orig_balance is not acc.balance:
+                acc.set_balance(acc.balance)
+            acc.save()
+            return redirect(reverse('moneydj.accounts.views.view', args=[acc.pk]))
+    else:
+        form = AccountForm(instance=acc)
+    
+    return render_to_response('account_edit.html', {'form': form, 'account': acc}, context_instance=RequestContext(request))
+
 @login_required
 def add_transaction(request, account):
     """Adds a transaction to the specified account"""

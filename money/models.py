@@ -88,9 +88,23 @@ class Account(models.Model):
         transactions = Transaction.objects.filter(account=self,date__gte=datetime).values('account__id').annotate(Sum('amount'))
         
         for t in transactions:
-            b -= t.amount__sum
+            b -= t['amount__sum']
         
         return b
+    
+    def set_balance(self, balance):
+        """
+        Allows the user to set the current balance, working out the original balance based on the transactions in the database
+        """
+        b = 0
+        transactions = Transaction.objects.filter(account=self).values('account__id').annotate(Sum('amount'))
+        
+        for t in transactions:
+            b += t['amount__sum']
+            
+        self.starting_balance = balance - b
+        self.balance = balance
+        self.balance_updated = datetime.datetime.now()
     
     class Meta:
         unique_together = ('user', 'number', 'sort_code', 'bank')

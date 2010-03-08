@@ -1,0 +1,24 @@
+{% extends 'overall_template.html' %}
+{% load i18n %}
+{% load money_overall %}
+
+{% block title %}{% trans 'Edit Account' %} | {{ account.name }} &bull; {% endblock %}
+
+{% block pagetitle %}{{ account.name }}{% endblock %}
+
+{% block content %}
+{% if account.track_balance %}
+<table class="transactions horizontal">
+	<tr>
+		<th scope="row">{% trans "Balance" %}</th>
+		<td class="money{% if account.balance < 0 %} out{% endif %}">{% currency account.balance account.currency 1 %} <a href="{% url accounts.views.resync account.pk %}" title="{% trans 'Resync balance' %}"><span class="sprite refresh">{% trans 'Resync balance' %}</span></a></td>
+	</tr>
+</table>
+{% endif %}
+<form action="{% url accounts.views.edit account.pk %}" method="post">
+	<ol class="form">
+		{{ form.as_ul }}
+		<li class="submit"><input type="submit" value="{% trans 'Save Changes' %}" class="button" /></li>
+	</ol>
+</form>
+{% endblock content %}
