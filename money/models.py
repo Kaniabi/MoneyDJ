@@ -5,6 +5,8 @@ from django.utils.translation import ugettext as _
 import datetime
 from django.db.models import Sum
 from django.db.models.signals import post_delete, post_save
+from django.core.cache import cache
+from django.core import serializers
 
 # Create your models here.
 class Tag(models.Model):
@@ -39,6 +41,8 @@ class Account(models.Model):
     """
     Encapsulates a bank account
     """
+    USER_ACCOUNTS = {}
+    
     user = models.ForeignKey(User)
     name = models.CharField(max_length=50)
     number = models.PositiveIntegerField(blank=True,null=True)
@@ -105,6 +109,12 @@ class Account(models.Model):
         self.starting_balance = balance - b
         self.balance = balance
         self.balance_updated = datetime.datetime.now()
+    
+    @staticmethod
+    def get_for_user(user):
+        if not user.pk in Account.USER_ACCOUNTS.keys():
+            Account.USER_ACCOUNTS.update({user.pk: Account.objects.filter(user=user).order_by('name')})
+        return Account.USER_ACCOUNTS[user.pk]
     
     class Meta:
         unique_together = ('user', 'number', 'sort_code', 'bank')

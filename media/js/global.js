@@ -8,6 +8,9 @@ $(function() {
 		showAnim: 'slideDown'
 	});
 	
+	$('#nav li.accounts ul').hide().css('margin', 0);
+	$('#nav li.accounts').hover(function() {$(this).find('ul').slideDown('fast');}, function() {$(this).find('ul').slideUp('fast');});
+	
 	// Remove the add transaction form from the page so we can make it nicer
 	var t = $('form#add_transaction').remove();
 	var transactions = $('table.transactions:first');

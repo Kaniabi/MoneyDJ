@@ -389,9 +389,9 @@ a:hover span.sprite.account_edit {
 #content table.transactions tr.transaction_form div.credit ul li { display: inline; }
 #content table.transactions tr div.actions { float: left; margin-left: -9999px; margin-right: 20px; }
 #content table.transactions tr:hover div.actions { display: block; margin: 0 4px 0 0; width: 16px; }
-#content table td.money, #content span.money { text-align: right; font-weight: bold; color: #4d4d4d; }
+#content table td.money, span.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
-#content table td.money.out, #content span.money.out { color: #c91200; }
+#content table td.money.out, span.money.out { color: #c91200; }
 /* END Tables */
 
 /* BEGIN Header */
@@ -448,7 +448,7 @@ h1 span {
 #userbox ul li a {
 	font-weight: bold;
 }
-/* END Navigation */
+/* END Header */
 
 /* BEGIN Navigation */
 #nav {
@@ -459,31 +459,31 @@ h1 span {
 	position: relative;
 	z-index: 100;
 }
-#nav ul {
+#nav > ul {
 	margin: 0 0 0 34px;
 	padding: 0;
 	list-style: none;
 	display: inline;
 	vertical-align: top;
 }
-#nav li {
+#nav > ul > li {
 	display: inline;
 	float: left;
 	padding: 0 9px 4px;
 	margin: 0;
 	background: transparent url('../img/nav.png') no-repeat center bottom;
 }
-#nav li.first {
+#nav > ul > li.first {
 	background-position: bottom left;
 	padding-left: 34px;
 }
-#nav a {
+#nav > ul > li > a {
 	display: block;
 	height: 22px;
 	position: relative;
 	overflow: hidden;
 }
-#nav a span {
+#nav > ul > li > a span {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -498,11 +498,24 @@ h1 span {
 #nav li.accounts a {
 	width: 96px;
 }
-#nav li.accounts span {
+#nav li.accounts > a span {
 	background-position: -122px 0;
 }
-#nav li.accounts.active span, #nav li.accounts a:hover span {
+#nav li.accounts.active > a span, #nav li.accounts > a:hover span {
 	background-position: -122px -22px;
+}
+#nav li.accounts ul {
+	position: absolute;
+	background: #B4BC91;
+	border: 4px solid #c0dd82;
+	border-top: 0;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	font-size: 0.7em;
+	padding: 2px;
+	margin-left: -1000px;
 }
 #nav li.tags a {
 	width: 56px;

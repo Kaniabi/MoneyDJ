@@ -15,7 +15,7 @@ except ImportError:
 
 @login_required
 def index(request):
-    accounts = Account.objects.filter(user=request.user).order_by('name')
+    accounts = Account.get_for_user(request.user)
 
     return render_to_response("account_index.html", { "accounts": accounts }, context_instance=RequestContext(request))
 

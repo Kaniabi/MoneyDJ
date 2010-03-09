@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.inclusion_tag('accounts_block.html')
 def accounts_block(user):
-    accounts = Account.objects.filter(user=user).order_by('name')
+    accounts = Account.get_for_user(user)
     return {'accounts': accounts}
 
 @register.simple_tag
