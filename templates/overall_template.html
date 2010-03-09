@@ -39,3 +39,16 @@
 				{% endif %}
 			</div>
 {% endblock body %}
+
+{% block nav %}
+				<ul>
+					<li class="home first"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
+					<li class="accounts">
+						<a href="{% url accounts.views.index %}"><span></span>{% trans "Accounts" %}</a>
+						{% accounts_block user %}
+					</li>
+					<li class="reports"><a href="{% url reports.views.index %}"><span></span>{% trans "Reports" %}</a></li>
+					<li class="tags"><a href="{% url tags.views.index %}"><span></span>{% trans "Tags" %}</a></li>
+					<li class="budget end"><a href="#"><span></span>{% trans "Budget" %}</a></li>
+				</ul>
+{% endblock nav %}
