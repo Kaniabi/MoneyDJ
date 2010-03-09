@@ -38,6 +38,8 @@ class QuickTransactionForm(forms.Form):
         else:
             raise TypeError("instance is not a Transaction")
 
+        payee = None
+        
         if self.cleaned_data['payee_id']:
             # Try to find a payee with the ID that's been put in the hidden payee id field
             try:
