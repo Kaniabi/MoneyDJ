@@ -351,7 +351,7 @@ function setCurrentWord(word, element, multiWords)
 		var lastSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
 		if (lastSpace == -1)
 		{
-			lastSpace = $t.val().length;
+			lastSpace = (range.start == $t.val().length) ? 0 : range.start;
 		}
 		
 		var cur = $t.val().substr(0, lastSpace);
