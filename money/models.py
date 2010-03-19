@@ -82,6 +82,12 @@ class Account(models.Model):
                 self.balance = b;
                 self.balance_updated = datetime.datetime.now()
                 self.save()
+                
+                # If this account occurs in the cache, replace it with the updated version
+                if self.user.id in Account.USER_ACCOUNTS.keys():
+                    for a in Account.USER_ACCOUNTS[self.user.id]:
+                        if a.id == self.id:
+                            a = self
         
     def balance_at(self, datetime):
         """ 
