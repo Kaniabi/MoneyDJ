@@ -13,11 +13,11 @@ $(function() {
 	
 	// Remove the add transaction form from the page so we can make it nicer
 	var t = $('form#add_transaction').remove();
-	var transactions = $('table.transactions:first');
+	var transactions = $('table.transactions');
 	if (t.length == 1 && transactions.length == 1)
 	{
 		var a = $('<a href="#add_transaction_button" class="button">+ ' + gettext('Add Transaction') + '</a>');
-		transactions.before(a);
+		transactions.eq(0).before(a);
 		var offset = a.offset();
 		var cruft = getCruft(a);
 		
@@ -32,6 +32,7 @@ $(function() {
 			holder.hide()
 		}
 		
+		// When the button's clicked, add an overlay and show the form
 		a.click(function(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -49,6 +50,60 @@ $(function() {
 		});
 	}
 	$('.uiDateField').datepicker();
+	
+	// Set up the tag editing
+	$('div.tags span.tags:not(.uneditable)', transactions).addClass('editable').live('click', function() {
+		var $t = $(this);
+		var input = $('<input type="text"/>').data('tags', $t.text()).data('hastags', $t.hasClass('notags')).val($t.text()).bind('blur.editTags', function() {
+				var $t = $(this);
+				var tags = $t.val();
+				if ($t.data('tags') != tags && (tags != '' || !$t.data('hastags')))
+				{
+					$t.before('<span class="sprite status loading"></span>');
+					var id = $t.parents('td').attr('id').substring(12);
+					$t.replaceWith('<span class="tags uneditable">' + gettext('Loading') + '</span>');
+					$.ajax({
+						url: '/accounts/transaction/' + id + '/tag/',
+						type: 'POST',
+						data: {'tags': tags, 'transactionId': id},
+						success: function(results) {
+							var c = '';
+							var tagHolder = $('#transaction-' + results.transaction + ' div.tags');
+							var holder = tagHolder.find('span.tags').removeClass('uneditable').addClass('editable');
+							var status = tagHolder.find('span.sprite.status');
+							if (results.tags.length > 0)
+							{
+								for (var i = 0; i < results.tags.length; i++)
+								{
+									c += results.tags[i] + ' ';
+								}
+								holder.removeClass('notags').text(c);
+							}
+							else
+							{
+								holder.addClass('notags').text(gettext('No tags'));
+							}
+							status.removeClass('loading').addClass('success');
+						},
+						error: function(request) {
+							$('#transaction-' + this.data.transactionId + ' div.tags span.tags').removeClass('uneditable').addClass('editable').addClass('notags').text(gettext('An error occurred')).siblings('span.sprite.status').removeClass('loading').addClass('error');
+						},
+						dataType: 'json'
+					});
+				}
+				else
+				{
+					var s = $('<span class="tags editable">' + tags + '</span>');
+					if ($t.data('hastags'))
+					{
+						s.text(gettext('No tags')).addClass('notags');
+					}
+					$t.replaceWith(s);
+				}
+			}).suggest({url: '/tags/suggest/'});
+		$t.replaceWith(input);
+		input.focus();
+	});
 	
 	var payeeTagXhr = null;
 	var payeeTagSuggestions = null;
@@ -86,6 +141,7 @@ $(function() {
 						var $t = $(this);
 						var tags = $('#id_tags');
 						setCurrentWord($t.text(), tags, true);
+						$t.text($t.text() + " ");
 						return false;
 					});
 					

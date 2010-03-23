@@ -7,6 +7,7 @@ urlpatterns = patterns('moneydj.accounts.views',
     (r'^add/$', 'add'),
     (r'^(\d+)/transaction/(\d+)/$', 'edit_transaction'),
     (r'^(\d+)/transaction/add/$', 'add_transaction'),
+    (r'^transaction/(\d+)/tag/$', 'tag_transaction'),
     (r'^(\d+)/transaction/delete/(\d+)/$', 'delete_transaction'),
     (r'^(\d+)/resync/$', 'resync'),
     (r'^payee/suggest/$', 'get_payee_suggestions')

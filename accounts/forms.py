@@ -78,59 +78,10 @@ class QuickTransactionForm(forms.Form):
 
         #
         # Now to deal with the tags
-        #
-
-        used_tags = []
-        
+        #        
         tr.taglink_set.all().delete()
-        
-        abs_amount = abs(Decimal(tr.amount))
 
         # get a list of the tags entered, separated by spaces
-        for t in self.cleaned_data['tags'].split(u' '):
-            # partition the tag on the last ':' to get any possible split
-            name, delim, split = t.rpartition(u':')
-            
-            if not name and not split:
-                continue
-            elif not name:
-                # We only have a name, but it's put into the split variable because we're partitioning from the right
-                name = split
-                split = None
-
-            if split != None:
-                try:
-                    split = float(split)
-                    # Use the total amount if the split is invalid
-                    if split > abs_amount or split < 0:
-                        split = abs_amount
-                except (InvalidOperation, TypeError):
-                    # The split couldn't be determined
-                    split = abs_amount
-            else:
-                # A split wasn't specified, so we use the total amount
-                split = abs_amount
-                
-            # Make sure we have the right sign!
-            if float(tr.amount) < 0:
-                split = -abs(split)
-            
-            # Convert the split into a string
-            split = '%s' % split
-
-            # If name is in the used_tags array, we've already tagged this transaction with that tag
-            if name in used_tags:
-                continue
-            else:
-                try:
-                    tag = Tag(name=name)
-                    tag.save()
-                    used_tags.append(name)
-                except IntegrityError:
-                    tag = Tag.objects.filter(name__iexact=name)[0]
-                    used_tags.append(name)
-
-            rel = TagLink(tag=tag, transaction=tr, split=split)
-            rel.save()
+        TagLink.create_relationships(tr, self.cleaned_data['tags'])
 
         return tr

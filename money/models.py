@@ -1,12 +1,14 @@
+from decimal import InvalidOperation, Decimal
 from django.contrib.auth.models import User
+from django.core import serializers
+from django.core.cache import cache
 from django.db import models
+from django.db.models import Sum
 from django.db.models.aggregates import Count
+from django.db.models.signals import post_delete, post_save
+from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _
 import datetime
-from django.db.models import Sum
-from django.db.models.signals import post_delete, post_save
-from django.core.cache import cache
-from django.core import serializers
 
 # Create your models here.
 class Tag(models.Model):
@@ -82,12 +84,6 @@ class Account(models.Model):
                 self.balance = b;
                 self.balance_updated = datetime.datetime.now()
                 self.save()
-                
-                # If this account occurs in the cache, replace it with the updated version
-                if self.user.id in Account.USER_ACCOUNTS.keys():
-                    for a in Account.USER_ACCOUNTS[self.user.id]:
-                        if a.id == self.id:
-                            a = self
         
     def balance_at(self, datetime):
         """ 
@@ -170,6 +166,59 @@ class TagLink(models.Model):
     transaction = models.ForeignKey(Transaction)
     tag = models.ForeignKey(Tag)
     split = models.DecimalField(decimal_places=2,max_digits=8)
+    
+    @staticmethod
+    def create_relationships(transaction, tag_string):
+        abs_amount = abs(Decimal(transaction.amount))
+
+        used_tags = []
+        
+        for t in tag_string.split(u' '):
+            # partition the tag on the last ':' to get any possible split
+            name, delim, split = t.rpartition(u':')
+            
+            if not name and not split:
+                continue
+            elif not name:
+                # We only have a name, but it's put into the split variable because we're partitioning from the right
+                name = split
+                split = None
+
+            if split != None:
+                try:
+                    split = float(split)
+                    # Use the total amount if the split is invalid
+                    if split > abs_amount or split < 0:
+                        split = abs_amount
+                except (InvalidOperation, TypeError):
+                    # The split couldn't be determined
+                    split = abs_amount
+            else:
+                # A split wasn't specified, so we use the total amount
+                split = abs_amount
+                
+            # Make sure we have the right sign!
+            if float(transaction.amount) < 0:
+                split = -abs(split)
+            
+            # Convert the split into a string
+            split = '%s' % split
+
+            # If name is in the used_tags array, we've already tagged this transaction with that tag
+            if name in used_tags:
+                continue
+            else:
+                try:
+                    tag = Tag(name=name)
+                    tag.save()
+                    used_tags.append(name)
+                except IntegrityError:
+                    tag = Tag.objects.filter(name__iexact=name)[0]
+                    used_tags.append(name)
+
+            rel = TagLink(tag=tag, transaction=transaction, split=split)
+            rel.save()
+    
     def __unicode__(self):
         return self.transaction.payee.name + u' - ' + self.tag.name
     

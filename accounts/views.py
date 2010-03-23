@@ -6,7 +6,7 @@ from django.db import transaction
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
-from money.models import Account, Transaction, Payee
+from money.models import Account, Transaction, Payee, TagLink
 import datetime
 try:
     import json
@@ -98,6 +98,20 @@ def edit(request, id):
 def add_transaction(request, account):
     """Adds a transaction to the specified account"""
     pass
+
+@login_required
+def tag_transaction(request, transaction):
+    transaction = get_object_or_404(Transaction, pk=transaction, account__user=request.user)
+    
+    if request.method == "POST" and 'tags' in request.POST.keys():
+        transaction.taglink_set.all().delete()
+        TagLink.create_relationships(transaction, request.POST['tags'])
+        
+        # Get the up-to-date set of tags for this transaction and return them
+        tags = [tag.tag.name for tag in transaction.taglink_set.select_related().all()]
+        return HttpResponse(json.dumps({'transaction': transaction.pk, 'tags': tags}), content_type='application/javascript; charset=utf-8')
+    else:
+        return HttpResponseBadRequest()
 
 @login_required
 def edit_transaction(request, account, transaction):

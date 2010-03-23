@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load money_overall %}
-			<td class="payee">
+			<td class="payee" id="transaction-{{ t.id }}">
 				<div class="actions">
 					<a href="{% url accounts.views.delete_transaction t.account.pk t.pk %}" title="{% trans 'Delete Transaction' %}"><span class="sprite delete">{% trans 'Delete Transaction' %}</span></a>
 				</div>
@@ -8,12 +8,14 @@
 					<span class="sprite{% if t.mobile %} mobile" title="{% trans 'Entered from a mobile device' %}{% endif %}">{% if t.mobile %}{% trans 'Entered from a mobile device' %}{% endif %}</span>
 					<a href="{% url accounts.views.edit_transaction t.account.pk t.pk %}">{{ t.payee.name }}</a>{% if t.comment %} <span class="sprite comment right" title="{{ t.comment }}">{% trans 'has a comment' %}</span>{% endif %}
 				</div>
-				{% if t.tags.all %}
 				<div class="tags"><span class="sprite tag"></span>
+				{% if t.tags.all %}
 					{% for tag in t.taglink_set.select_related.all %}
-					{{ tag.tag.name }}{% if tag.split != t.amount %}:{% currency tag.split %}{% endif %}
+					<span class="tags">{{ tag.tag.name }}{% if tag.split != t.amount %}:{% currency tag.split %}{% endif %}</span>
 					{% endfor %}
-				</div>
+				{% else %}
+					<span class="tags notags">{% trans 'No tags' %}</span>
 				{% endif %}
+				</div>
 			</td>
 			<td class="money{% if t.amount > 0 %} in{% endif %}">{% if t.amount > 0 %}+ {% endif %}{% currency t.amount t.account.currency %}</td>

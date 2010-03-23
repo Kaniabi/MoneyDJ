@@ -263,6 +263,13 @@ a span.sprite.account_edit {
 a:hover span.sprite.account_edit {
 	background-position: 0 -160px;
 }
+
+span.sprite.loading {
+	background: transparent url(../img/loading-DEE7B4.gif) top left;
+}
+tr.odd span.sprite.loading {
+	background-image: url(../img/loading-E9E6DC.gif);
+}
 /* END Sprites */
 
 /* BEGIN Boxes */
@@ -379,19 +386,19 @@ a:hover span.sprite.account_edit {
 #content table.transactions td.payee div.tags span.sprite {
 	margin-right: 0;
 }
+#content table.transactions td.payee div.tags span.tags.editable:hover {
+	background: #C0DD82;
+}
 #content table.transactions tbody th.date {
 	text-align: left;
 	font-size: 1.5em;
 	font-weight: normal;
 }
-#content table.transactions tr.transaction_form td { vertical-align: top; }
-#content table.transactions tr.transaction_form div.credit ul { margin: 0; padding: 0; }
-#content table.transactions tr.transaction_form div.credit ul li { display: inline; }
 #content table.transactions tr div.actions { float: left; margin-left: -9999px; margin-right: 20px; }
 #content table.transactions tr:hover div.actions { display: block; margin: 0 4px 0 0; width: 16px; }
 #content table td.money, span.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
-#content table td.money.out, span.money.out { color: #c91200; }
+#content table td.money.out, span.money.out, #content table.transactions div.tags span.notags { color: #c91200; }
 /* END Tables */
 
 /* BEGIN Header */
