@@ -183,6 +183,13 @@ class TagLink(models.Model):
                 # We only have a name, but it's put into the split variable because we're partitioning from the right
                 name = split
                 split = None
+                
+            # Strip out whitespace from either end
+            name = name.strip(u' \t\n\r')
+            
+            # If we don't have a tag, continue
+            if not name:
+                continue
 
             if split != None:
                 try:

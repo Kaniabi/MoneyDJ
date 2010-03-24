@@ -52,17 +52,29 @@ $(function() {
 	$('.uiDateField').datepicker();
 	
 	// Set up the tag editing
+	var tagXhr;
 	$('div.tags span.tags:not(.uneditable)', transactions).addClass('editable').live('click', function() {
 		var $t = $(this);
-		var input = $('<input type="text"/>').data('tags', $t.text()).data('hastags', $t.hasClass('notags')).val($t.text()).bind('blur.editTags', function() {
+		var text = $(this).hasClass('notags') ? '' : $t.text().trim();
+		var input = $('<input type="text"/>').data('tags', text).data('hastags', $t.hasClass('notags')).val(text).bind('blur.editTags', function() {
 				var $t = $(this);
 				var tags = $t.val();
 				if ($t.data('tags') != tags && (tags != '' || !$t.data('hastags')))
 				{
-					$t.before('<span class="sprite status loading"></span>');
+					var status = $t.siblings('span.status').removeClass('success error').addClass('loading');
+					if ($t.siblings('span.status').length == 0)
+					{
+						status = $t.before('<span class="sprite status loading"></span>');
+					}
+					
+					if (tagXhr)
+					{
+						tagXhr.abort();
+					}
+					
 					var id = $t.parents('td').attr('id').substring(12);
 					$t.replaceWith('<span class="tags uneditable">' + gettext('Loading') + '</span>');
-					$.ajax({
+					tagXhr = $.ajax({
 						url: '/accounts/transaction/' + id + '/tag/',
 						type: 'POST',
 						data: {'tags': tags, 'transactionId': id},
@@ -75,7 +87,12 @@ $(function() {
 							{
 								for (var i = 0; i < results.tags.length; i++)
 								{
-									c += results.tags[i] + ' ';
+									c += results.tags[i].name;
+									if (results.tags[i].amount && results.tags[i].amount != results.total)
+									{
+										c += ':' + (Math.round(results.tags[i].amount * 100) / 100);
+									}
+									c += ' ';
 								}
 								holder.removeClass('notags').text(c);
 							}
@@ -100,7 +117,7 @@ $(function() {
 					}
 					$t.replaceWith(s);
 				}
-			}).suggest({url: '/tags/suggest/'});
+			}).suggest({url: '/tags/suggest/', amountElement: $t.parents('td').siblings('td.money')});
 		$t.replaceWith(input);
 		input.focus();
 	});
@@ -225,3 +242,7 @@ function getCruft(element)
 		}
 	});
 })(jQuery);
+
+String.prototype.trim = function() {
+	return this.replace(/^\s+|\s+$/g, '');
+}

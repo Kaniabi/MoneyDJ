@@ -108,8 +108,8 @@ def tag_transaction(request, transaction):
         TagLink.create_relationships(transaction, request.POST['tags'])
         
         # Get the up-to-date set of tags for this transaction and return them
-        tags = [tag.tag.name for tag in transaction.taglink_set.select_related().all()]
-        return HttpResponse(json.dumps({'transaction': transaction.pk, 'tags': tags}), content_type='application/javascript; charset=utf-8')
+        tags = [{'name': tag.tag.name, 'amount': abs(float(tag.split))} for tag in transaction.taglink_set.select_related().all()]
+        return HttpResponse(json.dumps({'transaction': transaction.pk, 'tags': tags, 'total': abs(float(transaction.amount))}), content_type='application/javascript; charset=utf-8')
     else:
         return HttpResponseBadRequest()
 

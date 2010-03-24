@@ -17,6 +17,7 @@
 			}
 			var word = '';
 			var xhr;
+			var request;
 			var cache = {};
 			var mouseDownOnList = false;
 			
@@ -93,8 +94,10 @@
 				else if (options.amountElement && val.slice(range.start - 1, range.start) == ':' && (event.keyCode == 58 || event.keyCode == 59 || event.keyCode == 186))
 				{
 					var cur = getCurrentWord();
-					var currentTotal = getSplitTotal($t.val());
-					var value = parseFloat(options.amountElement.val());
+					var currentTotal = getSplitTotal($t.is('input') ? $t.val().trim() : $t.text().trim());
+					var total = ($(options.amountElement).is('input') ? $(options.amountElement).val() : $(options.amountElement).text());
+					total = total.replace(/[^0-9\-+.]+/, '');
+					var value = parseFloat(total);
 					
 					if (currentTotal >= value)
 					{
@@ -191,17 +194,25 @@
 					width: width
 				}).show();
 				
-				xhr = $.ajax({
-					type: 'GET',
-					url: options.url,
-					cache: true,
-					data: data,
-					dataType: 'json',
-					success: function(ret) {
-						cache[word] = ret;
-						showSuggestions(ret);
-					}
-				});
+				// Cancel previous requests
+				if (request)
+				{
+					clearTimeout(request);
+				}
+				
+				request = setTimeout(function() {
+					xhr = $.ajax({
+						type: 'GET',
+						url: options.url,
+						cache: true,
+						data: data,
+						dataType: 'json',
+						success: function(ret) {
+							cache[word] = ret;
+							showSuggestions(ret);
+						}
+					});
+				}, options.delay);
 			}
 			
 			function getCurrentWord()
@@ -337,7 +348,9 @@
 		idField: null,
 		multiIdSeparator: ',',
 		// Called when an item is selected. Passes either the id or text of the selected item depending on the options
-		onSelected: null
+		onSelected: null,
+		// The time delay before the request is made in milliseconds
+		delay: 1000
 	}
 	
 })(jQuery)
