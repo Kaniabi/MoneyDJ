@@ -9,6 +9,8 @@ from django.db.models.signals import post_delete, post_save
 from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _
 import datetime
+from django.utils.hashcompat import md5_constructor
+from django.utils.http import urlquote
 
 # Create your models here.
 class Tag(models.Model):
@@ -114,12 +116,19 @@ class Account(models.Model):
     
     @staticmethod
     def get_for_user(user):
-        if not user.pk in Account.USER_ACCOUNTS.keys():
-            Account.USER_ACCOUNTS.update({user.pk: Account.objects.filter(user=user).order_by('name')})
-        return Account.USER_ACCOUNTS[user.pk]
+        return Account.objects.filter(user=user).order_by('name')
+    
+    @staticmethod
+    def invalidate_cache(**kwargs):
+        if 'instance' in kwargs.keys() and 'sender' in kwargs.keys() and kwargs['sender'] is Account:
+            key = 'template.cache.accounts_block.%s' % (md5_constructor(urlquote(kwargs['instance'].user.username)).hexdigest(),)
+            cache.delete(key)   
     
     class Meta:
         unique_together = ('user', 'number', 'sort_code', 'bank')
+
+post_delete.connect(Account.invalidate_cache, sender=Account)
+post_save.connect(Account.invalidate_cache, sender=Account)
 
 class Transaction(models.Model):
     """

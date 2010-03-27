@@ -1,6 +1,7 @@
 {% extends "basic_template.html" %}
 {% load i18n %}
 {% load money_overall %}
+{% load cache %}
 
 {% block body %}
 			<div id="topbox" class="box green">
@@ -32,7 +33,7 @@
 					<div class="content">
 						<div class="t"></div>
 						<h3>{% block sidebar_title %}{% trans "Accounts" %}{% endblock %}</h3>
-						{% block sidebar %}{% accounts_block user %}{% endblock %}
+						{% block sidebar %}{% cache 500 accounts_block user.username %}{% accounts_block user %}{% endcache %}{% endblock %}
 					</div>
 					<div class="b"><div></div></div>
 				</div>
@@ -45,7 +46,7 @@
 					<li class="home first"><a href="{% url dashboard.views.index %}"><span></span>{% trans "Dashboard" %}</a></li>
 					<li class="accounts">
 						<a href="{% url accounts.views.index %}"><span></span>{% trans "Accounts" %}</a>
-						{% accounts_block user %}
+						{% cache 500 accounts_block user.username %}{% accounts_block user %}{% endcache %}
 					</li>
 					<li class="reports"><a href="{% url reports.views.index %}"><span></span>{% trans "Reports" %}</a></li>
 					<li class="tags"><a href="{% url tags.views.index %}"><span></span>{% trans "Tags" %}</a></li>
