@@ -43,6 +43,9 @@ USE_L10N = True
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = '/mnt/project/moneydj/media/'
 
+# Expires sessions when the browser is closed
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
