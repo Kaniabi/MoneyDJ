@@ -94,7 +94,7 @@
 				else if (options.amountElement && val.slice(range.start - 1, range.start) == ':' && (event.keyCode == 58 || event.keyCode == 59 || event.keyCode == 186))
 				{
 					var cur = getCurrentWord();
-					var currentTotal = getSplitTotal($t.is('input') ? $t.val().trim() : $t.text().trim());
+					var currentTotal = getSplitTotal($t.is('input') ? $.trim($t.val()) : $.trim($t.text()));
 					var total = ($(options.amountElement).is('input') ? $(options.amountElement).val() : $(options.amountElement).text());
 					total = total.replace(/[^0-9\-+.]+/, '');
 					var value = parseFloat(total);
@@ -354,25 +354,60 @@
 	}
 	
 })(jQuery)
-			
-function setCurrentWord(word, element, multiWords)
+		
+function setCurrentWord(word, element, multiWords, allowSplit)
 {
 	var $t = jQuery(element);
+	
+	allowSplit = (typeof allowSplit == 'undefined') ? true : allowSplit;
+	
+	// If we allow multiple words, we need to do more advanced calculation
 	if (multiWords)
 	{
+		// Get the current selection
 		var range = $t.caret();
-		var lastSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
-		if (lastSpace == -1)
+		
+		// Get the last space up until the end of the current selection
+		var beforeSpace = $t.val().substr(0, range.end).lastIndexOf(' ');
+		
+		// If the cursor is at the end and we have no spaces we can just replace what we have in the field
+		if (range.start == $t.val().length && beforeSpace == -1)
 		{
-			lastSpace = (range.start == $t.val().length) ? 0 : range.start;
+			$t.val(word + (allowSplit ? '' : ' '));
+			return;
+		}
+		// Otherwise if don't have a space then we want to replace from the beginning of the field onwards
+		else if (beforeSpace == -1)
+		{
+			beforeSpace = 0;
 		}
 		
-		var cur = $t.val().substr(0, lastSpace);
-		var valFirst = cur + (cur.length > 0 ? ' ' : '') + word;
-		var val = valFirst + ($t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '');
-		$t.val(val);
-		$t.caret(valFirst.length);
+		// The current value from the beginning of the field's value to the last space
+		var before = $t.val().substr(0, beforeSpace);
+		
+		// Work out what content we have after the cursor
+		var after = $t.val().length > range.end ? ' ' + $.trim($t.val().substr(range.end)) : '';
+		
+		var afterSpace = after.indexOf(' ');
+		// If there's a space in the content after the current position, we replace up to that space
+		if (afterSpace != -1 && afterSpace != 0)
+		{
+			after = after.substr(afterSpace);
+		}
+		
+		var value = before + (before.length > 0 ? ' ' : '') + word;
+		if (after.length > 0 || !allowSplit)
+		{
+			value += ' ';
+		}
+		value += after;
+		
+		// Set the value of the element, making sure to separate everything properly
+		$t.val(value);
+		// Set the position of the caret - if we're not allowing a split this will be after the space
+		$t.caret((before + (before.length > 0 ? ' ' : '') + word).length + (allowSplit ? 0 : 1));
 	}
+	// Otherwise we just set the value of the element to the word given
 	else
 	{
 		$t.val(word);

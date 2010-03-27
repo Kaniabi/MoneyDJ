@@ -62,7 +62,7 @@ $(function() {
 		
 	$('div.tags:has(span.tags) > span.sprite', transactions).live('click', function() {
 		var $t = $(this).siblings('span.tags');
-		var text = $t.hasClass('notags') ? '' : $t.text().trim();
+		var text = $t.hasClass('notags') ? '' : $.trim($t.text());
 		var input = $('<input type="text"/>').data('tags', text).data('hastags', $t.hasClass('notags')).val(text).bind('blur.editTags', function() {
 				var $t = $(this);
 				var tags = $t.val();
@@ -185,8 +185,7 @@ $(function() {
 					ul.find('a').click(function() {
 						var $t = $(this);
 						var tags = $('#id_tags');
-						setCurrentWord($t.text(), tags, true);
-						$t.text($t.text() + " ");
+						setCurrentWord($t.text(), tags, true, false);
 						return false;
 					});
 					
@@ -270,7 +269,3 @@ function getCruft(element)
 		}
 	});
 })(jQuery);
-
-String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+$/g, '');
-}
