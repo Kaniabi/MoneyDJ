@@ -264,6 +264,23 @@ a:hover span.sprite.account_edit {
 	background-position: 0 -160px;
 }
 
+span.sprite.tag_edit {
+	background-position: 0 -176px;
+}
+a span.sprite.tag_edit {
+	background-position: -16px -176px;
+}
+a:hover span.sprite.tag_edit {
+	background-position: 0 -176px;
+}
+
+span.sprite.success {
+	background-position: 0 -192px;
+}
+span.sprite.error {
+	background-position: 0 -218px;
+}
+
 span.sprite.loading {
 	background: transparent url(../img/loading-DEE7B4.gif) top left;
 }

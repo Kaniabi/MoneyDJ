@@ -53,19 +53,22 @@ $(function() {
 	
 	// Set up the tag editing
 	var tagXhr;
-	$('div.tags span.tags:not(.uneditable)', transactions).addClass('editable').live('click', function() {
-		var $t = $(this);
-		var text = $(this).hasClass('notags') ? '' : $t.text().trim();
+	
+	$('div.tags', transactions).hover(function() {
+			$(this).find('> .sprite').removeClass('tag').addClass('tag_edit');
+		}, function() {
+			$(this).find('> .sprite').addClass('tag').removeClass('tag_edit');
+		}).find('> .sprite').css('cursor', 'pointer');
+		
+	$('div.tags:has(span.tags) > span.sprite', transactions).live('click', function() {
+		var $t = $(this).siblings('span.tags');
+		var text = $t.hasClass('notags') ? '' : $t.text().trim();
 		var input = $('<input type="text"/>').data('tags', text).data('hastags', $t.hasClass('notags')).val(text).bind('blur.editTags', function() {
 				var $t = $(this);
 				var tags = $t.val();
 				if ($t.data('tags') != tags && (tags != '' || !$t.data('hastags')))
 				{
-					var status = $t.siblings('span.status').removeClass('success error').addClass('loading');
-					if ($t.siblings('span.status').length == 0)
-					{
-						status = $t.before('<span class="sprite status loading"></span>');
-					}
+					var status = $t.parent().siblings('span.sprite').removeClass('success error tag').addClass('loading');
 					
 					if (tagXhr)
 					{
@@ -81,41 +84,66 @@ $(function() {
 						success: function(results) {
 							var c = '';
 							var tagHolder = $('#transaction-' + results.transaction + ' div.tags');
-							var holder = tagHolder.find('span.tags').removeClass('uneditable').addClass('editable');
-							var status = tagHolder.find('span.sprite.status');
+							var holder = tagHolder.find('> span.tags').removeClass('uneditable');
+							var status = tagHolder.find('> span.sprite');
 							if (results.tags.length > 0)
 							{
+								holder.empty();
 								for (var i = 0; i < results.tags.length; i++)
 								{
-									c += results.tags[i].name;
+									holder.append($('<a></a>').text(results.tags[i].name).attr('href', '/tags/view/' + results.tags[i].name));
 									if (results.tags[i].amount && results.tags[i].amount != results.total)
 									{
-										c += ':' + (Math.round(results.tags[i].amount * 100) / 100);
+										holder.append(':' + (Math.round(results.tags[i].amount * 100) / 100));
 									}
-									c += ' ';
+									holder.append(' ');
 								}
-								holder.removeClass('notags').text(c);
+								holder.removeClass('notags');
 							}
 							else
 							{
 								holder.addClass('notags').text(gettext('No tags'));
 							}
 							status.removeClass('loading').addClass('success');
+							setTimeout(function() {
+								status.removeClass('success').addClass('tag');
+							}, 3000);
 						},
 						error: function(request) {
-							$('#transaction-' + this.data.transactionId + ' div.tags span.tags').removeClass('uneditable').addClass('editable').addClass('notags').text(gettext('An error occurred')).siblings('span.sprite.status').removeClass('loading').addClass('error');
+							$('#transaction-' + this.data.transactionId + ' div.tags span.tags').removeClass('uneditable').addClass('notags').text(gettext('An error occurred')).siblings('span.sprite.status').removeClass('loading').addClass('error');
 						},
 						dataType: 'json'
 					});
 				}
 				else
 				{
-					var s = $('<span class="tags editable">' + tags + '</span>');
+					tags = tags.split(' ');
+					
+					var repl = $('<span class="tags"></span>');
+					
 					if ($t.data('hastags'))
 					{
-						s.text(gettext('No tags')).addClass('notags');
+						repl.text(gettext('No tags')).addClass('notags');
 					}
-					$t.replaceWith(s);
+					else
+					{
+						for (var i = 0; i < tags.length; i++)
+						{
+							if (tags[i].length > 0)
+							{
+								var s = tags[i].split(':', 2);
+								repl.append('<a href="/tags/view/' + s[0] + '/">' + s[0] + '</a>');
+								
+								if (s.length > 1)
+								{
+									repl.append(':' + s[1]);
+								}
+								
+								repl.append(' ');
+							}
+						}
+					}
+					$t.replaceWith(repl);
 				}
 			}).suggest({url: '/tags/suggest/', amountElement: $t.parents('td').siblings('td.money')});
 		$t.replaceWith(input);
