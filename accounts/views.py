@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
@@ -157,14 +158,16 @@ def resync(request, account):
     return redirect(reverse('moneydj.accounts.views.view', args=[account.pk]))
 
 def get_payee_suggestions(request):
+    """
+    Gets all the payees used in transactions by the current user
+    """
     if not request.GET['q']:
         return HttpResponseBadRequest()
     
-    tags = Payee.objects.filter(name__icontains=request.GET['q']).order_by('name')
+    ts = Payee.objects.select_related().filter(name__icontains=request.GET['q'], transaction__account__user=request.user).distinct().order_by('name')
     
-    response = []
-    for t in tags:
-        response.append((t.id, t.name))
+    # Build the array to return as json
+    response = [(t.id, t.name) for t in ts]
     
     return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
 
