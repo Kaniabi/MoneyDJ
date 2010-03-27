@@ -16,9 +16,9 @@
 		<ol class="form">
 			<li>{{ form.username.label_tag }} {{ form.username }}</li>
 			<li>{{ form.password.label_tag }} {{ form.password }}</li>
+			<li><input type="submit" value="{% trans "Login" %}" class="button" /></li>
 		</ol>
 		
-		<input type="submit" value="{% trans "Login" %}" class="button" />
 		<input type="hidden" name="next" value="{{ next }}" />
 		</form>
 	</div>

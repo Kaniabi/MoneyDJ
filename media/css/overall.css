@@ -340,6 +340,17 @@ tr.odd span.sprite.loading {
 }
 /* END Boxes */
 
+/* BEGIN Non-logged in styles */
+#body > div.column {
+	width: 75%;
+	margin: 0 auto;
+	padding: 5px;
+	background: #F8F8F8;
+	border-left: 4px solid #C0DD82;
+	border-right: 4px solid #C0DD82;
+}
+/* END Non-logged in styles */
+
 /* BEGIN Tables */
 #content table {
 	font-size: 1.2em;
@@ -417,6 +428,11 @@ h1 {
 	font-size: 4em;
 	margin: 0 0 0.1em 0.2em;
 	background: transparent url(../img/logo.png) no-repeat top left;
+}
+h1 a{
+	display: block;
+	height: 52px;
+	width: 250px;
 }
 h1 span {
 	display: block;
@@ -743,8 +759,8 @@ div#add_transaction_holder ol {
 /* BEGIN Footer */
 #footer {
 	clear: both;
-	background: #7f7f7f;
-	border-top: 4px solid #1a1a1a;
+	background: #F8F8F8;
+	border-top: 4px solid #C0DD82;
 }
 /* END Footer */
 
