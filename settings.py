@@ -27,6 +27,8 @@ CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 # system time zone.
 TIME_ZONE = 'Europe/London'
 
+SHORT_DATE_FORMAT = 'Y-m-d'
+
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-gb'

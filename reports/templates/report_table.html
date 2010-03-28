@@ -1,24 +1,24 @@
-<table class="report">
-	{% if report.head %}
-	<thead>
-		<tr>
-			{% for th in report.head %}
-			<th>{{ th }}</th>
+<div class="reportWrapper">
+	<table class="report">
+		{% if report.head %}
+		<thead>
+			<tr>
+				<th></th>
+				{% for th in report.head %}
+				<th>{{ th }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		{% endif %}
+		<tbody>
+			{% for tr in report.body %}
+			<tr>
+				<th scope="row">{% if tr.head %}{{ tr.head }}{% endif %}</th>
+				{% for td in tr.values %}
+				<td>{{ td }}</td>
+				{% endfor %}
+			</tr>
 			{% endfor %}
-		</tr>
-	</thead>
-	{% endif %}
-	<tbody>
-		{% for tr in report.body %}
-		<tr>
-			{% if tr.head %}
-			<th scope="row">{{ tr.value }}</th>
-			{% else %}
-			{% for td in tr.values %}
-			<td>{{ td }}</td>
-			{% endfor %}
-			{% endif %}
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+		</tbody>
+	</table>
+</div>

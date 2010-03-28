@@ -773,6 +773,11 @@ div#add_transaction_holder ol {
 	padding: 0;
 }
 
+div.reportWrapper {
+	overflow-x: scroll;
+	width: 100%;
+}
+
 /* BEGIN Footer */
 #footer {
 	clear: both;

@@ -7,5 +7,6 @@
 {% block pagetitle %}{% trans 'Reports' %}{% endblock %}
 
 {% block content %}
+<h3>{% trans 'Net Worth over Time' %}</h3>
 {% net_worth_by_time user "month" %}
 {% endblock %}

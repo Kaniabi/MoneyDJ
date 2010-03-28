@@ -1,12 +1,12 @@
 from django import template
-from money.models import Account, Transaction
-from django.db.models import Sum
-import locale
-from django.utils.dateformat import DateFormat
-import datetime
 from django.conf import settings
+from django.db.models import Sum
+from django.utils.dateformat import DateFormat
 from django.utils.translation import gettext as _
+from money.models import Account, Transaction
 from money.templatetags.money_overall import currency
+import datetime
+import locale
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -16,9 +16,9 @@ register = template.Library()
 def net_worth_by_time(user, time=None, account=None):
     
     if type(account) is Account and account.user is user:
-        transactions = Transaction.objects.filter(account=account,transfer=False)
+        transactions = Transaction.objects.select_related().filter(account=account,transfer=False)
     else:
-        transactions = Transaction.objects.filter(account__user=user,transfer=False)
+        transactions = Transaction.objects.select_related().filter(account__user=user,transfer=False,account__track_balance=True)
     
     # Day of the week
     if time == 'day':
@@ -33,19 +33,30 @@ def net_worth_by_time(user, time=None, account=None):
     else:
         extra = {'time': 'CONCAT(YEAR(`date`), MONTH(`date`))'}
         
-    credit = transactions.extra(select=extra).values('time').annotate(Sum('amount')).order_by('time')
+    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount')).order_by('time')
     
-    # Convert the result set into dictionaries of time: result
-    total = dict([(str(t['time']), t['amount__sum']) for t in credit])
+    total = {}
+    accounts = []
+    times = []
+    for t in credit:
+        if t['time'] not in times:
+            times.append(t['time'])
+        
+        if t['account__id'] not in accounts:
+            accounts.append(t['account__id'])
+            
+        # Convert the result set into associative dictionaries of account: {time: amount}
+        if not total.has_key(t['account__id']):
+            total[t['account__id']] = {t['time']: t['amount__sum']}
+        else:
+            total[t['account__id']][t['time']] = t['amount__sum']
     
     body = []
     head = []
-    values = []
     
     # Have to iterate over the sorted keys because dicts don't maintain order
-    keys = total.keys()
-    keys.sort()
-    for timekey in keys:
+    times.sort()
+    for timekey in times:
         if time == 'day':
             t = {1: _(u'Sunday'),
                  2: _(u'Monday'),
@@ -55,7 +66,8 @@ def net_worth_by_time(user, time=None, account=None):
                  6: _(u'Friday'),
                  7: _(u'Saturday'),
                  }[int(timekey)]
-        elif time == 'week' and len(timekey) > 4:
+        elif time == 'week' and len(str(timekey)) > 4:
+            timekey = str(timekey)
             year = timekey[:4]
             week = timekey[4:]
             date = iso_to_gregorian(int(year), int(week), 1)
@@ -64,6 +76,7 @@ def net_worth_by_time(user, time=None, account=None):
         elif time == 'year':
             # Don't do anything because we already have the year which is what we need
             t = unicode(timekey)
+        # Month
         elif len(timekey) > 4:
             # Split the string into year and month, then format it nicely
             year = int(timekey[:4])
@@ -84,9 +97,23 @@ def net_worth_by_time(user, time=None, account=None):
             t = month + u' ' + unicode(str(year))
         else:
             continue
+        
+        # Add the value to the head
         head.append(t)
-        values.append(currency(total[timekey], sign=1))
-    body.append({'values': values})
+        
+    # Get the accounts
+    accounts = dict([(acc.id, acc.name) for acc in Account.objects.filter(id__in=accounts)])
+    
+    for a in total:
+        values = []
+        for timekey in times:
+            if total[a].has_key(timekey):
+                values.append(currency(total[a][timekey], sign=1))
+            else:
+                values.append(currency(0, sign=1))
+        body.append({'values': values, 'head': accounts[a]})
+    
+    print body
     
     return {'report': {'head': head, 'body': body}}
 
