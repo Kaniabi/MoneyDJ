@@ -717,7 +717,7 @@ ul.accounts li {
 	padding: 0 5px;
 	float: left;
 }
-#content .dash_column > div {
+#content .dash_row div.dash_box {
 	border: 3px solid #d9d9d9;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -725,10 +725,10 @@ ul.accounts li {
 	margin-bottom: 5px;
 	background: #e8e8e8;
 }
-#content .dash_column > div > div {
+#content .dash_row div.dash_box > div {
 	padding: 0 5px 5px;
 }
-#content .dash_column > div h3 {
+#content .dash_row div.dash_box h3 {
 	padding: 5px;
 	-moz-border-radius: 6px 6px 0 0;
 	-webkit-border-top-left-radius: 6px;
@@ -738,6 +738,10 @@ ul.accounts li {
 	font-size: 1.4em;
 	margin: 0;
 	background: transparent url(../img/title-overlay.png) repeat-x 0 0;
+}
+#content .dash_row div.dash_box div.reportWrapper {
+	padding: 0;
+	margin: 10px;
 }
 /* END Dashboard */
 
@@ -775,7 +779,6 @@ div#add_transaction_holder ol {
 
 div.reportWrapper {
 	overflow-x: scroll;
-	width: 100%;
 }
 
 /* BEGIN Footer */

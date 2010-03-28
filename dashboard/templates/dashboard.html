@@ -3,63 +3,72 @@
 {% load humanize %}
 {% load tags %}
 {% load money_overall %}
+{% load reports_tags %}
 
 {% block title %}{% trans 'Dashboard' %} &bull; {% endblock %}
 
 {% block pagetitle %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-<div class="dash_column">
-	<div id="transactions">
-		<h3>{% trans 'Latest Transactions' %}</h3>
-		<div>
-			{% if transactions %}
-			<table class="transactions">
-				<tbody>
-				{% for t in transactions %}
-					{% ifchanged t.date %}
-					<tr>
-						<th class="date" colspan="3">{{ t.date|naturalday|capfirst }}</th>
-					</tr>
-					{% endifchanged %}
-					<tr class="{% cycle 'odd' 'even' %}">
-						{% include 'transaction_row.html' %}
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-			{% else %}
-			<p>{% trans 'No recent transactions' %}</p>
-			{% endif %}
-		</div>
+<div class="dash_row">
+	<div class="dash_box">
+		<h3>{% trans 'Net Worth' %}</h3>
+		{% net_worth_by_time user 'month' %}
 	</div>
 </div>
-
-<div class="dash_column">
-	<div id="tags">
-		<h3><a href="{% url tags.views.index %}">{% trans 'Tags' %}</a></h3>
-		<div>
-			{% cloud user %}
+<div class="dash_row">
+	<div class="dash_column">
+		<div id="transactions" class="dash_box">
+			<h3>{% trans 'Latest Transactions' %}</h3>
+			<div>
+				{% if transactions %}
+				<table class="transactions">
+					<tbody>
+					{% for t in transactions %}
+						{% ifchanged t.date %}
+						<tr>
+							<th class="date" colspan="3">{{ t.date|naturalday|capfirst }}</th>
+						</tr>
+						{% endifchanged %}
+						<tr class="{% cycle 'odd' 'even' %}">
+							{% include 'transaction_row.html' %}
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				{% else %}
+				<p>{% trans 'No recent transactions' %}</p>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 	
-	<div id="accounts">
-		<h3><a href="{% url accounts.views.index %}">{% trans 'Accounts' %}</a></h3>
-		<div>
-			<table class="transactions">
-				<tbody>
-					{% for a in accounts %}
-					<tr class="{% cycle 'odd' 'even' %}">
-						<td><a href="{% url accounts.views.view a.id %}"><span class="sprite account"></span> {{ a.name }}</a></td>
-						<td class="money{% if a.balance < 0 %} out{% endif %}">{% if a.track_balance %}{% currency a.balance a.currency 1 %}{% endif %}</td>
-					</tr>
-					{% empty %}
-					<tr>
-						<td colspan="2">{% trans "You currently don't have any accounts set up. To get started, click the 'Add Account' button to the left" %}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+	<div class="dash_column">
+		<div id="tags" class="dash_box">
+			<h3><a href="{% url tags.views.index %}">{% trans 'Tags' %}</a></h3>
+			<div>
+				{% cloud user %}
+			</div>
+		</div>
+		
+		<div id="accounts" class="dash_box">
+			<h3><a href="{% url accounts.views.index %}">{% trans 'Accounts' %}</a></h3>
+			<div>
+				<table class="transactions">
+					<tbody>
+						{% for a in accounts %}
+						<tr class="{% cycle 'odd' 'even' %}">
+							<td><a href="{% url accounts.views.view a.id %}"><span class="sprite account"></span> {{ a.name }}</a></td>
+							<td class="money{% if a.balance < 0 %} out{% endif %}">{% if a.track_balance %}{% currency a.balance a.currency 1 %}{% endif %}</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="2">{% trans "You currently don't have any accounts set up. To get started, click the 'Add Account' button to the left" %}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
