@@ -113,8 +113,6 @@ def net_worth_by_time(user, time=None, account=None):
                 values.append(currency(0, sign=1))
         body.append({'values': values, 'head': accounts[a]})
     
-    print body
-    
     return {'report': {'head': head, 'body': body}}
 
 def iso_year_start(iso_year):

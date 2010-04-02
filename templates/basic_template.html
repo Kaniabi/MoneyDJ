@@ -17,36 +17,39 @@
 	</head>
 
 	<body>
-		<div id="header">
-			<div class="main">
-				<h1><a href="{% if user.is_authenticated %}{% url dashboard.views.index %}{% else %}{% url money.views.index %}{% endif %}"><span>MoneyDJ</span></a></h1>
-				<div id="userbox">
-				{% if user.is_authenticated %}
-					<img src="{{ MEDIA_URL }}/img/user.png" alt=""/>
-					<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
-					<ul>
-						<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
-						<li><a href="{% url django.contrib.auth.views.logout_then_login %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
-					</ul>
-				{% else %}
-					<ul>
-						<li><a href="{% url django.contrib.auth.views.login %}"><span class="sprite login"></span>{% trans 'Login' %}</a></li>
-						<li><a href="{% url moneyuser.views.register %}"><span class="sprite register"></span>{% trans 'Register' %}</a></li>
-					</ul>
-				{% endif %}
+		<div id="wrap">
+			<div id="header">
+				<div class="main">
+					<h1><a href="{% if user.is_authenticated %}{% url dashboard.views.index %}{% else %}{% url money.views.index %}{% endif %}"><span>MoneyDJ</span></a></h1>
+					<div id="userbox">
+					{% if user.is_authenticated %}
+						<img src="{{ MEDIA_URL }}/img/user.png" alt=""/>
+						<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
+						<ul>
+							<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
+							<li><a href="{% url django.contrib.auth.views.logout_then_login %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
+						</ul>
+					{% else %}
+						<ul>
+							<li><a href="{% url django.contrib.auth.views.login %}"><span class="sprite login"></span>{% trans 'Login' %}</a></li>
+							<li><a href="{% url moneyuser.views.register %}"><span class="sprite register"></span>{% trans 'Register' %}</a></li>
+						</ul>
+					{% endif %}
+					</div>
+				</div>
+				<div id="nav">
+					{% block nav %}{% endblock %}
+					<div class="end"></div>
 				</div>
 			</div>
-			<div id="nav">
-				{% block nav %}{% endblock %}
-				<div class="end"></div>
+			<div id="body">
+				{% block body %}{% endblock body %}
 			</div>
-		</div>
-		<div id="body">
-			{% block body %}{% endblock body %}
+			<div id="push"></div>
 		</div>
 		<div id="footer">
+			<span class="copy">© 2010 Joe Ray</span>
 			{% block footer %}
-			(C) 2010 Joe Ray
 			{% endblock footer %}
 		</div>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
