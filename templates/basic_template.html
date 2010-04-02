@@ -26,7 +26,7 @@
 					<p>{% trans "Welcome back" %}, <strong>{{ user.username }}</strong></p>
 					<ul>
 						<li><a href="{% url moneyuser.views.profile %}"><span class="sprite profile"></span>{% trans "Profile" %}</a></li>
-						<li><a href="{% url django.contrib.auth.views.logout %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
+						<li><a href="{% url django.contrib.auth.views.logout_then_login %}"><span class="sprite logout"></span>{% trans "Logout" %}</a></li>
 					</ul>
 				{% else %}
 					<ul>
