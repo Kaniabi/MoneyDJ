@@ -1,18 +1,46 @@
 /* General Styles */
+* {
+	margin: 0;
+}
+
 body {
 	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 62.5%;
-	margin: 0;
 	padding: 0;
 	background: url('../img/background.png');
 	color: #1A1A1A;
 }
 
+/* Sticky Footer based on code at: http://www.cssstickyfooter.com/using-sticky-footer-code.html */
+html, body, #wrap {height: 100%;}
+
+#wrap {
+	height: auto !important;
+	min-height: 100%;
+	height: 100%;
+	margin: 0 auto -64px;
+}
+
+#push {
+	height: 64px;
+	clear: both;
+}  /* must be same height as the footer */
+
+#footer {
+	height: 50px;
+	clear: both;
+	background: #B5BD92;
+	border-top: 4px solid #C0DD82;
+	padding: 5px;
+	text-align: center;
+}
+
+
 a:link, a:visited {
 	color: #642019;
 	text-decoration: none;
 }
-a:hover, a:active {
+a:hover, a:focus, a:active {
 	color: #5c3566;
 }
 
@@ -149,129 +177,100 @@ span.sprite {
 	height: 16px;
 	width: 16px;
 	background: transparent url('../img/sprites.png') no-repeat 16px 0;
-	vertical-align: middle;
+	vertical-align: bottom;
 	overflow: hidden;
 	text-indent: 20px;
 }
 
-span.sprite.profile {
+span.sprite.profile, a:hover span.sprite.profile, a:focus span.sprite.profile {
 	background-position: 0 0;
 }
 a span.sprite.profile {
 	background-position: -16px 0;
 }
-a:hover span.sprite.profile {
-	background-position: 0 0;
-}
 
-span.sprite.logout {
+span.sprite.logout, a:hover span.sprite.logout, a:focus span.sprite.logout {
 	background-position: 0 -16px;
 }
 a span.sprite.logout {
 	background-position: -16px -16px;
 }
-a:hover span.sprite.logout {
-	background-position: 0 -16px;
-}
 
-span.sprite.add {
+span.sprite.add, a:hover span.sprite.add, a:focus span.sprite.add {
 	background-position: 0 -32px;
 }
 a span.sprite.add {
 	background-position: -16px -32px;
 }
-a:hover span.sprite.add {
-	background-position: 0 -32px;
-}
 
-span.sprite.account {
+span.sprite.account, a:hover span.sprite.account, a:focus span.sprite.account {
 	background-position: 0 -48px;
 }
 a span.sprite.account {
 	background-position: -16px -48px;
 }
-a:hover span.sprite.account {
-	background-position: 0 -48px;
-}
 
-span.sprite.mobile {
+span.sprite.mobile, a:hover span.sprite.mobile, a:focus span.sprite.mobile {
 	background-position: 0 -64px;
 }
 a span.sprite.mobile {
 	background-position: -16px -64px;
 }
-a:hover span.sprite.mobile {
-	background-position: 0 -64px;
-}
 
-span.sprite.tag {
+span.sprite.tag, a:hover span.sprite.tag, a:focus span.sprite.tag {
 	background-position: 0 -80px;
 }
 a span.sprite.tag {
 	background-position: -16px -80px;
 }
-a:hover span.sprite.tag {
-	background-position: 0 -80px;
-}
 
-span.sprite.transaction_edit {
+span.sprite.transaction_edit, a:hover span.sprite.transaction_edit, a:focus span.sprite.transaction_edit {
 	background-position: 0 -96px;
 }
 a span.sprite.transaction_edit {
 	background-position: -16px -96px;
 }
-a:hover span.sprite.transaction_edit {
-	background-position: 0 -96px;
-}
 
-span.sprite.delete {
+span.sprite.delete, a:hover span.sprite.delete, a:focus span.sprite.delete {
 	background-position: 0 -112px;
 }
 a span.sprite.delete {
 	background-position: -16px -112px;
 }
-a:hover span.sprite.delete {
-	background-position: 0 -112px;
-}
 
-span.sprite.comment {
+span.sprite.comment, a:hover span.sprite.comment, a:focus span.sprite.comment {
 	background-position: 0 -128px;
 }
 a span.sprite.comment {
 	background-position: -16px -128px;
 }
-a:hover span.sprite.comment {
-	background-position: 0 -128px;
-}
 
-span.sprite.refresh {
+span.sprite.refresh, a:hover span.sprite.refresh, a:focus span.sprite.refresh {
 	background-position: 0 -144px;
 }
 a span.sprite.refresh {
 	background-position: -16px -144px;
 }
-a:hover span.sprite.refresh {
-	background-position: 0 -144px;
-}
 
-span.sprite.account_edit {
+span.sprite.account_edit, a:hover span.sprite.account_edit, a:focus span.sprite.account_edit {
 	background-position: 0 -160px;
 }
 a span.sprite.account_edit {
 	background-position: -16px -160px;
 }
-a:hover span.sprite.account_edit {
-	background-position: 0 -160px;
-}
 
-span.sprite.tag_edit {
+span.sprite.tag_edit, a:hover span.sprite.tag_edit, a:focus span.sprite.tag_edit {
 	background-position: 0 -176px;
 }
 a span.sprite.tag_edit {
 	background-position: -16px -176px;
 }
-a:hover span.sprite.tag_edit {
-	background-position: 0 -176px;
+
+span.sprite.login, a:hover span.sprite.login, a:focus span.sprite.login {
+	background-position: 0 -224px;
+}
+a span.sprite.login {
+	background-position: -16px -224px;
 }
 
 span.sprite.success {
@@ -361,10 +360,14 @@ tr.odd span.sprite.loading {
 #body > div.column {
 	width: 75%;
 	margin: 0 auto;
-	padding: 5px;
+	padding: 10px;
 	background: #F8F8F8;
-	border-left: 4px solid #C0DD82;
-	border-right: 4px solid #C0DD82;
+	border: 4px solid #C0DD82;
+	border-top: 0;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
 }
 /* END Non-logged in styles */
 
@@ -423,7 +426,7 @@ tr.odd span.sprite.loading {
 	font-weight: normal;
 }
 #content table.transactions tr div.actions { float: left; margin-left: -9999px; margin-right: 20px; }
-#content table.transactions tr:hover div.actions { display: block; margin: 0 4px 0 0; width: 16px; }
+#content table.transactions tr:hover div.actions { margin: 0 4px 0 0; width: 16px; }
 #content table td.money, span.money { text-align: right; font-weight: bold; color: #4d4d4d; }
 #content table td.money.in { color: #7CAF62; }
 #content table td.money.out, span.money.out, #content table.transactions div.tags span.notags { color: #c91200; }
@@ -488,6 +491,7 @@ h1 span {
 #userbox ul li a {
 	font-weight: bold;
 }
+#userbox ul li span.sprite { margin-right: 2px; }
 /* END Header */
 
 /* BEGIN Navigation */
@@ -713,8 +717,7 @@ ul.accounts li {
 
 /* BEGIN Dashboard */
 #content .dash_column {
-	width: 48%;
-	padding: 0 5px;
+	width: 50%;
 	float: left;
 }
 #content .dash_row div.dash_box {
@@ -722,7 +725,7 @@ ul.accounts li {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	margin-bottom: 5px;
+	margin: 0 5px 5px;
 	background: #e8e8e8;
 }
 #content .dash_row div.dash_box > div {
@@ -749,7 +752,7 @@ ul.accounts li {
 div.tagCloud { position: relative; }
 div.tagCloud ol { margin: 0; text-align: center; font-size: 120%; padding: 0; }
 div.tagCloud ol li { list-style: none; display: inline; margin: 0.1em; }
-div.tagCloud ol li span { left: -9999px; position: absolute; width: 9990px; }
+div.tagCloud ol li span { left: -9999px; position: absolute; }
 div.tagCloud ol li.tag-1 { font-size: 0.6em; }
 div.tagCloud ol li.tag-2 { font-size: 0.8em; }
 div.tagCloud ol li.tag-3 { font-size: 1em; }
@@ -781,14 +784,5 @@ div.reportWrapper {
 	overflow-x: scroll;
 }
 
-/* BEGIN Footer */
-#footer {
-	clear: both;
-	background: #F8F8F8;
-	border-top: 4px solid #C0DD82;
-}
-/* END Footer */
-
 /* UI Tweaks */
-#ui-datepicker-div { z-index: 9999; }
- */
+#ui-datepicker-div { z-index: 9999; display: none; }
