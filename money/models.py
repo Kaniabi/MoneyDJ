@@ -200,7 +200,7 @@ class TagLink(models.Model):
             if not name:
                 continue
 
-            if split != None:
+            if split:
                 try:
                     split = float(split)
                     # Use the total amount if the split is invalid

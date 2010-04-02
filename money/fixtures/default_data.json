@@ -346,6 +346,10 @@
     "model" : "money.payee",
     "pk" : 9
   },
+  { "fields" : { "name" : "Other Work" },
+    "model" : "money.payee",
+    "pk" : 10
+  },
   { "fields" : { "name" : "Barclay's" },
     "model" : "money.bank",
     "pk" : 1
@@ -354,7 +358,7 @@
     "model" : "money.bank",
     "pk" : 2
   },
-  { "fields" : { "balance" : "1522.53",
+  { "fields" : { "balance" : "3701.55",
         "balance_updated" : "2010-04-02 13:01:15",
         "bank" : null,
         "currency" : "£",
@@ -369,7 +373,7 @@
     "model" : "money.account",
     "pk" : 1
   },
-  { "fields" : { "balance" : "719.27",
+  { "fields" : { "balance" : "4824.58",
         "balance_updated" : "2010-04-02 13:01:17",
         "bank" : 2,
         "currency" : "£",
@@ -384,7 +388,7 @@
     "model" : "money.account",
     "pk" : 2
   },
-  { "fields" : { "balance" : "377.70",
+  { "fields" : { "balance" : "3138.21",
         "balance_updated" : "2010-04-02 13:01:19",
         "bank" : 2,
         "currency" : "£",
@@ -4496,6 +4500,18 @@
       },
     "model" : "money.transaction",
     "pk" : 339
+  },
+  { "fields" : { "account" : 5,
+        "amount" : "-75.00",
+        "comment" : "",
+        "date" : "2009-09-01",
+        "date_created" : "2010-04-02 13:01:21",
+        "mobile" : false,
+        "payee" : 10,
+        "transfer" : false
+      },
+    "model" : "money.transaction",
+    "pk" : 340
   },
   { "fields" : { "split" : "827.59",
         "tag" : 1,

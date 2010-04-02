@@ -158,7 +158,7 @@ def get_payee_suggestions(request):
     """
     Gets all the payees used in transactions by the current user
     """
-    if not request.GET['q']:
+    if 'q' not in request.GET.keys() or not request.GET['q']:
         return HttpResponseBadRequest()
     
     ts = Payee.objects.select_related().filter(name__icontains=request.GET['q'], transaction__account__user=request.user).distinct().order_by('name')
