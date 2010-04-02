@@ -414,6 +414,21 @@
     "model" : "money.account",
     "pk" : 4
   },
+  { "fields" : { "balance" : "0.00",
+        "balance_updated" : "2010-04-02 11:54:30",
+        "bank" : null,
+        "currency" : "£",
+        "date_created" : "2010-04-02 11:54:54",
+        "name" : "Fred's Cash",
+        "number" : null,
+        "sort_code" : "",
+        "starting_balance" : "0.00",
+        "track_balance" : false,
+        "user" : 1
+      },
+    "model" : "money.account",
+    "pk" : 5
+  },
   { "fields" : { "account" : 1,
         "amount" : "827.59",
         "comment" : "",

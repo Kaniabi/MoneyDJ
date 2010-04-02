@@ -75,6 +75,7 @@ def add(request):
         form = AccountForm()
     return render_to_response('account_add.html', {'form': form}, context_instance=RequestContext(request))
 
+@login_required
 def edit(request, id):
     """ Edit an account """
     acc = get_object_or_404(Account, pk=id, user=request.user)
@@ -94,11 +95,6 @@ def edit(request, id):
         form = AccountForm(instance=acc)
     
     return render_to_response('account_edit.html', {'form': form, 'account': acc}, context_instance=RequestContext(request))
-
-@login_required
-def add_transaction(request, account):
-    """Adds a transaction to the specified account"""
-    pass
 
 @login_required
 def tag_transaction(request, transaction):
@@ -157,6 +153,7 @@ def resync(request, account):
     account.update_balance(True)
     return redirect(reverse('moneydj.accounts.views.view', args=[account.pk]))
 
+@login_required
 def get_payee_suggestions(request):
     """
     Gets all the payees used in transactions by the current user
