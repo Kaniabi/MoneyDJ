@@ -30,10 +30,12 @@ def net_worth_by_time(user, time=None, account=None):
     elif time == 'year':
         extra = {'time': 'YEAR(`date`)'}
     # Month (and year)
-    else:
+    elif time == 'month' or time is None:
         extra = {'time': 'CONCAT(YEAR(`date`), MONTH(`date`))'}
+    else:
+        raise ValueError, time + ' is not a valid time value'
         
-    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount')).order_by('time')
+    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount')).order_by('date')
     
     total = {}
     accounts = []
@@ -54,8 +56,6 @@ def net_worth_by_time(user, time=None, account=None):
     body = []
     head = []
     
-    # Have to iterate over the sorted keys because dicts don't maintain order
-    times.sort()
     for timekey in times:
         if time == 'day':
             t = {1: _(u'Sunday'),
