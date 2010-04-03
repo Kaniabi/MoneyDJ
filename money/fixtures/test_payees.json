@@ -1,0 +1,40 @@
+[{ "fields" : { "name" : "British Gas" },
+    "model" : "money.payee",
+    "pk" : 8
+  },
+  { "fields" : { "name" : "HMV" },
+    "model" : "money.payee",
+    "pk" : 4
+  },
+  { "fields" : { "name" : "Homebase" },
+    "model" : "money.payee",
+    "pk" : 3
+  },
+  { "fields" : { "name" : "Nando's" },
+    "model" : "money.payee",
+    "pk" : 6
+  },
+  { "fields" : { "name" : "npower" },
+    "model" : "money.payee",
+    "pk" : 7
+  },
+  { "fields" : { "name" : "Sainsbury's" },
+    "model" : "money.payee",
+    "pk" : 5
+  },
+  { "fields" : { "name" : "Tesco's" },
+    "model" : "money.payee",
+    "pk" : 1
+  },
+  { "fields" : { "name" : "Wagamama" },
+    "model" : "money.payee",
+    "pk" : 2
+  },
+  { "fields" : { "name" : "Work" },
+    "model" : "money.payee",
+    "pk" : 9
+  },
+  { "fields" : { "name" : "Other Work" },
+    "model" : "money.payee",
+    "pk" : 10
+  }]

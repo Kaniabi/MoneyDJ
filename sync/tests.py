@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 
 class SyncTest(TestCase):
-    fixtures = ['default_data']
+    fixtures = ['test_users', 'test_accounts']
     
     def test_accounts_logged_out_bad(self):
         async = reverse('sync-accounts')
@@ -50,7 +50,7 @@ class SyncTest(TestCase):
         r = self.client.post(reverse('sync-accounts'), {'username': 'bob', 'password': 'bob'})
         self.assertEqual(r.status_code, 200)
         
-        self.accounts_test_helper(r, 2, [1, 4])
+        self.accounts_test_helper(r, 2, (1, 4))
     
     def test_accounts_logged_in(self):
         """
@@ -60,6 +60,18 @@ class SyncTest(TestCase):
         
         r = self.client.get(reverse('sync-accounts'))
         self.assertEqual(r.status_code, 200)
-        self.accounts_test_helper(r, 3, [2, 3, 5])
+        self.accounts_test_helper(r, 3, (2, 3, 5))
         
         self.client.logout()
+        
+    def test_transactions_logged_out_bad(self):
+        pass
+    
+    def test_transactions_logged_out(self):
+        pass
+    
+    def test_transactions_logged_in_bad(self):
+        pass
+    
+    def test_transactions_logged_in(self):
+        pass

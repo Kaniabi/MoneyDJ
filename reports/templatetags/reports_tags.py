@@ -46,6 +46,8 @@ def net_worth_by_time(user, time=None, account=None):
     total = {}
     accounts = []
     times = []
+    
+    # Build arrays of account ids and 'time' values used in the query
     for t in credit:
         if t['time'] not in times:
             times.append(t['time'])
@@ -117,7 +119,7 @@ def net_worth_by_time(user, time=None, account=None):
                 values.append(currency(total[a][timekey], sign=1))
             else:
                 values.append(currency(0, sign=1))
-        body.append({'values': values, 'head': accounts[a]})
+        body.append({'head': accounts[a], 'values': values, 'id': 'account-' + str(a)})
     
     return {'report': {'head': head, 'body': body}}
 

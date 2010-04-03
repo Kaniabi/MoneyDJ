@@ -12,7 +12,7 @@
 		{% endif %}
 		<tbody>
 			{% for tr in report.body %}
-			<tr>
+			<tr id="{{ tr.id }}">
 				<th scope="row">{% if tr.head %}{{ tr.head }}{% endif %}</th>
 				{% for td in tr.values %}
 				<td>{{ td }}</td>

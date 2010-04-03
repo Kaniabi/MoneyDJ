@@ -13,7 +13,7 @@ class MoneyUserLoggedOutTest(TestCase):
         self.assertRedirects(r, reverse('user-login') + '?next=' + urllib.quote(reverse('user-profile')))
         
 class MoneyUserLoggedInTest(TestCase):
-    fixtures = ['default_data']
+    fixtures = ['test_users']
     
     def setUp(self):
         self.client.login(username='bob', password='bob')

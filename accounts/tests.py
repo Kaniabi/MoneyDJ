@@ -47,9 +47,10 @@ class LoggedOutAccountsTest(TestCase):
         
 class BobAccountsTest(TestCase):
     """
-    Tests the accounts application with a logged in user
+    Test the parts of the accounts application that don't require the large data 
+    sets (makes it faster!) with a logged in user
     """
-    fixtures = ['default_data.json']
+    fixtures = ['test_users', 'test_accounts']
     
     def setUp(self):
         self.client.login(username='bob', password='bob') or self.fail('Could not log in as Bob')
@@ -77,6 +78,74 @@ class BobAccountsTest(TestCase):
             response.context['user']
         except KeyError:
             self.fail('Not using RequestContext')
+            
+    def test_view_other(self):
+        """
+        Makes sure you cannot view someone else's accounts
+        """
+        response = self.client.get(reverse('account-view', args=[3]))
+        self.assertEquals(response.status_code, 404)
+    
+    def test_edit(self):
+        """
+        Makes sure the edit account page displays properly
+        """
+        response = self.client.get(reverse('account-edit', args=[1]))
+        self.assertEquals(response.status_code, 200)
+        
+        a = Account.objects.get(pk=1)
+        
+        # Check we're showing the right account
+        try:
+            self.assertEquals(response.context['account'], a)
+        except KeyError:
+            self.fail('account is not in the template context')
+        
+        # Make sure we're using the AccountForm
+        try:
+            self.failUnless(isinstance(response.context['form'], AccountForm), "The form is not an AccountForm")
+        except KeyError:
+            self.fail('Not using a form')
+        
+        # Make sure we're using the RequestContext
+        try:
+            response.context['user']
+        except KeyError:
+            self.fail('Not using RequestContext')
+        
+    def test_edit_other(self):
+        """
+        Makes sure you cannot edit someone else's accounts
+        """
+        response = self.client.get(reverse('account-edit', args=[3]))
+        self.assertEquals(response.status_code, 404)
+        
+    def test_tag_transaction_other(self):
+        """
+        Ensures you can't tag someone else's transaction
+        """
+        response = self.client.post(reverse('transaction-tag', args=[103]), {'tags': 'cds:15 dvds:12:37 presents birthdays entertainment'})
+        self.assertEquals(response.status_code, 404)
+        
+    def test_get_payee_suggestions_bad(self):
+        """ Makes sure that requests for payee suggestions that are malformed are rejected """
+         
+        response = self.client.get(reverse('payee-suggestions'), {})
+        self.assertEquals(response.status_code, 400)
+        
+        response = self.client.post(reverse('payee-suggestions'), {'q': 'work'})
+        self.assertEquals(response.status_code, 400)
+        
+class BobAccountsTransactionsTest(TestCase):
+    """
+    Tests the parts of the accounts application that require the large data sets
+    with a logged in user
+    """
+    fixtures = ['test_users', 'test_accounts', 'test_payees', 'test_transactions']
+    
+    def setUp(self):
+        self.client.login(username='bob', password='bob') or self.fail('Could not log in as Bob')
+        self.user = User.objects.get(username='bob')
         
     def test_view_own(self):
         response = self.client.get(reverse('account-view', args=[1]))
@@ -131,73 +200,6 @@ class BobAccountsTest(TestCase):
         
         # Check the balance of the Account has been updated
         self.assertEqual(a.balance, Decimal('3578.01'))
-            
-    def test_view_other(self):
-        """
-        Makes sure you cannot view someone else's accounts
-        """
-        response = self.client.get(reverse('account-view', args=[3]))
-        self.assertEquals(response.status_code, 404)
-    
-    def test_edit(self):
-        """
-        Makes sure the edit account page displays properly
-        """
-        response = self.client.get(reverse('account-edit', args=[1]))
-        self.assertEquals(response.status_code, 200)
-        
-        a = Account.objects.get(pk=1)
-        
-        # Check we're showing the right account
-        try:
-            self.assertEquals(response.context['account'], a)
-        except KeyError:
-            self.fail('account is not in the template context')
-        
-        # Make sure we're using the AccountForm
-        try:
-            self.failUnless(isinstance(response.context['form'], AccountForm), "The form is not an AccountForm")
-        except KeyError:
-            self.fail('Not using a form')
-        
-        # Make sure we're using the RequestContext
-        try:
-            response.context['user']
-        except KeyError:
-            self.fail('Not using RequestContext')
-            
-    def test_edit_post(self):
-        """
-        Makes sure the edit account form works properly
-        """
-        orig_a = Account.objects.get(pk=1)
-        
-        balance = orig_a.balance - 500
-        
-        response = self.client.post(reverse('account-edit', args=[1]), {
-                'name': u"Bob's Updated Account",
-                'number': u'',
-                'sort_code': u'',
-                'bank': u'',
-                'currency': u'£',
-                'balance': balance
-            })
-        self.assertRedirects(response, reverse('account-view', args=[1]))
-        
-        a = Account.objects.get(pk=1)
-        
-        # Check all the attributes got updated properly
-        self.assertEquals(a.name, u"Bob's Updated Account")
-        self.assertEquals(a.track_balance, False)
-        self.assertEquals(a.balance, balance)
-        self.assertEquals(a.starting_balance, orig_a.starting_balance - 500)
-        
-    def test_edit_other(self):
-        """
-        Makes sure you cannot edit someone else's accounts
-        """
-        response = self.client.get(reverse('account-edit', args=[3]))
-        self.assertEquals(response.status_code, 404)
         
     def test_tag_transaction_bad(self):
         """
@@ -230,22 +232,32 @@ class BobAccountsTest(TestCase):
         self.assertEquals(unicode(tags[2]), u'Work - other')
         # This tag was malformed so it should just be the full amount
         self.assertEquals(tags[2].split, Decimal('827.59'))
-        
-    def test_tag_transaction_other(self):
+            
+    def test_edit_post(self):
         """
-        Ensures you can't tag someone else's transaction
+        Makes sure the edit account form works properly
         """
-        response = self.client.post(reverse('transaction-tag', args=[103]), {'tags': 'cds:15 dvds:12:37 presents birthdays entertainment'})
-        self.assertEquals(response.status_code, 404)
+        orig_a = Account.objects.get(pk=1)
         
-    def test_get_payee_suggestions_bad(self):
-        """ Makes sure that requests for payee suggestions that are malformed are rejected """
-         
-        response = self.client.get(reverse('payee-suggestions'), {})
-        self.assertEquals(response.status_code, 400)
+        balance = orig_a.balance - 500
         
-        response = self.client.post(reverse('payee-suggestions'), {'q': 'work'})
-        self.assertEquals(response.status_code, 400)
+        response = self.client.post(reverse('account-edit', args=[1]), {
+                'name': u"Bob's Updated Account",
+                'number': u'',
+                'sort_code': u'',
+                'bank': u'',
+                'currency': u'£',
+                'balance': balance
+            })
+        self.assertRedirects(response, reverse('account-view', args=[1]))
+        
+        a = Account.objects.get(pk=1)
+        
+        # Check all the attributes got updated properly
+        self.assertEquals(a.name, u"Bob's Updated Account")
+        self.assertEquals(a.track_balance, False)
+        self.assertEquals(a.balance, balance)
+        self.assertEquals(a.starting_balance, orig_a.starting_balance - 500)
         
     def test_get_payee_suggestions(self):
         """ Tests the payee suggestions view """

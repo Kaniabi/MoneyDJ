@@ -12,7 +12,7 @@ class ReportsLoggedOutTest(TestCase):
         self.assertRedirects(r, reverse('user-login') + '?next=' + urllib.quote(index))
         
 class ReportsLoggedInTest(TestCase):
-    fixtures = ['default_data']
+    fixtures = ['test_users']
     def setUp(self):
         self.client.login(username='bob', password='bob')
     
@@ -21,7 +21,7 @@ class ReportsLoggedInTest(TestCase):
         self.assertEqual(r.status_code, 200)
         
 class ReportsTagsTest(TestCase):
-    fixtures = ['default_data']
+    fixtures = ['test_users', 'test_accounts', 'test_payees', 'test_transactions']
     
     def test_net_worth_by_time(self):
         u = User.objects.get(pk=3)
@@ -33,6 +33,7 @@ class ReportsTagsTest(TestCase):
         expected = {'report': {
             'body': [{
                 'head': u"Fred's Current Account",
+                'id': 'account-2',
                 'values': [
                     '1,523.47',
                     '-115.16',
@@ -50,6 +51,7 @@ class ReportsTagsTest(TestCase):
                     ]
                 }, {
                 'head': u"Fred's Savings Account",
+                'id': 'account-3',
                 'values': [
                     '-696.38',
                     '491.96',
@@ -91,6 +93,7 @@ class ReportsTagsTest(TestCase):
         expected = {'report': {
             'body': [{
                 'head': u"Fred's Current Account",
+                'id': 'account-2',
                 'values': [
                     '2,183.81',
                     '-469.40',
@@ -102,6 +105,7 @@ class ReportsTagsTest(TestCase):
                     ]
                 }, {
                 'head': u"Fred's Savings Account",
+                'id': 'account-3',
                 'values': [
                     '910.14',
                     '-457.75',

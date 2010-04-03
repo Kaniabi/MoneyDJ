@@ -14,7 +14,7 @@ class LoggedOutTest(TestCase):
         self.assertRedirects(r, reverse('user-login'))
 
 class LoggedInTest(TestCase):
-    fixtures = ['default_data']
+    fixtures = ['test_users']
     def setUp(self):
         self.client.login(username='bob', password='bob')
     
@@ -29,7 +29,7 @@ class TransactionTest(TestCase):
     """
     Tests the transaction class functions
     """
-    fixtures = ['default_data']
+    fixtures = ['test_users', 'test_accounts', 'test_payees', 'test_transactions']
     
     def test_add_positive(self):
         a = Account.objects.get(pk=1)
@@ -106,7 +106,7 @@ class AccountTest(TestCase):
     """
     Tests the Account model
     """
-    fixtures = ['default_data']
+    fixtures = ['test_users', 'test_payees', 'test_accounts', 'test_transactions']
     
     def test_update_balance(self):
         # Make sure the Transaction model doesn't update the account
@@ -166,7 +166,7 @@ class TagLinkTest(TestCase):
     """
     Tests the TagLink model
     """
-    fixtures = ['default_data']
+    fixtures = ['test_users', 'test_accounts', 'test_payees', 'test_tags']
     
     def test_create_relationships(self):
         a = Account.objects.get(pk=4)

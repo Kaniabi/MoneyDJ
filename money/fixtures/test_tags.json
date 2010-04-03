@@ -1,0 +1,44 @@
+[{ "fields" : { "name" : "birthdays" },
+    "model" : "money.tag",
+    "pk" : 5
+  },
+  { "fields" : { "name" : "cds" },
+    "model" : "money.tag",
+    "pk" : 10
+  },
+  { "fields" : { "name" : "dvds" },
+    "model" : "money.tag",
+    "pk" : 3
+  },
+  { "fields" : { "name" : "electricity" },
+    "model" : "money.tag",
+    "pk" : 47
+  },
+  { "fields" : { "name" : "entertainment" },
+    "model" : "money.tag",
+    "pk" : 11
+  },
+  { "fields" : { "name" : "food" },
+    "model" : "money.tag",
+    "pk" : 2
+  },
+  { "fields" : { "name" : "garden" },
+    "model" : "money.tag",
+    "pk" : 187
+  },
+  { "fields" : { "name" : "gas" },
+    "model" : "money.tag",
+    "pk" : 23
+  },
+  { "fields" : { "name" : "household" },
+    "model" : "money.tag",
+    "pk" : 7
+  },
+  { "fields" : { "name" : "presents" },
+    "model" : "money.tag",
+    "pk" : 4
+  },
+  { "fields" : { "name" : "work" },
+    "model" : "money.tag",
+    "pk" : 1
+  }]
