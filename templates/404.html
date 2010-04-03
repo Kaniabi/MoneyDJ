@@ -1,0 +1,9 @@
+{% extends 'basic_template.html' %}
+{% load i18n %}
+
+{% block body %}
+<div class="column">
+	<h2>{% trans "Whoops! We can't find what you're looking for" %}</h2>
+	<p>{% trans "It looks like you've tried to get to a page that doesn't exist." %}</p>
+</div>
+{% endblock body %}
