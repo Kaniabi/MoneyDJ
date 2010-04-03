@@ -35,7 +35,13 @@ def net_worth_by_time(user, time=None, account=None):
     else:
         raise ValueError, time + ' is not a valid time value'
         
-    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount')).order_by('date')
+    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount'))
+    
+    # day needs to be sorted differently than the others because it's a more arbitrary aggregation
+    if time == 'day':
+        credit = credit.order_by('time')
+    else:
+        credit = credit.order_by('date')
     
     total = {}
     accounts = []

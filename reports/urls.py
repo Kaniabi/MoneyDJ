@@ -1,5 +1,5 @@
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('moneydj.reports.views',
-    (r'^$', 'index')
+    url(r'^$', 'index', name='reports-index')
 )
