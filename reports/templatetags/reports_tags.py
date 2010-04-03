@@ -14,17 +14,16 @@ register = template.Library()
 
 @register.inclusion_tag('report_table.html')
 def net_worth_by_time(user, time=None, account=None):
-    
+    """
+    Calculates the change in balance per account for each given time period
+    """
     if type(account) is Account and account.user is user:
-        transactions = Transaction.objects.select_related().filter(account=account,transfer=False)
+        transactions = Transaction.objects.select_related().filter(account=account)
     else:
-        transactions = Transaction.objects.select_related().filter(account__user=user,transfer=False,account__track_balance=True)
+        transactions = Transaction.objects.select_related().filter(account__user=user,account__track_balance=True)
     
-    # Day of the week
-    if time == 'day':
-        extra = {'time': 'DAYOFWEEK(`date`)'}
     # Week number (and year)
-    elif time == 'week':
+    if time == 'week':
         extra = {'time': 'YEARWEEK(`date`)'}
     # Year
     elif time == 'year':
@@ -35,13 +34,7 @@ def net_worth_by_time(user, time=None, account=None):
     else:
         raise ValueError, time + ' is not a valid time value'
         
-    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount'))
-    
-    # day needs to be sorted differently than the others because it's a more arbitrary aggregation
-    if time == 'day':
-        credit = credit.order_by('time')
-    else:
-        credit = credit.order_by('date')
+    credit = transactions.extra(select=extra).values('time', 'account__id').annotate(Sum('amount')).order_by('date')
     
     total = {}
     accounts = []
@@ -65,16 +58,8 @@ def net_worth_by_time(user, time=None, account=None):
     head = []
     
     for timekey in times:
-        if time == 'day':
-            t = {1: _(u'Sunday'),
-                 2: _(u'Monday'),
-                 3: _(u'Tuesday'),
-                 4: _(u'Wednesday'),
-                 5: _(u'Thursday'),
-                 6: _(u'Friday'),
-                 7: _(u'Saturday'),
-                 }[int(timekey)]
-        elif time == 'week' and len(str(timekey)) > 4:
+        if time == 'week' and len(str(timekey)) > 4:
+            # In the format YYYYW[W]
             timekey = str(timekey)
             year = timekey[:4]
             week = timekey[4:]
