@@ -212,7 +212,7 @@ class TagLink(models.Model):
 
             if split:
                 try:
-                    split = float(split)
+                    split = abs(Decimal('%.2f' % float(split)))
                     # Use the total amount if the split is invalid
                     if split > abs_amount or split < 0:
                         split = abs_amount
@@ -226,9 +226,6 @@ class TagLink(models.Model):
             # Make sure we have the right sign!
             if float(transaction.amount) < 0:
                 split = -abs(split)
-            
-            # Convert the split into a string
-            split = '%s' % split
 
             # If name is in the used_tags array, we've already tagged this transaction with that tag
             if name in used_tags:

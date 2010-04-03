@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.test.testcases import TestCase
 from django.core.urlresolvers import reverse
-from money.models import Transaction, Account, Payee
+from money.models import Transaction, Account, Payee, TagLink
 from decimal import Decimal
 import datetime
 
@@ -161,3 +161,36 @@ class AccountTest(TestCase):
         a = Account.objects.get(pk=1)
         a.set_balance('3801.55')
         self.assertEqual(a.starting_balance, Decimal('1100.00'))
+        
+class TagLinkTest(TestCase):
+    """
+    Tests the TagLink model
+    """
+    fixtures = ['default_data']
+    
+    def test_create_relationships(self):
+        a = Account.objects.get(pk=4)
+        p = Payee.objects.get(pk=5)
+        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('-50'), date=datetime.datetime.now())
+        t.save()
+        
+        TagLink.create_relationships(t, u' food:26.30 toiletries:12.98\n household:51.23')
+        
+        expected = [{
+            'name': 'food',
+            'split': Decimal('-26.30')
+        }, {
+            'name': 'toiletries',
+            'split': Decimal('-12.98')
+        }, {
+            'name': 'household',
+            'split': Decimal('-50')
+        }]
+        
+        results = TagLink.objects.select_related().filter(transaction=t).order_by('id')
+        
+        self.assertEqual(len(results), len(expected))
+        
+        for t in range(len(results)):
+            self.assertEqual(results[t].tag.name, expected[t]['name'])
+            self.assertEqual(results[t].split, expected[t]['split'])
