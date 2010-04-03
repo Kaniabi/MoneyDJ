@@ -42,6 +42,9 @@ def get_transactions(request):
     
     # Set up some variables
     accounts = {}
+    # errors will contain a list of integers corresponding to the transaction's number
+    # That way, clients can determine which transactions were successfully received and 
+    # committed to the database
     errors = []
     
     try:
@@ -66,24 +69,29 @@ def get_transactions(request):
             errors.append(i)
             continue
         else:
+            # If we already know about this account, we can get if from the 'cache'
             if transactions[i]['account'] in accounts.keys():
                 account = accounts[transactions[i]['account']]
             else:
+                # Otherwise we need to try and find it from the database
                 try:
                     account = Account.objects.get(pk=transactions[i]['account'])
                     accounts[account.id] = account
                 except Account.DoesNotExist:
+                    # If it doesn't appear in the database, add the transaction's number
+                    # to the list of errors and continue
                     errors.append(i)
                     continue
         
-        t = Transaction()
-        t.mobile = True
-        t.account = account
-        
+        # Make sure we have enough information to continue
         if 'payee' not in transactions[i].keys() or 'amount' not in transactions[i].keys():
             errors.append(i)
             continue
         
+        # Set up the new Transaction
+        t = Transaction(mobile=True, account=account, transfer=False)
+        
+        # Get the payee's name and make sure it's UTF8
         pname = transactions[i]['payee']
         if type(pname) is str:
             pname = pname.decode('utf-8')
@@ -98,31 +106,38 @@ def get_transactions(request):
 
         t.payee = payee
         t.amount = '%s' % transactions[i]['amount']
+        
+        # If credit doesn't appear in the keys, assume it's a negative value
         if 'credit' not in transactions[i].keys():
             t.amount = '%s' % (-abs(float(t.amount)))
         else:
+            # Otherwise if credit is anything but 0 assume it's a positive value
             if transactions[i]['credit'] == 0:
                 t.amount = '%s' % (-abs(float(t.amount)))
             else:
                 t.amount = '%s' % abs(float(t.amount))
         
-        if 'date' not in transactions[i].keys():
-            t.date = datetime.date.today()
-        else:
+        # Try to get the date from the POSTed values
+        try:
             t.date = datetime.date.fromtimestamp(float(transactions[i]['date']))
+        except KeyError, ValueError:
+            # KeyError means we don't have one in the POST data
+            # ValueError means we couldn't decode it
+            t.date = datetime.date.today()
             
+        # If we have a comment, decode it
         if 'comment' in transactions[i].keys():
             comment = transactions[i]['comment']
             if type(comment) is str:
                 comment = comment.decode('utf-8')
             t.comment = comment
             
-        t.transfer = False
         t.save()
     
     # Turn signal listening back on
     Transaction.listen_on()
     
+    # Now we can update the balance of all the accounts we've dealt with
     for a in accounts:
         accounts[a].update_balance()
     
