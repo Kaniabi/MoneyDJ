@@ -4,6 +4,6 @@ from django.core.urlresolvers import reverse
 
 def index(request):
     if request.user.is_authenticated():
-        return redirect(reverse('moneydj.dashboard.views.index'))
+        return redirect(reverse('dashboard'))
     else:
-        return redirect(reverse('django.contrib.auth.views.logout_then_login'))
+        return redirect(reverse('user-login'))

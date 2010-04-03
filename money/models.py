@@ -133,7 +133,7 @@ post_save.connect(Account.invalidate_cache, sender=Account)
 class Transaction(models.Model):
     """
     Encapsulates a transaction
-    """
+    """    
     mobile = models.BooleanField(default=False)
     account = models.ForeignKey(Account)
     payee = models.ForeignKey(Payee)
@@ -143,6 +143,24 @@ class Transaction(models.Model):
     comment = models.TextField(blank=True)
     transfer = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
+    
+    @staticmethod
+    def listen_on():
+        """
+        Turns the signal listening on
+        """
+        post_delete.connect(Transaction.on_delete, sender=Transaction)
+        post_save.connect(Transaction.on_save, sender=Transaction)
+    
+    @staticmethod
+    def listen_off():
+        """
+        Turns signal listening off so account balances are not updated. This
+        should be done when lots of transactions will be saved/deleted in a 
+        short space of time to avoid problems when updating account balances
+        """
+        post_delete.disconnect(Transaction.on_delete, sender=Transaction)
+        post_save.disconnect(Transaction.on_save, sender=Transaction)
     
     def __unicode__(self):
         return self.payee.name + u' (' + unicode(self.amount) + u' on ' + unicode(self.date) + u')'
@@ -165,8 +183,7 @@ class Transaction(models.Model):
             kwargs['instance'].account.update_balance(True)
     
 # Attach listeners for delete and save signals so we can update the account's balance
-post_delete.connect(Transaction.on_delete, sender=Transaction)
-post_save.connect(Transaction.on_save, sender=Transaction)
+Transaction.listen_on()
 
 class TagLink(models.Model):
     """

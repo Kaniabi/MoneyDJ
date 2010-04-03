@@ -5,6 +5,7 @@ from django.contrib.auth.models import check_password
 from money.models import Account, Transaction, Payee
 from django.core import serializers
 from django.contrib.auth.models import User
+from django.db import transaction
 import datetime
 try:
     import json
@@ -27,15 +28,19 @@ def get_accounts(request):
     
     return HttpResponse(serializers.serialize('json', Account.objects.filter(user=user), ensure_ascii=False), content_type='application/javascript; charset=utf-8')
 
+@transaction.commit_on_success
 def get_transactions(request):
+    # Check the validity of the request
     if request.method != u'POST' or 'username' not in request.POST.keys() or 'password' not in request.POST.keys() or 'transactions' not in request.POST.keys():
         return HttpResponseBadRequest(u"Either you didn't POST or you didn't give your username and your password")
     
     user = get_object_or_404(User, username=request.POST['username'])
 
+    # Check the username and password given
     if not check_password(request.POST['password'], user.password):
         return HttpResponseForbidden()
     
+    # Set up some variables
     accounts = {}
     errors = []
     
@@ -48,6 +53,10 @@ def get_transactions(request):
     if type(transactions) is not list:
         return HttpResponseBadRequest(u'Transactions is not a list')
     
+    # Turn signal listening off so that account balances aren't updated
+    Transaction.listen_off()
+    
+    # Go through each transaction we've been sent
     for i in range(len(transactions)):
         if type(transactions[i]) is not dict:
             return HttpResponseBadRequest(u'Element %d of transactions is not a dictionary' % i)
@@ -110,6 +119,9 @@ def get_transactions(request):
             
         t.transfer = False
         t.save()
+    
+    # Turn signal listening back on
+    Transaction.listen_on()
     
     for a in accounts:
         accounts[a].update_balance()
