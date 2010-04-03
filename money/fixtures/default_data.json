@@ -428,7 +428,7 @@
         "sort_code" : "",
         "starting_balance" : "0.00",
         "track_balance" : false,
-        "user" : 1
+        "user" : 3
       },
     "model" : "money.account",
     "pk" : 5

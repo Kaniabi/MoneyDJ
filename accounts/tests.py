@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from money.models import Account, TagLink
 import urllib
+import datetime
 
 class LoggedOutAccountsTest(TestCase):
     """
@@ -92,6 +93,8 @@ class BobAccountsTest(TestCase):
         # Check the right transactions have been returned
         try:
             self.failUnless(isinstance(response.context['transactions'], Page), 'transactions are not paginated')
+            
+            # Make sure every transaction belongs to the currently viewed account
             for t in response.context['transactions'].object_list:
                 self.assertEquals(t.account, a)
         except KeyError:
@@ -102,6 +105,32 @@ class BobAccountsTest(TestCase):
             response.context['user']
         except KeyError:
             self.fail('Not using RequestContext')
+        
+    def test_view_form(self):
+        """
+        Tests the form on the view page to make sure it saves correctly
+        """
+        response = self.client.post(reverse('account-view', args=[1]), {
+            'date': datetime.datetime.now().strftime('%Y-%m-%d'),
+            'payee': "Kwik-Fit",
+            'amount': "123.54",
+            'credit': "0",
+            'tags': "car tyres:104",
+            'account': "1",
+            'comment': ""
+        })
+        self.assertEqual(response.status_code, 200)
+        
+        # Make sure the first transaction is the one we just added
+        try:
+            self.assertEqual(response.context['transactions'].object_list[0].payee.name, "Kwik-Fit")
+        except KeyError:
+            self.fail('transactions is not in the template context')
+        
+        a = Account.objects.get(pk=1)
+        
+        # Check the balance of the Account has been updated
+        self.assertEqual(a.balance, Decimal('3578.01'))
             
     def test_view_other(self):
         """
@@ -201,6 +230,13 @@ class BobAccountsTest(TestCase):
         self.assertEquals(unicode(tags[2]), u'Work - other')
         # This tag was malformed so it should just be the full amount
         self.assertEquals(tags[2].split, Decimal('827.59'))
+        
+    def test_tag_transaction_other(self):
+        """
+        Ensures you can't tag someone else's transaction
+        """
+        response = self.client.post(reverse('transaction-tag', args=[103]), {'tags': 'cds:15 dvds:12:37 presents birthdays entertainment'})
+        self.assertEquals(response.status_code, 404)
         
     def test_get_payee_suggestions_bad(self):
         """ Makes sure that requests for payee suggestions that are malformed are rejected """
