@@ -45,8 +45,6 @@ class Account(models.Model):
     """
     Encapsulates a bank account
     """
-    USER_ACCOUNTS = {}
-    
     user = models.ForeignKey(User)
     name = models.CharField(max_length=50)
     number = models.PositiveIntegerField(blank=True,null=True)
@@ -86,24 +84,19 @@ class Account(models.Model):
                 self.balance = b;
                 self.balance_updated = datetime.datetime.now()
                 self.save()
-        
-    def balance_at(self, datetime):
-        """ 
-        Gets the balance at a particular date and time
-        """
-        self.update_balance()
-        b = self.balance
-        transactions = Transaction.objects.filter(account=self,date__gte=datetime).values('account__id').annotate(Sum('amount'))
-        
-        for t in transactions:
-            b -= t['amount__sum']
-        
-        return b
     
     def set_balance(self, balance):
         """
         Allows the user to set the current balance, working out the original balance based on the transactions in the database
         """
+        if not isinstance(balance, Decimal):
+            if type(balance) is 'str' or type(balance) is 'unicode':
+                balance = Decimal(balance)
+            elif type(balance) is 'float':
+                balance = Decimal('%.2f' % balance)
+            else:
+                balance = Decimal('%.2f' % float(balance))
+        
         b = 0
         transactions = Transaction.objects.filter(account=self).values('account__id').annotate(Sum('amount'))
         

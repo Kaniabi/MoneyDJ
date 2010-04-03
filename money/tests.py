@@ -4,8 +4,6 @@ from django.core.urlresolvers import reverse
 from money.models import Transaction, Account, Payee
 from decimal import Decimal
 import datetime
-import random
-from django.db import transaction
 
 class LoggedOutTest(TestCase):
     def test_index(self):
@@ -77,6 +75,8 @@ class TransactionTest(TestCase):
         total = a.balance
         orig = total.copy_abs()
         
+        count = Transaction.objects.all().count()
+        
         # Turn the signal listening off so we can update the account balance afterwards
         Transaction.listen_off()
         
@@ -89,15 +89,75 @@ class TransactionTest(TestCase):
             t.save()
             
             total += amount
+            count += 1
         
         # Turn signal listening back on
         Transaction.listen_on()
         
         a = Account.objects.get(pk=1)
         
-        # Make sure the balance hasn't been updated so far
+        # Make sure the balance hasn't been updated
         self.assertEqual(a.balance, orig)
         
-        # Update the balance and check it's ok
-        a.update_balance(True)
-        self.assertEqual(a.balance, total)
+        # Make sure the right number of transactions has been added
+        self.assertEqual(Transaction.objects.all().count(), count)
+        
+class AccountTest(TestCase):
+    """
+    Tests the Account model
+    """
+    fixtures = ['default_data']
+    
+    def test_update_balance(self):
+        # Make sure the Transaction model doesn't update the account
+        Transaction.listen_off()
+        
+        # Delete the first transaction (827.59 of credit)
+        t = Transaction.objects.select_related().get(pk=1)
+        t.delete()
+        a = t.account
+        
+        # The balance shouldn't have changed
+        self.assertEqual(a.balance, Decimal('3701.55'))
+        
+        # Update the balance, only taking into account new transactions
+        a.update_balance(all=False)
+        
+        # The balance still shouldn't have changed
+        self.assertEqual(a.balance, Decimal('3701.55'))
+        
+        # Create a new transaction
+        p = Payee.objects.get(pk=1)
+        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('300'), date=datetime.datetime.now())
+        t.save()
+        
+        # Update the balance once more
+        a.update_balance(all=False)
+        
+        # The balance should now be +300 from the added transaction
+        self.assertEqual(a.balance, Decimal('4001.55'))
+        
+        # Update the balance a final time
+        a.update_balance(all=True)
+        
+        # The balance should now be completely up-to-date
+        self.assertEqual(a.balance, Decimal('3173.96'))
+        
+        # Turn transaction listening back on for other tests
+        Transaction.listen_on()
+        
+    def test_set_balance(self):
+        # Test with a float
+        a = Account.objects.get(pk=1)
+        a.set_balance(3801.55)
+        self.assertEqual(a.starting_balance, Decimal('1100.00'))
+        
+        # Now with a Decimal object
+        a = Account.objects.get(pk=1)
+        a.set_balance(Decimal('3801.55'))
+        self.assertEqual(a.starting_balance, Decimal('1100.00'))
+        
+        # Finally with a string
+        a = Account.objects.get(pk=1)
+        a.set_balance('3801.55')
+        self.assertEqual(a.starting_balance, Decimal('1100.00'))
