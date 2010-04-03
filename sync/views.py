@@ -1,5 +1,4 @@
 # coding=utf8
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib.auth.models import check_password
 from money.models import Account, Transaction, Payee
@@ -21,8 +20,11 @@ def get_accounts(request):
     if not request.user.is_anonymous():
         user = request.user
     else:
-        user = get_object_or_404(User, username=request.POST['username'])
-    
+        try:
+            user = User.objects.get(username=request.POST['username'])
+        except User.DoesNotExist:
+            return HttpResponseForbidden()
+        
         if not check_password(request.POST['password'], user.password):
             return HttpResponseForbidden()
     
@@ -34,7 +36,10 @@ def get_transactions(request):
     if request.method != u'POST' or 'username' not in request.POST.keys() or 'password' not in request.POST.keys() or 'transactions' not in request.POST.keys():
         return HttpResponseBadRequest(u"Either you didn't POST or you didn't give your username and your password")
     
-    user = get_object_or_404(User, username=request.POST['username'])
+    try:
+        user = User.objects.get(username=request.POST['username'])
+    except User.DoesNotExist:
+        return HttpResponseForbidden()
 
     # Check the username and password given
     if not check_password(request.POST['password'], user.password):

@@ -109,5 +109,6 @@ INSTALLED_APPS = (
     'moneydj.dashboard',
     'moneydj.accounts',
     'moneydj.tags',
-    'moneydj.reports'
+    'moneydj.reports',
+    'moneydj.sync'
 )

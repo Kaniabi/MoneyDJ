@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('moneydj.sync.views',
-    (r'^accounts/$', 'get_accounts'),
-    (r'^transactions/$', 'get_transactions')
+    url(r'^accounts/$', 'get_accounts', name='sync-accounts'),
+    url(r'^transactions/$', 'get_transactions', name='sync-transactions')
 )
