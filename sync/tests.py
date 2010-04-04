@@ -65,13 +65,13 @@ class SyncTest(TestCase):
         self.client.logout()
         
     def test_transactions_logged_out_bad(self):
-        pass
+        self.fail("Test not completed")
     
     def test_transactions_logged_out(self):
-        pass
+        self.fail("Test not completed")
     
     def test_transactions_logged_in_bad(self):
-        pass
+        self.fail("Test not completed")
     
     def test_transactions_logged_in(self):
-        pass
+        self.fail("Test not completed")

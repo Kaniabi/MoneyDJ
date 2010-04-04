@@ -30,7 +30,7 @@ class Payee(models.Model):
         return self.name
     
     def suggest_tags(self):
-        return Tag.objects.filter(taglink__transaction__payee=self).annotate(count=Count('id', distinct=True)).order_by('count', 'name')[:10]
+        return [t['name'] for t in Tag.objects.filter(taglink__transaction__payee=self).values('id', 'name').annotate(count=Count('id')).order_by('-count', 'name')[:10]]
 
 class Bank(models.Model):
     """

@@ -34,7 +34,7 @@ class TransactionTest(TestCase):
     def test_add_positive(self):
         a = Account.objects.get(pk=1)
         p = Payee.objects.get(pk=1)
-        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('512.78'), date=datetime.datetime.now())
+        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('512.78'), date=datetime.date.today())
         t.save()
         
         a = Account.objects.get(pk=1)
@@ -44,7 +44,7 @@ class TransactionTest(TestCase):
     def test_add_negative(self):
         a = Account.objects.get(pk=1)
         p = Payee.objects.get(pk=1)
-        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('-512.78'), date=datetime.datetime.now())
+        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('-512.78'), date=datetime.date.today())
         t.save()
         
         a = Account.objects.get(pk=1)
@@ -85,7 +85,7 @@ class TransactionTest(TestCase):
             if i > 50:
                 amount = amount.copy_negate()
             
-            t = Transaction(account=a, mobile=False, payee=p, amount=amount, date=datetime.datetime.now())
+            t = Transaction(account=a, mobile=False, payee=p, amount=amount, date=datetime.date.today())
             t.save()
             
             total += amount
@@ -128,7 +128,7 @@ class AccountTest(TestCase):
         
         # Create a new transaction
         p = Payee.objects.get(pk=1)
-        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('300'), date=datetime.datetime.now())
+        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('300'), date=datetime.date.today())
         t.save()
         
         # Update the balance once more
@@ -171,7 +171,7 @@ class TagLinkTest(TestCase):
     def test_create_relationships(self):
         a = Account.objects.get(pk=4)
         p = Payee.objects.get(pk=5)
-        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('-50'), date=datetime.datetime.now())
+        t = Transaction(account=a, mobile=False, payee=p, amount=Decimal('-50'), date=datetime.date.today())
         t.save()
         
         TagLink.create_relationships(t, u' food:26.30 toiletries:12.98\n household:51.23')
@@ -194,3 +194,27 @@ class TagLinkTest(TestCase):
         for t in range(len(results)):
             self.assertEqual(results[t].tag.name, expected[t]['name'])
             self.assertEqual(results[t].split, expected[t]['split'])
+            
+class PayeeTest(TestCase):
+    """
+    Tests the Payee model
+    """
+    fixtures = ['test_users', 'test_accounts', 'test_payees', 'test_tags', 'test_transactions', 'test_taglinks']
+    
+    def test_tag_suggest(self):
+        p = Payee.objects.get(name="Sainsbury's")
+        tags = p.suggest_tags()
+        self.assertEqual(tags, [u'food', u'household'])
+        
+        p = Payee.objects.get(name="HMV")
+        tags = p.suggest_tags()
+        self.assertEqual(tags, [u'cds', u'birthdays', u'dvds', u'entertainment', u'presents'])
+        
+        a = Account.objects.get(pk=3)
+        t = Transaction.objects.create(account=a, mobile=False, payee=p, amount=Decimal('-50'), date=datetime.date.today())
+        
+        # By creating these tags we should move dvds up the ranking, and add in books
+        TagLink.create_relationships(t, 'books cds dvds')
+        
+        tags = p.suggest_tags()
+        self.assertEqual(tags, [u'cds', u'dvds', u'birthdays', u'entertainment', u'presents', u'books'])

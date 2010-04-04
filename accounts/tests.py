@@ -180,7 +180,7 @@ class BobAccountsTransactionsTest(TestCase):
         Tests the form on the view page to make sure it saves correctly
         """
         response = self.client.post(reverse('account-view', args=[1]), {
-            'date': datetime.datetime.now().strftime('%Y-%m-%d'),
+            'date': datetime.date.today().strftime('%Y-%m-%d'),
             'payee': "Kwik-Fit",
             'amount': "123.54",
             'credit': "0",
