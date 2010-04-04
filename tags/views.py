@@ -11,7 +11,7 @@ except ImportError:
     
 @login_required
 def index(request):
-    transactions = Transaction.objects.filter(taglink__id__isnull=True)
+    transactions = Transaction.objects.filter(taglink__id__isnull=True).order_by('-date')
     
     paginator = Paginator(transactions, 20)
     
@@ -50,7 +50,7 @@ def view_tag(request, tag):
     return render_to_response("tag_view.html", {'tag': tag, 'transactions': transactions }, context_instance=RequestContext(request))
 
 def get_tag_suggestions(request):
-    if not request.GET['q']:
+    if 'q' not in request.GET or not request.GET['q']:
         return HttpResponseBadRequest()
     
     tags = Tag.objects.filter(name__icontains=request.GET['q']).order_by('name')
@@ -62,6 +62,4 @@ def get_tag_suggestions(request):
 def get_tag_suggestions_for_payee(request, payee):
     payees = get_object_or_404(Payee, pk=payee).suggest_tags()
     
-    response = [p.name for p in payees]
-    
-    return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
+    return HttpResponse(json.dumps(payees), content_type='application/javascript; charset=utf-8')

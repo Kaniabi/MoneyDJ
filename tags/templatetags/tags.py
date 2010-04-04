@@ -24,6 +24,12 @@ def cloud(account_user=None, credit=0, number=20):
         
     items = items.order_by('total', 'tag__name')[:number]
     
+    if len(items) < 2:
+        c = []
+        if len(items) is 1:
+            c.append({'name': items[0]['tag__name'], 'val': 10, 'amount': items[0]['total']})
+        return {'cloud': c}
+    
     cloud = []
     max = 0
     min = 0
@@ -35,6 +41,8 @@ def cloud(account_user=None, credit=0, number=20):
         if i['total'] < min or min == 0:
             min = i['total']
             
+    # If we're looking at all items where money is going out, swap over the 
+    # max and min values as the max will be the lowest possible (negative) number 
     if not credit:
         max, min = min, max
             
@@ -45,7 +53,7 @@ def cloud(account_user=None, credit=0, number=20):
         cloud.append({'name': i['tag__name'],
                       # Distribute the cloud over 10 levels of granularity
                       'val': int(round(percent * 9) + 1),
-                      'amount': unicode(str(i['total']))})
+                      'amount': i['total']})
     
     # Sort the cloud by the tag name
     cloud.sort(key=operator.itemgetter('name'))
