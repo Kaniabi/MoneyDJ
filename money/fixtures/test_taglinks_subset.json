@@ -1,0 +1,91 @@
+[{ "fields" : { "split" : "827.59",
+        "tag" : 1,
+        "transaction" : 1
+      },
+    "model" : "money.taglink",
+    "pk" : 1
+  },
+  { "fields" : { "split" : "400.00",
+        "tag" : 2,
+        "transaction" : 1
+      },
+    "model" : "money.taglink",
+    "pk" : 7
+  },
+  { "fields" : { "split" : "-149.37",
+        "tag" : 2,
+        "transaction" : 2
+      },
+    "model" : "money.taglink",
+    "pk" : 2
+  },
+  { "fields" : { "split" : "-41.01",
+        "tag" : 3,
+        "transaction" : 3
+      },
+    "model" : "money.taglink",
+    "pk" : 3
+  },
+  { "fields" : { "split" : "-41.01",
+        "tag" : 4,
+        "transaction" : 3
+      },
+    "model" : "money.taglink",
+    "pk" : 4
+  },
+  { "fields" : { "split" : "-41.01",
+        "tag" : 5,
+        "transaction" : 3
+      },
+    "model" : "money.taglink",
+    "pk" : 5
+  },
+  { "fields" : { "split" : "-25.36",
+        "tag" : 2,
+        "transaction" : 4
+      },
+    "model" : "money.taglink",
+    "pk" : 6
+  },
+  { "fields" : { "split" : "-59.40",
+        "tag" : 23,
+        "transaction" : 241
+      },
+    "model" : "money.taglink",
+    "pk" : 361
+  },
+  { "fields" : { "split" : "-13.64",
+        "tag" : 4,
+        "transaction" : 242
+      },
+    "model" : "money.taglink",
+    "pk" : 362
+  },
+  { "fields" : { "split" : "-13.64",
+        "tag" : 10,
+        "transaction" : 242
+      },
+    "model" : "money.taglink",
+    "pk" : 363
+  },
+  { "fields" : { "split" : "-13.64",
+        "tag" : 11,
+        "transaction" : 242
+      },
+    "model" : "money.taglink",
+    "pk" : 364
+  },
+  { "fields" : { "split" : "-13.64",
+        "tag" : 3,
+        "transaction" : 242
+      },
+    "model" : "money.taglink",
+    "pk" : 365
+  },
+  { "fields" : { "split" : "-31.34",
+        "tag" : 187,
+        "transaction" : 243
+      },
+    "model" : "money.taglink",
+    "pk" : 366
+  }]

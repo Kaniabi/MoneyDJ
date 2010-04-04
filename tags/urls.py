@@ -1,8 +1,8 @@
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('moneydj.tags.views',
-    (r'^$', 'index'),
-    (r'^suggest/$', 'get_tag_suggestions'),
-    (r'^suggest/(\d+)/$', 'get_tag_suggestions_for_payee'),
-    (r'^view/(\w+)/$', 'view_tag')
+    url(r'^$', 'index', name='tag-index'),
+    url(r'^suggest/$', 'get_tag_suggestions', name='tag-suggestions'),
+    url(r'^suggest/(\d+)/$', 'get_tag_suggestions_for_payee', name='tag-payee-suggestions'),
+    url(r'^view/(\w+)/$', 'view_tag', name='tag-view')
 )
