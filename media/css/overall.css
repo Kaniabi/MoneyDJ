@@ -559,7 +559,18 @@ h1 span {
 	-webkit-border-bottom-right-radius: 10px;
 	font-size: 0.7em;
 	padding: 2px;
-	margin-left: -1000px;
+	margin-left: -2000px;
+}
+#nav li.accounts:hover ul {
+	margin-left: 0;
+}
+#nav li.accounts ul li a:focus,#nav li.accounts ul li a:active {
+	left: 2000px;
+	position: relative;
+	background: #B4BC91;	
+} 
+#nav li.accounts:hover ul a:focus,#nav li.accounts:hover ul li a:active {
+	left: 0;
 }
 #nav li.tags a {
 	width: 56px;
