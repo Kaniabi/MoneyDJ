@@ -29,7 +29,7 @@ def view(request, id):
     if request.method == 'POST':
         transaction_form = QuickTransactionForm(request.POST)
         if 'account' not in request.POST.keys() or request.POST['account'] != id:
-            raise Http404
+            raise HttpResponseBadRequest
         
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
