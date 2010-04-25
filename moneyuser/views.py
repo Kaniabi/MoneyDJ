@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render_to_response
 from django.template.context import RequestContext
+from django.contrib import messages
+from django.utils.translation import ugettext as _
+from moneyuser.forms import RegisterForm
 
 # Create your views here.
 @login_required
@@ -16,12 +18,13 @@ def register(request):
         return redirect(dashboard)
     
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.INFO, _('You have been successfully registered. You may now proceed to log in'))
             return redirect(dashboard)
         
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
         
     return render_to_response('registration/register.html', { 'form': form }, context_instance=RequestContext(request))
