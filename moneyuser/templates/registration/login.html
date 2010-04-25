@@ -7,19 +7,25 @@
 
 {% block body %}
 	<div class="column">
-		{% if form.errors %}
-		<p>{% trans "Your username and password didn't match. Please try again." %}</p>
-		{% endif %}
-		
-		<form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
-		
-		<ol class="form">
-			<li>{{ form.username.label_tag }} {{ form.username }}</li>
-			<li>{{ form.password.label_tag }} {{ form.password }}</li>
-			<li><input type="submit" value="{% trans "Login" %}" class="button" /></li>
-		</ol>
-		
-		<input type="hidden" name="next" value="{{ next }}" />
-		</form>
+		<div class="srow">
+			<div class="column col50_1">
+				<h2>{% trans 'Login' %}</h2>
+				{% if form.errors %}
+				<p>{% trans "Your username and password didn't match. Please try again." %}</p>
+				{% endif %}
+				
+				<form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+					<ol class="form">
+						{{ form.as_ul }}
+						<li><input type="submit" value="{% trans "Login" %}" class="button" /></li>
+					</ol>
+				</form>
+			</div>
+			<div class="column col50_2">
+				<h2>{% trans 'Not got an account?' %}</h2>
+				<p><a href="{% url moneyuser.views.register %}">{% trans 'Register for a free account' %}</a></p>
+			</div>
+		</div>
+		<div class="clear"></div>
 	</div>
 {% endblock body %}

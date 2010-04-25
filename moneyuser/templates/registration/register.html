@@ -7,11 +7,14 @@
 
 {% block body %}
 	<div class="column">
-		<form method="post" action="{% url moneydj.moneyuser.views.register %}">{% csrf_token %}
-			<ol class="form">
-				{{ form.as_ul }}
-				<li><input type="submit" value="{% trans "Register" %}" class="button" /></li>
-			</ol>
-		</form>
+		<div class="row">
+			<h2>{% trans "Register" %}</h2>
+			<form method="post" action="{% url moneydj.moneyuser.views.register %}">{% csrf_token %}
+				<ol class="form">
+					{{ form.as_ul }}
+					<li><input type="submit" value="{% trans "Register" %}" class="button" /></li>
+				</ol>
+			</form>
+		</div>
 	</div>
 {% endblock body %}
