@@ -57,6 +57,7 @@ form {
 
 ol.form {
 	font-size: 1.5em;
+	padding: 0.5em;
 }
 ol.form li {
 	list-style: none;
@@ -64,8 +65,21 @@ ol.form li {
 	padding-bottom: 0.5em;
 	font-style: italic;
 }
+ol.form > li input, ol.form > li textarea {
+	border: 1px solid #C0DD82;
+	background: white;
+	padding: 2px;
+}
+ol.form > li input:focus, ol.form > li textarea:focus {
+	box-shadow: 0 0 5px #999;
+	-moz-box-shadow: 0 0 5px #999;
+	-webkit-box-shadow: 0 0 5px #999;
+}
 ol.form li.required label {
 	font-weight: bold;
+}
+ol.form > li.error input, ol.form > li.error textarea {
+	border-color: #642019;
 }
 ol.form label {
 	width: 13em;
@@ -92,7 +106,10 @@ ol.form ul.errorlist li {
 	border: 1px solid #642019;
 	background-color: #a35c55;
 	color: white;
-	padding: 0.1em;
+	padding: 0.1em 0.3em;
+	margin-bottom: 5px;
+	font-style: normal;
+	font-weight: bold;
 }
 ol.form input.button {
 	margin-left: 12em;
@@ -160,24 +177,24 @@ div.overlay {
 a.button, input.button {
 	font-size: 1.1em;
 	display: inline-block;
-	padding: 5px 10px 6px;
+	padding: 5px 10px 6px !important;
 	text-decoration: none;
 	font-weight: bold;
 	line-height: 1;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-	border: 0;
-	border-bottom: 1px solid rgba(0,0,0,0.25);
+	border: 0 !important;
+	border-bottom: 1px solid rgba(0,0,0,0.25) !important;
 	position: relative;
 	cursor: pointer;
-	background: #8b536f url('../img/alert-overlay.png') repeat-x 0 0;
-	color: white;
-	width: auto;
+	background: #8b536f url('../img/alert-overlay.png') repeat-x 0 0 !important;
+	color: white !important;
+	width: auto !important;
 }
 .button:hover {
 	background-color: #5c3566;
@@ -372,7 +389,6 @@ tr.odd span.sprite.loading {
 #body > div.column {
 	width: 75%;
 	margin: 0 auto;
-	padding: 10px;
 	background: #F8F8F8;
 	border: 4px solid #C0DD82;
 	border-top: 0;
@@ -380,6 +396,31 @@ tr.odd span.sprite.loading {
 	-moz-border-radius-bottomright: 10px;
 	-webkit-border-bottom-left-radius: 10px;
 	-webkit-border-bottom-right-radius: 10px;
+	overflow: hidden;
+}
+#body > div.column div.row {
+	padding: 10px;
+}
+#body > div.column div.srow {
+	position: relative;
+	clear: both;
+	float: left;
+	right: 50%;
+	width: 100%;
+	border-right: 4px solid #CEDDAC;
+}
+#body > div.column div.srow > div.column {
+	float: left;
+	position: relative;
+	overflow: hidden;
+	width: 46%;
+	padding: 0.5em 0;
+}
+#body > div.column div.srow > div.column.col50_1 {
+	left: 52%;
+}
+#body > div.column div.srow > div.column.col50_2 {
+	left: 56%;
 }
 /* END Non-logged in styles */
 
@@ -799,6 +840,7 @@ div#add_transaction_holder {
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
 	padding: 5px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	min-width: 60%;
