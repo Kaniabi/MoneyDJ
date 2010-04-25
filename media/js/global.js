@@ -199,7 +199,7 @@ $(function() {
 	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
 
 	// Make form help text tooltips instead
-	$('form li').contents().filter(function() { 
+	$('ol.form > li').contents().filter(function() { 
 		// nodeType 3 is text (help text in django forms is just appended to the containing LI)
 		return this.nodeType == 3 && $.trim(this.nodeValue).length > 0;
 	}).wrap($('<div class="help_tooltip"></div>').css('display', 'none'));
