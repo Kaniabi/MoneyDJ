@@ -32,7 +32,6 @@
 					{% else %}
 						<ul>
 							<li><a href="{% url django.contrib.auth.views.login %}"><span class="sprite login"></span>{% trans 'Login' %}</a></li>
-							<li><a href="{% url moneyuser.views.register %}"><span class="sprite register"></span>{% trans 'Register' %}</a></li>
 						</ul>
 					{% endif %}
 					</div>
@@ -41,6 +40,13 @@
 					{% block nav %}{% endblock %}
 					<div class="end"></div>
 				</div>
+				{% if messages %}
+				<ul id="messages">
+				    {% for message in messages %}
+				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				    {% endfor %}
+				</ul>
+				{% endif %}
 			</div>
 			<div id="body">
 				{% block body %}{% endblock body %}
@@ -52,8 +58,9 @@
 			{% block footer %}
 			{% endblock footer %}
 		</div>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.tools.min.js"></script>
 		<script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.suggest.js"></script>
 		<script type="text/javascript" src="{{ MEDIA_URL }}/js/global.js"></script>
 		<script type="text/javascript" src="/jsi18n/"></script>
