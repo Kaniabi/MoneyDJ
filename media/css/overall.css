@@ -79,8 +79,8 @@ ol.form li div.help_tooltip {
 	background: #c0dd82;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	-moz-box-shadow: 0 0 10px #000;
-	-webkit-box-shadow: 0 0 10px #000;
+	-moz-box-shadow: 0 0 10px #999;
+	-webkit-box-shadow: 0 0 10px #999;
 	padding: 5px;
 	font-style: normal;
 	z-index: 500;
