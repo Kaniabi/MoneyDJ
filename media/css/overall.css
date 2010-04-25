@@ -417,9 +417,6 @@ tr.odd span.sprite.loading {
 #content table.transactions td.payee div.tags span.sprite {
 	margin-right: 0;
 }
-#content table.transactions td.payee div.tags span.tags.editable:hover {
-	background: #C0DD82;
-}
 #content table.transactions tbody th.date {
 	text-align: left;
 	font-size: 1.5em;
@@ -706,9 +703,9 @@ ul.accounts li {
 	max-width: 1500px;
 }
 #content .maincontent {
-	float: right;
-	width: 75%;
+	width: 80%;
 	z-index: 5;
+	margin: 0 auto;
 }
 #content .maincontent h2 {
 	font-size: 3em;
@@ -731,6 +728,10 @@ ul.accounts li {
 	width: 50%;
 	float: left;
 }
+#content .dash_column_100 {
+	width: 100%;
+	float: left;
+}
 #content .dash_row div.dash_box {
 	border: 3px solid #d9d9d9;
 	-moz-border-radius: 10px;
@@ -738,6 +739,9 @@ ul.accounts li {
 	border-radius: 10px;
 	margin: 0 5px 5px;
 	background: #e8e8e8;
+}
+#content .dash_row div.dash_box_big {
+	font-size: 1.5em;
 }
 #content .dash_row div.dash_box > div {
 	padding: 0 5px 5px;

@@ -27,7 +27,7 @@
 		</tr>
 		{% empty %}
 		<tr>
-			<td colspan="4">{% trans "You currently don't have any accounts set up. To get started, click the 'Add Account' button to the left" %}</td>
+			<td colspan="4">{% trans "You currently don't have any accounts set up." %} <a href="{% url accounts.views.add %}">{% trans "Get Started" %}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
