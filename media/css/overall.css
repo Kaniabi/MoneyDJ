@@ -73,6 +73,18 @@ ol.form label {
 	float: left;
 	font-style: normal;
 }
+ol.form li div.help_tooltip {
+	display: none;
+	border: 2px solid #a1ab74;
+	background: #c0dd82;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 0 10px #000;
+	-webkit-box-shadow: 0 0 10px #000;
+	padding: 5px;
+	font-style: normal;
+	z-index: 500;
+}
 ol.form ul.errorlist {
 	padding: 0;
 }
@@ -789,6 +801,7 @@ div#add_transaction_holder {
 	padding: 5px;
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	min-width: 60%;
 }
 div#add_transaction_holder ol {
 	margin: 0;

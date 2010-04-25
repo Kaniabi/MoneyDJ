@@ -197,6 +197,15 @@ $(function() {
 	
 	$('#id_payee').suggest({url: '/accounts/payee/suggest/', multiWords: false, useIds: true, idField: $('#id_payee_id'), onChosen: getPayeeTags});
 	$('#id_tags').suggest({url: '/tags/suggest/', amountElement: $('#id_amount')});
+
+	// Make form help text tooltips instead
+	$('form li').contents().filter(function() { 
+		// nodeType 3 is text (help text in django forms is just appended to the containing LI)
+		return this.nodeType == 3 && $.trim(this.nodeValue).length > 0;
+	}).wrap($('<div class="help_tooltip"></div>').css('display', 'none'));
+	$('.help_tooltip');
+
+	$('form li:has(.help_tooltip) > :input').tooltip({'tip': '.help_tooltip', relative: true, effect: 'fade', position: 'center right', offset: [0, 10]});
 });
 
 function getCruft(element)
