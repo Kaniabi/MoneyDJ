@@ -11,7 +11,7 @@ except ImportError:
     
 @login_required
 def index(request):
-    transactions = Transaction.objects.filter(taglink__id__isnull=True).order_by('-date')
+    transactions = Transaction.objects.filter(taglink__id__isnull=True, account__user=request.user).order_by('-date')
     
     paginator = Paginator(transactions, 20)
     
