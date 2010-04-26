@@ -53,13 +53,13 @@ def get_tag_suggestions(request):
     if 'q' not in request.GET or not request.GET['q']:
         return HttpResponseBadRequest()
     
-    tags = Tag.objects.filter(name__icontains=request.GET['q']).order_by('name')
+    tags = Tag.objects.filter(name__icontains=request.GET['q'], transaction__account__user=request.user).order_by('name')
     
     response = [t.name for t in tags]
     
     return HttpResponse(json.dumps(response), content_type='application/javascript; charset=utf-8')
 
 def get_tag_suggestions_for_payee(request, payee):
-    payees = get_object_or_404(Payee, pk=payee).suggest_tags()
+    payees = get_object_or_404(Payee, pk=payee).suggest_tags(request.user)
     
     return HttpResponse(json.dumps(payees), content_type='application/javascript; charset=utf-8')

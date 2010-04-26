@@ -29,8 +29,8 @@ class Payee(models.Model):
     def __unicode__(self):
         return self.name
     
-    def suggest_tags(self):
-        return [t['name'] for t in Tag.objects.filter(taglink__transaction__payee=self).values('id', 'name').annotate(count=Count('id')).order_by('-count', 'name')[:10]]
+    def suggest_tags(self, user):
+        return [t['name'] for t in Tag.objects.filter(taglink__transaction__payee=self, transaction__account__user=user).values('id', 'name').annotate(count=Count('id')).order_by('-count', 'name')[:10]]
 
 class Bank(models.Model):
     """

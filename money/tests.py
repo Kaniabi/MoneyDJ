@@ -202,19 +202,20 @@ class PayeeTest(TestCase):
     fixtures = ['test_users', 'test_accounts', 'test_payees', 'test_tags', 'test_transactions', 'test_taglinks']
     
     def test_tag_suggest(self):
+        a = Account.objects.get(pk=3)
+
         p = Payee.objects.get(name="Sainsbury's")
-        tags = p.suggest_tags()
+        tags = p.suggest_tags(a.user)
         self.assertEqual(tags, [u'food', u'household'])
         
         p = Payee.objects.get(name="HMV")
-        tags = p.suggest_tags()
-        self.assertEqual(tags, [u'cds', u'birthdays', u'dvds', u'entertainment', u'presents'])
+        tags = p.suggest_tags(a.user)
+        self.assertEqual(tags, [u'cds', u'entertainment', u'birthdays', u'dvds', u'presents'])
         
-        a = Account.objects.get(pk=3)
         t = Transaction.objects.create(account=a, mobile=False, payee=p, amount=Decimal('-50'), date=datetime.date.today())
         
-        # By creating these tags we should move dvds up the ranking, and add in books
-        TagLink.create_relationships(t, 'books cds dvds')
+        # By creating these tags we should move presents up the ranking, and add in books
+        TagLink.create_relationships(t, 'books cds presents')
         
-        tags = p.suggest_tags()
-        self.assertEqual(tags, [u'cds', u'dvds', u'birthdays', u'entertainment', u'presents', u'books'])
+        tags = p.suggest_tags(a.user)
+        self.assertEqual(tags, [u'cds', u'entertainment', u'birthdays', u'presents', u'dvds', u'books'])
