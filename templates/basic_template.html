@@ -35,18 +35,22 @@
 						</ul>
 					{% endif %}
 					</div>
+					{% if messages %}
+					<div id="messages">
+						<div class="contents">
+						    <ul>
+							{% for message in messages %}
+							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+							{% endfor %}
+						    </ul>
+						</div>
+					</div>
+					{% endif %}
 				</div>
 				<div id="nav">
 					{% block nav %}{% endblock %}
 					<div class="end"></div>
 				</div>
-				{% if messages %}
-				<ul id="messages">
-				    {% for message in messages %}
-				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-				    {% endfor %}
-				</ul>
-				{% endif %}
 			</div>
 			<div id="body">
 				{% block body %}{% endblock body %}

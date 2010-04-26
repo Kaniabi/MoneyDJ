@@ -12,17 +12,15 @@ def profile(request):
     pass
 
 def register(request):
-    dashboard = reverse('moneydj.dashboard.views.index')
-    
     if request.user.is_authenticated():
-        return redirect(dashboard)
+        return redirect(reverse('moneydj.dashboard.views.index'))
     
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.INFO, _('You have been successfully registered. You may now proceed to log in'))
-            return redirect(dashboard)
+            u = form.save()
+            messages.add_message(request, messages.SUCCESS, _('Thank you for registering, %s. You may now proceed to log in.' % u.username))
+            return redirect(reverse('django.contrib.auth.views.login'))
         
     else:
         form = RegisterForm()

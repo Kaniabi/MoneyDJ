@@ -10,6 +10,14 @@ $(function() {
 	
 	$('#nav li.accounts ul').hide().css('margin', 0);
 	$('#nav li.accounts').hover(function() {$(this).find('ul').slideDown('fast');}, function() {$(this).find('ul').slideUp('fast');});
+
+    // Sort out any messages showing on the page
+    $('#messages').css('left', ($(document).width() - $('#messages').width()) / 2 + 'px').hide().delay(500).slideDown();
+    setTimeout(function() {
+        $('#messages .contents').slideUp();
+        $('#messages').append($('<a href="#">' + gettext('Show Messages') + '</a>').toggle(function() { $(this).text(gettext('Hide Messages')).siblings('.contents').slideDown(); }, function() {
+            $(this).text(gettext('Show Messages')).siblings('.contents').slideUp(); }));
+    }, 10000);
 	
 	// Remove the add transaction form from the page so we can make it nicer
 	var t = $('form#add_transaction').remove();

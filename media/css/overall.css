@@ -542,6 +542,51 @@ h1 span {
 	font-weight: bold;
 }
 #userbox ul li span.sprite { margin-right: 2px; }
+#messages {
+	position: absolute;
+	top: 0;
+	padding: 5px;
+	font-size: 1.4em;
+	opacity: 0.9;
+    z-index: 150;
+    width: 50%;
+    background: #B5BD92;
+    border: 4px solid #C0DD83;
+    border-top: 0;
+    -moz-border-radius-bottomleft: 1em;
+    -moz-border-radius-bottomright: 1em;
+    -webkit-border-bottom-left-radius: 1em;
+    -webkit-border-bottom-right-radius: 1em;
+}
+#messages a {
+    display: block;
+    text-align: center;
+}
+#messages ul {
+    margin: 0;
+    padding: 0;
+}
+#messages li {
+	list-style: none;
+	padding: 0.5em;
+	margin: 0.25em;
+}
+#messages li.info {
+    border: 1px solid #2339C4;
+    background: #96BBFF;
+}
+#messages li.success {
+    border: 1px solid #349627;
+    background: #9DCC97;
+}
+#messages li.warning {
+    border: 1px solid #F5F518;
+    background-color: #F2F299;
+}
+#messages li.error {
+	border: 1px solid #642019;
+	background-color: #a35c55;
+}
 /* END Header */
 
 /* BEGIN Navigation */
