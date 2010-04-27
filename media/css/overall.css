@@ -197,7 +197,7 @@ a.button, input.button {
 	width: auto !important;
 }
 .button:hover {
-	background-color: #5c3566;
+	background-color: #5c3566 !important;
 }
 
 /* BEGIN Sprites */
@@ -387,7 +387,7 @@ tr.odd span.sprite.loading {
 
 /* BEGIN Non-logged in styles */
 #body > div.column {
-	width: 75%;
+	width: 970px;
 	margin: 0 auto;
 	background: #F8F8F8;
 	border: 4px solid #C0DD82;
@@ -421,6 +421,37 @@ tr.odd span.sprite.loading {
 }
 #body > div.column div.srow > div.column.col50_2 {
 	left: 56%;
+}
+#promoboxes {
+	clear: right;
+}
+#promo_nav {
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border: 1px solid #303030;
+	background: #b5bd92 url(../img/alert-overlay.png) repeat-x 0 0;
+	padding: 0 8px;
+}
+#promo_nav h3.first {
+	border-width: 0;
+}
+#promo_nav h3 {
+	padding: 0.5em;
+	font-size: 2em;
+	display: inline-block;
+	text-align: center;
+	width: 31%;
+	border-color: #5e5e5e;
+	border-style: solid;
+	border-width: 0 0 0 1px;
+}
+#promo_nav h3.selected {
+	color: #5c3566;
+}
+a#start {
+	font-size: 2em;
+	float: right;
+	margin-bottom: 5px;
 }
 /* END Non-logged in styles */
 

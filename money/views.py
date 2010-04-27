@@ -6,4 +6,4 @@ def index(request):
     if request.user.is_authenticated():
         return redirect(reverse('dashboard'))
     else:
-        return redirect(reverse('user-login'))
+        return render_to_response('index.html', context_instance=RequestContext(request))
