@@ -65,8 +65,8 @@ ol.form {
 ol.form li {
 	list-style: none;
 	clear: left;
-	padding-bottom: 0.5em;
 	font-style: italic;
+	margin-bottom: 0.5em;
 }
 ol.form > li input, ol.form > li textarea {
 	border: 1px solid #C0DD82;
@@ -80,6 +80,16 @@ ol.form > li input:focus, ol.form > li textarea:focus {
 }
 ol.form li.required label {
 	font-weight: bold;
+}
+ol.form li.error {
+	border: 1px solid #642019;
+	background: #a35c55;
+	color: white;
+	padding: 0.3em;
+	margin-left: -0.3em;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
 }
 ol.form > li.error input, ol.form > li.error textarea {
 	border-color: #642019;
@@ -112,14 +122,11 @@ ol.form ul.errorlist {
 	padding: 0;
 }
 ol.form ul.errorlist li {
-	border: 1px solid #642019;
 	padding-left: 22px;
-	background: #a35c55 url(../img/icons/exclamation.png) no-repeat 2px center;
-	color: white;
-	padding: 0.1em 0.3em 0.1em 20px;
 	margin-bottom: 5px;
 	font-style: normal;
 	font-weight: bold;
+	background: transparent url(../img/icons/exclamation.png) no-repeat 2px center;
 }
 ol.form input.button {
 	margin-left: 12em;
@@ -609,24 +616,30 @@ h1 span {
 }
 #messages li {
 	list-style: none;
-	padding: 0.5em;
+	padding: 0.5em 0.5em 0.5em 22px;
 	margin: 0.25em;
+    background-position: 2px center;
+    background-repeat: no-repeat;
 }
 #messages li.info {
     border: 1px solid #2339C4;
-    background: #96BBFF;
+    background-color: #96BBFF;
+    background-image: url(../img/icons/information.png);
 }
 #messages li.success {
     border: 1px solid #349627;
-    background: #9DCC97;
+    background-color: #9DCC97;
+    background-image: url(../img/icons/accept.png);
 }
 #messages li.warning {
     border: 1px solid #F5F518;
     background-color: #F2F299;
+    background-image: url(../img/icons/error.png);
 }
 #messages li.error {
 	border: 1px solid #642019;
 	background-color: #a35c55;
+    background-image: url(../img/icons/exclamation.png);
 }
 /* END Header */
 
