@@ -8,7 +8,7 @@ from django.db.models.aggregates import Count
 from django.db.models.signals import post_delete, post_save
 from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _
-import datetime
+import datetime, re
 from django.utils.hashcompat import md5_constructor
 from django.utils.http import urlquote
 
@@ -191,6 +191,8 @@ class TagLink(models.Model):
         abs_amount = abs(Decimal(transaction.amount))
 
         used_tags = []
+
+	tag_string = re.sub(':[ \t\n\r]+([0-9]+)', ':\\1', tag_string)
         
         for t in tag_string.split(u' '):
             # partition the tag on the last ':' to get any possible split
@@ -203,8 +205,8 @@ class TagLink(models.Model):
                 name = split
                 split = None
                 
-            # Strip out whitespace from either end
-            name = name.strip(u' \t\n\r')
+            # Strip out whitespace from either end and normalise the name
+            name = re.sub('[^A-Za-z0-9_&\-.]', '', name.strip(u' \t\n\r'))
             
             # If we don't have a tag, continue
             if not name:
