@@ -9,6 +9,7 @@ from decimal import Decimal, InvalidOperation
 
 class AccountForm(forms.ModelForm):
     currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)')])
+    bank = forms.ModelChoiceField(queryset=Bank.objects.all().order_by('name'), empty_label=_('None'), required=False)
     error_css_class = 'error'
     required_css_class = 'required'
     class Meta:
