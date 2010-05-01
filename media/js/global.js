@@ -4,7 +4,7 @@ $(function() {
 		dayNames: [gettext('Sunday'), gettext('Monday'), gettext('Tuesday'), gettext('Wednesday'), gettext('Thursday'), gettext('Friday'), gettext('Saturday')],
 		firstDay: 1,
 		maxDate: '+0d',
-		dateFormat: 'yy-mm-dd',
+		dateFormat: 'dd/mm/yy',
 		showAnim: 'slideDown'
 	});
 	
@@ -42,6 +42,22 @@ $(function() {
 		});
 	}
 	$('.uiDateField').datepicker();
+
+	var yes = gettext('Delete'), cancel = gettext('Don\'t Delete');
+	var buttons = {};
+	buttons[cancel] = function() { $(this).dialog('close'); };
+	buttons[yes] = function() { document.location = url; };
+	// Add a confirmation to the delete action
+	$('a:has(span.delete)').click(function(e) {
+		e.stopPropagation();
+		var url = $(this).attr('url');
+		$('<p>' + gettext('Are you sure you want to delete this transaction?') + '</p>').dialog({
+			modal: true,
+			buttons: buttons,
+			resizable: false
+		});
+		return false;
+	});
 	
 	// Set up the tag editing
 	var tagXhr;
@@ -52,7 +68,7 @@ $(function() {
 			$(this).find('> .sprite').addClass('tag').removeClass('tag_edit');
 		}).find('> .sprite').css('cursor', 'pointer');
 		
-	$('div.tags:has(span.tags) > span.sprite', transactions).live('click', function() {
+	$('div.tags:has(span.tags) > span.sprite', transactions).attr('title', gettext('Edit tags')).live('click', function() {
 		var $t = $(this).siblings('span.tags');
 		var text = $t.hasClass('notags') ? '' : $.trim($t.text());
 		var input = $('<input type="text"/>').data('tags', text).data('hastags', $t.hasClass('notags')).val(text).bind('blur.editTags', function() {
