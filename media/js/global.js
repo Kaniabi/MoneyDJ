@@ -29,32 +29,16 @@ $(function() {
 		var offset = a.offset();
 		var cruft = getCruft(a);
 		
-		var holder = $('<div id="add_transaction_holder"></div>').css({
-				position: 'absolute',
-				left: offset.left,
-				top: offset.top + a.height() + cruft.top + cruft.bottom,
-				zIndex: 9998
-			}).html(t).appendTo('body');
-		if (holder.find('li.error').length == 0)
+		var holder = $('<div id="add_transaction_holder"></div>').html(t);
+		holder.dialog({ autoOpen: false, modal: true, resizable: false, width: '80%' });
+		if (holder.find('li.error').length > 0)
 		{
-			holder.hide()
+			holder.dialog('open');
 		}
 		
 		// When the button's clicked, add an overlay and show the form
-		a.click(function(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			holder.slideDown();
-			$('body').append($('<div class="overlay"></div>').css({
-				zIndex: 500,
-				height: $('body').height(),
-				width: $('body').width()
-			}).click(function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				holder.slideUp();
-				$(this).remove();
-			}));
+		a.click(function () {
+			holder.dialog('open');
 		});
 	}
 	$('.uiDateField').datepicker();
