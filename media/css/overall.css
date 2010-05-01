@@ -83,6 +83,12 @@ ol.form li.required label {
 }
 ol.form > li.error input, ol.form > li.error textarea {
 	border-color: #642019;
+	border-width: 2px;
+}
+ol.form > li.error input:focus, ol.form > li.error textarea:focus {
+	box-shadow: 0 0 9px #999;
+	-moz-box-shadow: 0 0 9px #999;
+	-webkit-box-shadow: 0 0 9px #999;
 }
 ol.form label {
 	width: 13em;
@@ -107,9 +113,10 @@ ol.form ul.errorlist {
 }
 ol.form ul.errorlist li {
 	border: 1px solid #642019;
-	background-color: #a35c55;
+	padding-left: 22px;
+	background: #a35c55 url(../img/icons/exclamation.png) no-repeat 2px center;
 	color: white;
-	padding: 0.1em 0.3em;
+	padding: 0.1em 0.3em 0.1em 20px;
 	margin-bottom: 5px;
 	font-style: normal;
 	font-weight: bold;
