@@ -48,10 +48,10 @@ $(function() {
 	var buttons = {};
     // Build the buttons this way so we can translate them
 	buttons[cancel] = function() { $(this).dialog('close'); };
-	buttons[yes] = function() { document.location = url; };
 	$('a:has(span.delete)').click(function(e) {
 		e.stopPropagation();
-		var url = $(this).attr('url');
+		var url = $(this).attr('href');
+		buttons[yes] = function() { document.location = url; };
 		$('<p>' + gettext('Are you sure you want to delete this transaction?') + '</p>').dialog({
 			modal: true,
 			buttons: buttons,
