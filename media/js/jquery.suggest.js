@@ -37,11 +37,13 @@
 					if (event.keyCode == 13 && suggestions.is(':visible'))
 					{
 						useSuggestion();
+						xhr && xhr.abort();
 						return false;
 					}
 					else if (suggestions.is(':visible'))
 					{
 						useSuggestion();
+						xhr && xhr.abort();
 					}
 				}
 			}).bind('keyup', function(event) {
@@ -88,11 +90,13 @@
 				{
 					selectSuggestion(-1);
 					hideSuggestions();
+					xhr && xhr.abort();
 					return false;
 				}
 				// Keycode 58/59/186 == ':' depending on the browser
 				else if (options.amountElement && val.slice(range.start - 1, range.start) == ':' && (event.keyCode == 58 || event.keyCode == 59 || event.keyCode == 186))
 				{
+					xhr && xhr.abort();
 					var cur = getCurrentWord();
 					var currentTotal = getSplitTotal($t.is('input') ? $.trim($t.val()) : $.trim($t.text()));
 					var total = ($(options.amountElement).is('input') ? $(options.amountElement).val() : $(options.amountElement).text());
@@ -279,6 +283,7 @@
 			
 			function hideSuggestions()
 			{
+				xhr && xhr.abort();
 				suggestions.hide().html('');
 			}
 			
