@@ -9,14 +9,20 @@
 {% block pagetitle %}{% trans 'Tags' %}{% endblock %}
 
 {% block content %}
-<h3>{% trans 'Untagged Transactions' %}</h3>
-{% show_transactions transactions %}
-{% endblock %}
-
-{% block sidebar %}
-{% cloud user %}
-{% endblock %}
-
-{% block sidebar_title %}
-{% trans 'Tags: Spending' %}
+<div class="tabs">
+    <ul>
+        <li><a href="#used_tags">{% trans 'Most Used Tags (Expenditure)' %}</a></li>
+        <li><a href="#tags_income">{% trans 'Most Used Tags (Income)' %}</a></li>
+        <li><a href="#untagged">{% trans 'Untagged Transactions' %}</a></li>
+    </ul>
+    <div id="used_tags">
+        {% cloud user %}
+    </div>
+    <div id="tags_income">
+        {% cloud user 1 %}
+    </div>
+    <div id="untagged">
+        {% show_transactions transactions %}
+    </div>
+</div>
 {% endblock %}

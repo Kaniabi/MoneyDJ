@@ -7,7 +7,7 @@
 
 {% block title %}{{ tag.name }} | {% trans 'Tags' %} &bull; {% endblock %}
 
-{% block pagetitle %}{{ tag.name }}{% endblock %}
+{% block pagetitle %}{% blocktrans with tag.name as tname %}Transactions tagged with '{{ tname }}'{% endblocktrans %}{% endblock %}
 
 {% block content %}
 {% show_transactions transactions %}

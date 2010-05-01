@@ -43,11 +43,12 @@ $(function() {
 	}
 	$('.uiDateField').datepicker();
 
+	// Add a confirmation to the delete action
 	var yes = gettext('Delete'), cancel = gettext('Don\'t Delete');
 	var buttons = {};
+    // Build the buttons this way so we can translate them
 	buttons[cancel] = function() { $(this).dialog('close'); };
 	buttons[yes] = function() { document.location = url; };
-	// Add a confirmation to the delete action
 	$('a:has(span.delete)').click(function(e) {
 		e.stopPropagation();
 		var url = $(this).attr('url');
@@ -58,6 +59,9 @@ $(function() {
 		});
 		return false;
 	});
+
+    // Setup tabs
+    $('div.tabs').tabs();
 	
 	// Set up the tag editing
 	var tagXhr;
