@@ -1,4 +1,5 @@
 from accounts.forms import QuickTransactionForm, AccountForm
+from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
@@ -7,6 +8,7 @@ from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
+from django.contrib import messages
 from money.models import Account, Transaction, Payee, TagLink
 import datetime
 try:
@@ -33,6 +35,7 @@ def view(request, id):
         
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
+            messages.add_message(request, messages.SUCCESS, _('Your transaction was succesfully added'))
             acc = transaction.account
             transaction_form = QuickTransactionForm(initial={ 'account': acc.pk, 'user': request.user.pk })
     else:
@@ -173,4 +176,7 @@ def delete_transaction(request, account, transaction):
     transaction = get_object_or_404(Transaction, pk=transaction, account=account, account__user=request.user)
     
     transaction.delete()
+
+    messages.add_message(request, messages.SUCCESS, _('Your transaction was succesfully deleted'))
+
     return redirect(reverse('moneydj.accounts.views.view', args=[account]))
