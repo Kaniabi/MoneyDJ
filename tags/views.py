@@ -49,6 +49,7 @@ def view_tag(request, tag):
     
     return render_to_response("tag_view.html", {'tag': tag, 'transactions': transactions }, context_instance=RequestContext(request))
 
+@login_required
 def get_tag_suggestions(request):
     if 'q' not in request.GET or not request.GET['q']:
         return HttpResponseBadRequest()

@@ -21,30 +21,10 @@ class TagLoggedOutTest(TestCase):
         r = self.client.get(view)
         self.assertRedirects(r, reverse('user-login') + '?next=' + urllib.quote(view))
         
-    def test_get_tag_suggestions_bad(self):
-        r = self.client.get(reverse('tag-suggestions'))
-        self.assertEqual(r.status_code, 400)
-        
-        r = self.client.get(reverse('tag-suggestions'), data={'q': u''})
-        self.assertEqual(r.status_code, 400)
-        
     def test_get_tag_suggestions(self):
-        r = self.client.get(reverse('tag-suggestions'), data={'q': u'en'})
-        self.assertEqual(r.status_code, 200)
-        results = simplejson.loads(r.content, 'utf-8')
-        self.assertEqual(results, [u'entertainment', u'garden', u'presents'])
-        
-        # Make sure we get the same results regardless of case
-        r = self.client.get(reverse('tag-suggestions'), data={'q': u'EN'})
-        self.assertEqual(r.status_code, 200)
-        results = simplejson.loads(r.content, 'utf-8')
-        self.assertEqual(results, [u'entertainment', u'garden', u'presents'])
-        
-        # Make sure we get no results for a tag that doesn't exist
-        r = self.client.get(reverse('tag-suggestions'), data={'q': u'test'})
-        self.assertEqual(r.status_code, 200)
-        results = simplejson.loads(r.content, 'utf-8')
-        self.assertEqual(results, [])
+        view = reverse('tag-suggestions')
+        r = self.client.get(view)
+        self.assertRedirects(r, reverse('user-login') + '?next=' + urllib.quote(view))
         
 class TagLoggedInTest(TestCase):
     fixtures = ['test_users', 'test_tags', 'test_accounts', 'test_payees', 'test_transactions', 'test_taglinks']
@@ -83,6 +63,31 @@ class TagLoggedInTest(TestCase):
         # Should just be showing the one transaction we added
         self.assertEqual(len(r.context['transactions'].object_list), 1)
         self.assertEqual([tr.id for tr in r.context['transactions'].object_list], [t.id])
+
+    def test_get_tag_suggestions_bad(self):
+        r = self.client.get(reverse('tag-suggestions'))
+        self.assertEqual(r.status_code, 400)
+        
+        r = self.client.get(reverse('tag-suggestions'), data={'q': u''})
+        self.assertEqual(r.status_code, 400)
+
+    def test_tag_suggestions(self):
+        r = self.client.get(reverse('tag-suggestions'), data={'q': u'en'})
+        self.assertEqual(r.status_code, 200)
+        results = simplejson.loads(r.content, 'utf-8')
+        self.assertEqual(results, [u'entertainment', u'garden', u'presents'])
+        
+        # Make sure we get the same results regardless of case
+        r = self.client.get(reverse('tag-suggestions'), data={'q': u'EN'})
+        self.assertEqual(r.status_code, 200)
+        results = simplejson.loads(r.content, 'utf-8')
+        self.assertEqual(results, [u'entertainment', u'garden', u'presents'])
+        
+        # Make sure we get no results for a tag that doesn't exist
+        r = self.client.get(reverse('tag-suggestions'), data={'q': u'test'})
+        self.assertEqual(r.status_code, 200)
+        results = simplejson.loads(r.content, 'utf-8')
+        self.assertEqual(results, [])
         
 class TagCloudTest(TestCase):
     # Use subsets of the large test data in order to speed up and simplify the tests
