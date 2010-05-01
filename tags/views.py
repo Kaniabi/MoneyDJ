@@ -33,7 +33,7 @@ def view_tag(request, tag):
     tag = get_object_or_404(Tag, name=tag)
 
     # Get the transactions related to the tag
-    transactions = Transaction.objects.select_related().filter(taglink__tag=tag).order_by('-date')
+    transactions = Transaction.objects.select_related().filter(taglink__tag=tag, account__user=request.user).order_by('-date')
     
     paginator = Paginator(transactions, 20)
     
