@@ -59,6 +59,9 @@ ol.form {
 	font-size: 1.5em;
 	padding: 0.5em;
 }
+.ui-widget ol.form {
+	font-size: 1.1em;
+}
 ol.form li {
 	list-style: none;
 	clear: left;
