@@ -54,7 +54,7 @@ def get_tag_suggestions(request):
     if 'q' not in request.GET or not request.GET['q']:
         return HttpResponseBadRequest()
     
-    tags = Tag.objects.filter(name__icontains=request.GET['q'], transaction__account__user=request.user).order_by('name')
+    tags = Tag.objects.distinct().filter(name__icontains=request.GET['q'], transaction__account__user=request.user).order_by('name')
     
     response = [t.name for t in tags]
     
