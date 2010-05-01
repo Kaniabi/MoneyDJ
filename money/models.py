@@ -50,10 +50,10 @@ class Account(models.Model):
     number = models.PositiveIntegerField(blank=True,null=True)
     sort_code = models.CharField(max_length=8,blank=True)
     bank = models.ForeignKey(Bank,blank=True,null=True)
+    track_balance = models.BooleanField(help_text=_(u'Turn this off if you want to use a cash account without tracking the balance'), default=True)
     starting_balance = models.DecimalField(decimal_places=2,max_digits=9,default=0.00)
     balance = models.DecimalField(decimal_places=2,max_digits=9,default=0.00)
     balance_updated = models.DateTimeField()
-    track_balance = models.BooleanField(help_text=_(u'Turn this off if you want to use a cash account without tracking the balance'), default=True)
     currency = models.CharField(max_length=3)
     date_created = models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
