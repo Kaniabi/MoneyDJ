@@ -21,7 +21,7 @@ class QuickTransactionForm(forms.Form):
     date = forms.DateField(label=_(u'Date'), initial=datetime.date.today(), widget=widgets.UIDateWidget())
     payee = forms.CharField(label=_(u'Payee'), max_length=50)
     payee_id = forms.IntegerField(required=False, widget=forms.HiddenInput)
-    amount = forms.DecimalField(label=_(u'Amount'), decimal_places=2, max_digits=8, help_text=_('The amount of the transaction. Don\'t worry about putting the sign - we\'ll handle that.'))
+    amount = forms.DecimalField(label=_(u'Amount'), decimal_places=2, max_digits=8, help_text=_('The amount of the transaction as a decimal amount (e.g. 13.24). Don\'t worry about putting the sign or thousand separators - we\'ll handle them.'))
     credit = forms.ChoiceField(widget=forms.RadioSelect, choices=[(0, _(u'Expense')), (1, _(u'Income'))], initial=0)
     transfer = forms.BooleanField(label=_(u'Transfer'), required=False, help_text=_('Is the transaction a transfer between accounts? This will prevent the transaction from appearing in tag reports.'))
     tags = forms.CharField(label=_(u'Tags'), required=False, help_text=_(u'Separate tags using spaces. Use up and down arrows to select a tag suggestion, and press enter to select it. To add splits, follow the tag with a colon and then the amount of the split. You can mix split and normal tags e.g. "food:23.56 cds:9.99 household:3.84 shopping"'))
