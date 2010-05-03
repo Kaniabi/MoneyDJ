@@ -5,7 +5,7 @@ from django.template.context import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate, login
-from moneyuser.forms import RegisterForm
+from moneydj.moneyuser.forms import RegisterForm
 
 # Create your views here.
 @login_required

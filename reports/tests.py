@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 import urllib
 from django.contrib.auth.models import User
-from reports.templatetags.reports_tags import net_worth_by_time
+from moneydj.reports.templatetags.reports_tags import net_worth_by_time
 
 class ReportsLoggedOutTest(TestCase):
     def test_index(self):

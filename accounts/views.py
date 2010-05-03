@@ -1,4 +1,4 @@
-from accounts.forms import QuickTransactionForm, AccountForm
+from moneydj.accounts.forms import QuickTransactionForm, AccountForm
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -9,7 +9,7 @@ from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
-from money.models import Account, Transaction, Payee, TagLink
+from moneydj.money.models import Account, Transaction, Payee, TagLink
 import datetime
 try:
     import json

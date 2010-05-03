@@ -3,8 +3,8 @@ from django import forms
 from django.db import transaction, IntegrityError
 from django.http import Http404
 from django.utils.translation import ugettext as _
-from money import widgets
-from money.models import *
+from moneydj.money import widgets
+from moneydj.money.models import *
 from decimal import Decimal, InvalidOperation
 
 class AccountForm(forms.ModelForm):

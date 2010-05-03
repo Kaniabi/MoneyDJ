@@ -1,7 +1,7 @@
 # coding=utf8
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib.auth.models import check_password
-from money.models import Account, Transaction, Payee
+from moneydj.money.models import Account, Transaction, Payee
 from django.core import serializers
 from django.contrib.auth.models import User
 from django.db import transaction

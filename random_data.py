@@ -4,10 +4,10 @@ from decimal import Decimal
 
 setup_environ(settings)
 
-from money.models import Account
+from moneydj.money.models import Account
 import random
 import datetime
-from accounts.forms import QuickTransactionForm
+from moneydj.accounts.forms import QuickTransactionForm
 
 def weighted_choice(items):
     """

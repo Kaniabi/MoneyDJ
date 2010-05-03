@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from moneyuser.forms import LoginForm
+from moneydj.moneyuser.forms import LoginForm
 
 urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'authentication_form': LoginForm}, name='user-login'),

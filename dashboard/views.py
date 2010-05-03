@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from money.models import Transaction, TagLink, Account
+from moneydj.money.models import Transaction, TagLink, Account
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.db.models import Sum

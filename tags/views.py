@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from money.models import Tag, Transaction, Payee
+from moneydj.money.models import Tag, Transaction, Payee
 try:
     import json
 except ImportError:

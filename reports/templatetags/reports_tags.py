@@ -3,8 +3,8 @@ from django.conf import settings
 from django.db.models import Sum
 from django.utils.dateformat import DateFormat
 from django.utils.translation import gettext as _
-from money.models import Account, Transaction
-from money.templatetags.money_overall import currency
+from moneydj.money.models import Account, Transaction
+from moneydj.money.templatetags.money_overall import currency
 import datetime
 import locale
 

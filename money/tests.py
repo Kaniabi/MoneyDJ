@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.test.testcases import TestCase
 from django.core.urlresolvers import reverse
-from money.models import Transaction, Account, Payee, TagLink
+from moneydj.money.models import Transaction, Account, Payee, TagLink
 from decimal import Decimal
 import datetime
 

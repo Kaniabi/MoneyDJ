@@ -3,10 +3,10 @@ from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 from django.utils import simplejson
-from money.models import Transaction, Account, Payee, TagLink
+from moneydj.money.models import Transaction, Account, Payee, TagLink
 import datetime
 import urllib
-from tags.templatetags.tags import cloud
+from moneydj.tags.templatetags.tags import cloud
 from django.contrib.auth.models import User
 
 class TagLoggedOutTest(TestCase):

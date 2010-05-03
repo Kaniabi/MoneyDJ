@@ -1,12 +1,12 @@
 # coding=utf-8
 
-from accounts.forms import AccountForm
+from moneydj.accounts.forms import AccountForm
 from decimal import Decimal
 from django.contrib.auth.models import User
 from django.core.paginator import Page
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from money.models import Account, TagLink
+from moneydj.money.models import Account, TagLink
 import urllib
 import datetime
 
