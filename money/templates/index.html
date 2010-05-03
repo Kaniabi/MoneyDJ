@@ -1,0 +1,25 @@
+{% extends "basic_template.html" %}
+{% load i18n %}
+
+{% block pagetitle %}MoneyDJ{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/index.js"></script>
+{% endblock %}
+
+{% block body %}
+	<div class="column">
+		<div class="row index">
+			<a id="start" class="button" href="/user/login/">{% trans 'Get Started' %} &gt;&gt;</a>
+			<div id="promoboxes">
+				<h3>{% trans 'Take Control' %}</h3>
+				<img src="{{ MEDIA_URL }}/img/index/organise.png" alt="Organise your finances"/>
+				<h3>{% trans 'Grow' %}</h3>
+				<img src="{{ MEDIA_URL }}/img/index/money_stacks.png" alt="Watch your money grow"/>
+				<h3>{% trans 'Relax' %}</h3>
+				<img src="{{ MEDIA_URL }}/img/index/relax.png" alt="Let us do the hard work"/>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+{% endblock %}
