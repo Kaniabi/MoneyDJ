@@ -1,0 +1,9 @@
+{% extends 'basic_template.html' %}
+{% load i18n %}
+
+{% block body %}
+<div class="column">
+	<h2>{% trans "Whoops! There's a problem with this page" %}</h2>
+	<p>{% trans "We're really sorry, but there's an error on this page which means we can't display it." %}</p>
+</div>
+{% endblock body %}
