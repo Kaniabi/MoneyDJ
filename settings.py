@@ -1,24 +1,20 @@
 # Django settings for moneydj project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
-
-MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'NAME': 'moneydj',
-        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '/var/www/moneydj-dist/moneydj/moneydj.db',
+        'ENGINE': 'django.db.backends.sqlite3',
         'USER': 'moneydj',
         'PASSWORD': 'moneydj'
     }
 }
 
-CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+#CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+#CACHE_BACKEND = 'file:///var/tmp/django_cache'
+CACHE_BACKEND = 'dummy://'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -43,7 +39,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/mnt/project/moneydj/media/'
+MEDIA_ROOT = '/var/www/moneydj-dist/moneydj/media/'
 
 # Expires sessions when the browser is closed
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -51,7 +47,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://media.moneydj.joe.local'
+MEDIA_URL = 'http://localhost/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -76,12 +72,6 @@ MIDDLEWARE_CLASSES = (
     'moneydj.money.debug_middleware.DebugFooter'
 )
 
-INTERNAL_IPS = (
-    '127.0.0.1',
-    '10.50.0.11',
-    '10.50.0.12'
-)
-
 ROOT_URLCONF = 'moneydj.urls'
 
 LOGIN_URL = '/user/login/'
@@ -92,7 +82,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/mnt/project/moneydj/templates'
+    '/var/www/moneydj-dist/moneydj/templates'
 )
 
 INSTALLED_APPS = (
