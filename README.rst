@@ -9,6 +9,7 @@ INSTALLING
 ==========
 
 Prerequisites:
+--------------
 
 * Python (2.6 is the only version that has been tested, though 2.5 should work)
 * A database module for python (e.g. python-mysqldb)
@@ -16,6 +17,9 @@ Prerequisites:
   (see http://docs.djangoproject.com/en/dev/topics/install/)
 * A web server (e.g. Apache or nginx)
 * wsgi module (e.g. mod_wsgi for Apache or nginx)
+
+Instructions
+------------
 
 1. Extract the files to a folder readable by your webserver (e.g.
    `/var/www/moneydj-dist/`) so that the /moneydj subfolder is contained within 
@@ -47,13 +51,16 @@ Prerequisites:
 
 5. Add /var/www/moneydj-dist/django/ to your site packages directory by running
    the following command::
+
     ln -s /var/www/moneydj-dist/django-trunk/django `python -c "from \
       distutils.sysconfig import get_python_lib; print get_python_lib()"`/django
 
 6. Run the following command::
+
     python /var/www/moneydj-dist/moneydj/manage.py syncdb
+
    The script will ask you if you want to create a superuser. It is recommended
-   that you do so you will have access to Django's admin interface (at /admin/)
+   that you do so you will have access to Django's admin interface (at `/admin/`)
 
 7. Restart your web server and point your browser at http://localhost or the
    domain you have installed the site to
