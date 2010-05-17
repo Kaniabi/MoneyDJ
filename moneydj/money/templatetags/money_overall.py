@@ -1,8 +1,6 @@
 from django import template
 from moneydj.money.models import Account
-import locale
-
-locale.setlocale(locale.LC_ALL, '')
+from django.utils.formats import localize
 
 register = template.Library()
 
@@ -15,7 +13,10 @@ def accounts_block(user):
 def currency(value, symbol=None, sign=0):
     if sign is 0:
         value = abs(value)
-    return locale.currency(value, grouping=True, symbol=symbol)
+    val = unicode(localize(value))
+    if symbol is not None:
+        val = ''.join([symbol, val])
+    return val
 
 @register.inclusion_tag('pagination_links.html')
 def pagination_links(items):

@@ -74,6 +74,9 @@
 							<td class="money{% if a.balance < 0 %} out{% endif %}">{% if a.track_balance %}{% currency a.balance a.currency 1 %}{% endif %}</td>
 						</tr>
 						{% endfor %}
+						<tr class="total">
+							<td colspan="2" class="money{% if acc_total < 0 %} out{% endif %}">{% currency acc_total %}</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
