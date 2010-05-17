@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+	ServerName moneydj.local
+
+	Alias /media/ /var/www/moneydj-dist/moneydj/media/
+	
+	<Directory /var/www/moneydj-dist/moneydj/media>
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	WSGIScriptAlias / /var/www/moneydj-dist/moneydj/apache/moneydj.wsgi
+
+	<Directory /var/www/moneydj-dist/moneydj>
+		Order allow,deny
+		Allow from all
+	</Directory>
+</VirtualHost>
