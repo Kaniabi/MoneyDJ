@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -20,5 +21,6 @@ urlpatterns = patterns('',
     (r'^sync/', include('moneydj.sync.urls')),
     (r'^tags/', include('moneydj.tags.urls')),
     (r'^reports/', include('moneydj.reports.urls')),
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', {'packages': 'django.conf'}), 
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', {'packages': 'django.conf'}),
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}), 
 )

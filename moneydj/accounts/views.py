@@ -1,5 +1,4 @@
-from moneydj.accounts.forms import QuickTransactionForm, AccountForm
-from django.utils.translation import ugettext as _
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
@@ -8,7 +7,8 @@ from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
-from django.contrib import messages
+from django.utils.translation import ugettext as _
+from moneydj.accounts.forms import QuickTransactionForm, AccountForm
 from moneydj.money.models import Account, Transaction, Payee, TagLink
 import datetime
 try:
@@ -28,11 +28,12 @@ def view(request, id):
     """Lists the transactions in an account"""
     acc = get_object_or_404(Account, pk=id, user=request.user)
 
+    # "Add Transaction" form
     if request.method == 'POST':
-        transaction_form = QuickTransactionForm(request.POST)
         if 'account' not in request.POST.keys() or request.POST['account'] != id:
             return HttpResponseBadRequest()
         
+        transaction_form = QuickTransactionForm(request.POST)
         if (transaction_form.is_valid()):
             transaction = transaction_form.save()
             messages.add_message(request, messages.SUCCESS, _('Your transaction was succesfully added'))
@@ -56,10 +57,11 @@ def view(request, id):
     except (EmptyPage, InvalidPage):
         transactions = paginator.page(paginator.num_pages)
 
+
     return render_to_response('account_view.html', {
         'account': acc,
         'transactions': transactions,
-        'transaction_form': transaction_form
+        'transaction_form': transaction_form,
     }, context_instance=RequestContext(request))
 
 @login_required

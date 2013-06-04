@@ -8,7 +8,7 @@ from moneydj.money.models import *
 from decimal import Decimal, InvalidOperation
 
 class AccountForm(forms.ModelForm):
-    currency = forms.ChoiceField(choices=[(u'£', u'GBP (£)')])
+    currency = forms.ChoiceField(choices=[(u'R$', u'BRL (R$)')])
     bank = forms.ModelChoiceField(queryset=Bank.objects.all().order_by('name'), empty_label=_('None'), required=False)
     error_css_class = 'error'
     required_css_class = 'required'
@@ -86,3 +86,4 @@ class QuickTransactionForm(forms.Form):
         TagLink.create_relationships(tr, self.cleaned_data['tags'])
 
         return tr
+

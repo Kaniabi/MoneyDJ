@@ -30,7 +30,9 @@ $(function() {
 		var cruft = getCruft(a);
 		
 		var holder = $('<div id="add_transaction_holder"></div>').html(t);
-		holder.dialog({ autoOpen: false, modal: true, resizable: false, width: '80%' });
+		holder.dialog(
+		  { autoOpen: false, modal: true, resizable: false, width: '80%' }
+		);
 		if (holder.find('li.error').length > 0)
 		{
 			holder.dialog('open');
